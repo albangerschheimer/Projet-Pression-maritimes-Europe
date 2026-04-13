@@ -1,9 +1,11 @@
 ---
-title: "Rapport de groupe des UE \\newline  Bases de données + Sciences des Données 2"
+title: "Rapport de groupe des deep learners anonymes\\newline  Bases de données + Sciences des Données 2"
 author:
-- 'Victor Hugo, '
+- 'Alban Gerschheimer, '
+- 'Omar Terras, '
+- 'Mia Portes, '
 - Albert Enstein.
-date: "18 March 2026"
+date: "13 April 2026"
 output:
   pdf_document:
     fig_caption: yes
@@ -53,14 +55,15 @@ always_allow_html: true
 
 ## Contenu d'une introduction
 
-Une bonne introduction débute par une présentation du contexte, avant de définir votre ou vos questions de recherche. Il peut être bon d'afficher votre question de recherche en gras, séparée du reste du texte, comme ceci: 
+La biodiversité marine est aujourd’hui soumise à de nombreuses pressions humaines, notamment liées aux activités portuaires et aux installations offshore. Les ports concentrent une forte activité maritime, logistique et industrielle, tandis que les infrastructures offshore modifient également les espaces marins. Il est donc pertinent 
 
 
 \bigskip
 
 \begin{center}
 
-\textbf{Quelles sont les facteurs influençant la variabilité de la demande en électricité et comment cette variabilité varie t-elle en fonction de ces facteurs?}
+\textbf{Dans quelle mesure la proximité des ports maritimes et des infrastructures offshore influence-t-elle la distribution spatiale des observations de biodiversité marine en Europe ?
+}
 
 \end{center}
 \medskip 
@@ -112,7 +115,7 @@ Pour vous aider, on vous fournit un fichier `.Rmd` qui contient la structure du 
 
 La «compilation» (_i.e._, «Kniter») du `Rmd` permet de créer soit un fichier PDF, soit un fichier Word, soit un fichier HTML (le PDF étant celui pour lequel les choses se passent le mieux, et aussi le format attendu pour ce cours).
 
-Vous pouvez incorporer des _chunks_ R qui seront exécutés à la volée [@R ; @Lafaye2013]. Vous pouvez inclure des commandes \LaTeX. 
+Vous pouvez incorporer des _chunks_ R qui seront exécutés à la volée. Vous pouvez inclure des commandes \LaTeX. 
 
 Le désavantage de travailler avec un `.Rmd` sous `RStudio` est que vous travaillez en local : il faudra donc bien faire attention de prendre en compte les modifications de chacun. 
 
@@ -249,8 +252,8 @@ digraph boxes_and_circles {
 ```
 
 ```{=html}
-<div class="grViz html-widget html-fill-item" id="htmlwidget-9630e909204423f0493a" style="width:468px;height:10cm;"></div>
-<script type="application/json" data-for="htmlwidget-9630e909204423f0493a">{"x":{"diagram":"\ndigraph boxes_and_circles {\n\n  # a \"graph\" statement\n  graph [overlap = true, fontsize = 10]\n\n  # several \"node\" statements\n  node [shape = box,\n        fontname = Helvetica]\n  A; B; C; D; E; F\n\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.9] // sets as circles\n  1; 2; 3; 4; 5; 6; 7; 8\n\n  # several \"edge\" statements\n  A->1 B->2 B->3 B->4 C->A\n  1->D E->A 2->4 1->5 1->F\n  E->6 4->6 5->7 6->7 3->8\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-a64034212c0826645452" style="width:468px;height:10cm;"></div>
+<script type="application/json" data-for="htmlwidget-a64034212c0826645452">{"x":{"diagram":"\ndigraph boxes_and_circles {\n\n  # a \"graph\" statement\n  graph [overlap = true, fontsize = 10]\n\n  # several \"node\" statements\n  node [shape = box,\n        fontname = Helvetica]\n  A; B; C; D; E; F\n\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.9] // sets as circles\n  1; 2; 3; 4; 5; 6; 7; 8\n\n  # several \"edge\" statements\n  A->1 B->2 B->3 B->4 C->A\n  1->D E->A 2->4 1->5 1->F\n  E->6 4->6 5->7 6->7 3->8\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 ```
 
 
@@ -312,9 +315,7 @@ Vous pourrez consulter avec profit les Chapitre 11--13 du livre sur R :
 
 Toute étude impliquant des données doit **obligatoirement** inclure une analyse exploratoire préalable. Celle-ci permet de mieux comprendre l'information contenue dans les données.
 
-Pour commencer, vous listerez les variables étudiées et préciserez leur nature.
-
-Ensuite, il faut produire de nombreux résumés graphiques (_e.g._, histogrammes, nuages de points, boxplots, etc.) et numériques (_e.g._, médiane, moyenne, variance, etc.). Ainsi, il faut faire une analyse descriptive uni- et bivariée systématique de toutes les variables du jeu de données. Puis, il faut uniquement conserver les plus pertinents (les autres pouvant être gardés en Annexe), c'est-à-dire ceux qui permettront de dégager des éléments de réponse pour la question de recherche envisagée.  Chaque figure et tableau doit être commenté. Mais il ne faut pas extrapoler et dire des choses qui ne sont pas visibles dans ces graphiques ou tableaux. Pour chaque analyse, vous pourrez préciser le nombre d'individus/ d'unités statistiques concernés au total.
+Il faut produire de nombreux résumés graphiques (_e.g._, histogrammes, nuages de points, boxplots, etc.) et numériques (_e.g._, médiane, moyenne, variance, etc.). Ainsi, il faut faire une analyse descriptive uni- et bivariée systématique de toutes les variables du jeu de données. Puis, il faut uniquement conserver les plus pertinents (les autres pouvant être gardés en Annexe), c'est-à-dire ceux qui permettront de dégager des éléments de réponse pour la question de recherche envisagée.  Chaque figure et tableau doit être commenté. Mais il ne faut pas extrapoler et dire des choses qui ne sont pas visibles dans ces graphiques ou tableaux. Pour chaque analyse, vous pourrez préciser le nombre d'individus/ d'unités statistiques concernés au total.
 
 Vous pourrez consulter avec profit le Chapitre 9 du livre sur R :
 
@@ -400,14 +401,6 @@ où l'on a:
 Dans cette partie, vous pourrez utiliser les outils et méthodes vus au semestre précédent pour analyser les liens entre les variables. 
 
 Pour cela, vous pourrez utiliser les tests du $\chi^2$, test du coefficient de corrélation linéaire, test d'Anova, la droite de régression linéaire.
-
-\vspace{2em}
-Pour chaque test :
-\begin{itemize}
-\item Il faut que le graphique bivarié permettant d'explorer la relation entre les deux variables ait été mis dans la partie précédente
-\item Il faut rappeler quelle est l'hypothèse du test
-\end{itemize}
-\vspace{2em}
 
 Vous pourrez également proposer des modèles pour faire du clustering (k-means, CAH), de la classification (K plus proches voisins par exemple) comme vu en Science des données 1.  
 
