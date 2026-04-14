@@ -3,8 +3,8 @@ title: "Rapport de groupe des deep learners anonymes\\newline  Bases de données
 author:
 - 'Alban Gerschheimer, '
 - 'Omar Terras, '
-- 'Mia Portes, '
-- Albert Enstein.
+- 'Alfred Gyalay, '
+- Mia Portes.
 date: "`r format(Sys.Date(), '%d %B %Y')`"
 output:
   pdf_document:
@@ -57,7 +57,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Contenu d'une introduction
 
-La biodiversité marine est aujourd’hui soumise à de nombreuses pressions humaines, notamment liées aux activités portuaires et aux installations offshore. Les ports concentrent une forte activité maritime, logistique et industrielle, tandis que les infrastructures offshore modifient également les espaces marins. Il est donc pertinent 
+La biodiversité marine est aujourd’hui soumise à de nombreuses pressions humaines, notamment liées aux activités portuaires et aux installations offshore. Les ports concentrent une forte activité maritime, logistique et industrielle, tandis que les infrastructures offshore modifient également les espaces marins. Il est donc pertinent de se poser la question suivante:
 
 
 \bigskip
@@ -72,22 +72,16 @@ La biodiversité marine est aujourd’hui soumise à de nombreuses pressions hum
 
 \justifying
 
-Il est important ensuite de bien motiver l'importance de la (des)
-question(s), et leur actualité. Pour qui et en quoi cette question
-est-elle importante? Quelles actions pourront être menées si l'on dipose
-d'éléments de réponse ?
+
+Cette problématique s’appuie sur plusieurs sources de données réelles : des occurrences d’espèces marines issues de GBIF(mettre lien), des données géographiques sur les ports maritimes(mettre lien), ainsi que des données sur des infrastructures offshore(mettre lien).
 
 \medskip
 
-Notez que la question de recherche ci-haut doit servir de fil
-conducteur, de guide, tout au long de votre rapport (dans le choix des
-données à collecter, des analyses à effectuer, de comment présenter les
-résultats, de vos analyses et conclusions, etc.).
-
+L’objectif est de construire une base de données relationnelle permettant de croiser ces informations, puis de réaliser des requêtes SQL afin de dégager des tendances exploitables dans le cadre du cours de Sciences des données 2.
 \medskip
-Nous suggérons que vous organisiez votre rapport en utilisant des
-chapitres mais, en fonction de votre projet, rien ne vous empêche
-d'adopter une structure différente.
+ Le cadre du projet demande justement d’utiliser plusieurs sources réelles, de les intégrer dans une base relationnelle, puis de les interroger pour produire des tableaux et analyses.
+\medskip
+ Nous avons retenu ces jeux de données car ils permettent de croiser une information biologique, à savoir les occurrences d’espèces marines, avec des informations spatiales décrivant certaines pressions anthropiques. Ce croisement est cohérent avec notre problématique, qui porte sur l’influence potentielle des ports et des infrastructures offshore sur la distribution observée de la biodiversité marine.
 
 
 
@@ -96,7 +90,7 @@ Vous devez décrire les principaux rôles de chaque membre du groupe dans l'équ
 
 \medskip
 
-Victor HUGO : Étudiant n°XXXX, Resp. de la collecte des données.
+Alban  Gerschheimer: Étudiant n°XXXX, Resp. de la collecte des données.
 
 Albert ENSTEIN : Étudiant n°XXXX, Resp. du rapport.
 
