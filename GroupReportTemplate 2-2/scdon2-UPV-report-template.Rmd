@@ -41,8 +41,8 @@ Acknowledgements:
 - Nous remercions aussi ...
 biblio-style: elsarticle-harv
 session: 2026
-team: XXX
-groupeTD : TD1 ou TD2
+team: 5
+groupeTD : TD1
 Abstract: L'image ci-dessous vous donne quelques conseils pour rédiger un bon résumé.\newline
   ![](good-abstract.png){width=10cm height=10cm}
 always_allow_html: true
@@ -86,13 +86,17 @@ L’objectif est de construire une base de données relationnelle permettant de 
 
 
 ## Responsabilités et composition de l’équipe
-Vous devez décrire les principaux rôles de chaque membre du groupe dans l'équipe.
+Les taches ont été réparties de la manière suivante:
 
 \medskip
 
 Alban  Gerschheimer: Étudiant n°XXXX, Resp. de la collecte des données.
 
-Albert ENSTEIN : Étudiant n°XXXX, Resp. du rapport.
+Omar Terras: Étudiant n°XXXX, Resp. du rapport.
+
+Alfred Gyalay: Étudiant n°XXXX, Resp. du rapport.
+
+Mia Portes : Étudiant n°XXXX, Resp. du rapport.
 
 ....
 
@@ -171,6 +175,18 @@ Table: une légende au-dessus du tableau. \label{tab7.1}
 # Base de données
 
 ## Provenance des données
+
+Nous avons décidé de choisir des datas selon certains critères afin de garder une cohérence lors de cette recherche.
+
+Les critères appliqué sont les suivants :
+- zone : \textbf{Europe maritime}
+- période : \textbf{2010–2026}
+- espèces : \textbf{uniquement 3 grands groupes}
+- observations : \textbf{présentes uniquement}
+- coordonnées : \textbf{obligatoires}
+- problèmes spatiaux : \textbf{on exclut les observations avec souci géospatial}
+- profondeur : \textbf{plus petit ou égal à 0 pour garder que les espèces maritimes.}
+
 
 Donner ici le ou les \textbf{lien}(s) vers le(s) jeu(x) de données que vous avez
 utiliser pour votre travail et présenter les rapidement. 
