@@ -49,9 +49,9 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{Projet réalisé par\\[0.5cm] l'équipe XXX du groupe de TD1 ou
-TD2 \\[3cm]Rapport de groupe des deep learners anonymes\newline  Bases
-de données + Sciences des Données 2}
+\title{Projet réalisé par\\[0.5cm] l'équipe 5 du groupe de TD1 \\[3cm]Rapport
+de groupe des deep learners anonymes\newline  Bases de données +
+Sciences des Données 2}
 
 \authornameonly{Alban Gerschheimer, Omar Terras, Alfred Gyalay, Mia
 Portes. }
@@ -164,13 +164,14 @@ résumé.\newline \includegraphics[width=10cm,height=10cm]{scdon2-UPV-report-tem
 
 \chapter{Introduction}\label{introduction}
 
-\section{Contenu d'une introduction}\label{contenu-dune-introduction}
+\section{Introduction}\label{introduction-1}
 
 La biodiversité marine est aujourd'hui soumise à de nombreuses pressions
 humaines, notamment liées aux activités portuaires et aux installations
 offshore. Les ports concentrent une forte activité maritime, logistique
 et industrielle, tandis que les infrastructures offshore modifient
-également les espaces marins. Il est donc pertinent
+également les espaces marins. Il est donc pertinent de se poser la
+question suivante:
 
 \bigskip
 
@@ -184,35 +185,48 @@ et industrielle, tandis que les infrastructures offshore modifient
 
 \justifying
 
-Il est important ensuite de bien motiver l'importance de la (des)
-question(s), et leur actualité. Pour qui et en quoi cette question
-est-elle importante? Quelles actions pourront être menées si l'on dipose
-d'éléments de réponse ?
+Cette problématique s'appuie sur plusieurs sources de données réelles :
+des occurrences d'espèces marines issues de GBIF(mettre lien), des
+données géographiques sur les ports maritimes(mettre lien), ainsi que
+des données sur des infrastructures offshore(mettre lien).
 
 \medskip
 
-Notez que la question de recherche ci-haut doit servir de fil
-conducteur, de guide, tout au long de votre rapport (dans le choix des
-données à collecter, des analyses à effectuer, de comment présenter les
-résultats, de vos analyses et conclusions, etc.).
+L'objectif est de construire une base de données relationnelle
+permettant de croiser ces informations, puis de réaliser des requêtes
+SQL afin de dégager des tendances exploitables dans le cadre du cours de
+Sciences des données 2.
 
 \medskip
 
-Nous suggérons que vous organisiez votre rapport en utilisant des
-chapitres mais, en fonction de votre projet, rien ne vous empêche
-d'adopter une structure différente.
+Le cadre du projet demande justement d'utiliser plusieurs sources
+réelles, de les intégrer dans une base relationnelle, puis de les
+interroger pour produire des tableaux et analyses.
+
+\medskip
+
+Nous avons retenu ces jeux de données car ils permettent de croiser une
+information biologique, à savoir les occurrences d'espèces marines, avec
+des informations spatiales décrivant certaines pressions anthropiques.
+Ce croisement est cohérent avec notre problématique, qui porte sur
+l'influence potentielle des ports et des infrastructures offshore sur la
+distribution observée de la biodiversité marine.
 
 \section{Responsabilités et composition de
 l'équipe}\label{responsabilituxe9s-et-composition-de-luxe9quipe}
 
-Vous devez décrire les principaux rôles de chaque membre du groupe dans
-l'équipe.
+Dans notre équipe, les taches ont été réparties de la manière suivante:
 
 \medskip
 
-Victor HUGO : Étudiant n°XXXX, Resp. de la collecte des données.
+Alban Gerschheimer: Étudiant n°XXXX, Resp. de l'import de données et des
+requêtes SQL.
 
-Albert ENSTEIN : Étudiant n°XXXX, Resp. du rapport.
+Omar Terras: Étudiant n°XXXX, Resp.
+
+Alfred Gyalay: Étudiant n°XXXX, Resp. du code R.
+
+Mia Portes : Étudiant n°22406297, Resp. du rapport.
 
 \ldots.
 
@@ -326,32 +340,71 @@ Table: une légende au-dessus du tableau. \label{tab7.1}
 
 \section{Provenance des données}\label{provenance-des-donnuxe9es}
 
-Donner ici le ou les \textbf{lien}(s) vers le(s) jeu(x) de données que
-vous avez utiliser pour votre travail et présenter les rapidement.
+Nous avons décidé de choisir des datas selon certains critères afin de
+garder une cohérence lors de cette recherche.
+
+Les critères appliqués sont les suivants :
+
+\begin{itemize}
+\item zone : \textbf{Europe maritime}
+\item période : \textbf{2010–2026}
+\item espèces : \textbf{uniquement 3 grands groupes}
+\item observations : \textbf{présentes uniquement}
+\item coordonnées : \textbf{obligatoires}
+\item problèmes spatiaux : \textbf{exclusion des observations avec un problème géospatial}
+\item profondeur : \textbf{plus petit ou égal à 0}
+\end{itemize}
+
+\textbf{METTRE IMAGES}
+
+Chaque observation d'espèce sera localisée à l'aide de ses coordonnées
+géographiques, puis comparée à la position des ports et des
+infrastructures offshore les plus proches. L'idée est que plus une
+observation est proche d'un port ou d'une infrastructure, plus elle est
+susceptible d'être soumise à une pression humaine potentielle. À
+l'inverse, les observations éloignées seront considérées comme situées
+dans des zones moins directement influencées.
+
+\section{Distance entre une observation et un
+port/plateforme}\label{distance-entre-une-observation-et-un-portplateforme}
+
+Pour chaque observation, nous calculerons la distance avec les ports
+maritimes présents dans notre base.\newline Si une observation a pour
+coordonnées (lat\_o, lon\_o) et un port (lat\_p, lon\_p), alors on
+calcule une distance géographique entre les deux points à l'aide de la
+formule suivante:
+
+\textbf{METTRE FORMULE}
+
+Cette formule donne une distance euclidienne simplifiée entre une
+observation o et un port p.
 
 \bigskip
 
-Dans le jeu de données récupéré, expliquer pourquoi vous avez
-sélectionné certaines tables ou pourquoi vous en avez rajouté. Vous
-devez indiquer comment les données sont stockées (le format csv,
-txt\ldots), la taille des fichiers, le nombre de lignes et de colonnes,
-\ldots{}
+Ensuite, pour chaque observation, on garde seulement la distance au port
+\textbf{le plus proche}. On applique la même logique aux infrastructures
+offshore. Pour une observation o et une infrastructure i, la distance
+peut être notée :
 
-\bigskip
+\textbf{METTRE FORMULE}
 
-Expliquer quels choix vous avez réalisés pour filtrer les lignes et les
-colonnes (éventuellement réduire le périmètre du projet) et décrire les
-critères de sélection (e.g., ne garder que 5 colonnes sur les 15, ne
-garder que les lignes qui correspondent à une ville en particulier,
-\ldots).
+Puis on retient la \textbf{distance minimale}.
 
-\bigskip
+\section{Construction de classes de
+distance}\label{construction-de-classes-de-distance}
 
-Finalement, définir clairement quelle est la
-\textbf{population étudiée}. Vous devez expliquer quelles données vous
-avez utiliser et en quoi elles peuvent permettre d'apporter des éléments
-de réponses aux questions posées. Bien définir quelles sont les
-\textbf{unités statistiques}.
+Afin de rendre l'analyse plus lisible, les distances minimales calculées
+entre chaque observation et le port ou l'infrastructure offshore les
+plus proches n'ont pas seulement été conservées sous forme numérique.
+Elles ont aussi été transformées en classes de proximité, enregistrées
+dans les variables classe\_distance\_port et classe\_distance\_infra.
+
+Dans notre codage, une valeur élevée correspond à une observation plus
+proche, tandis qu'une valeur faible correspond à une observation plus
+éloignée. Ce regroupement permet de comparer plus facilement la
+distribution des observations, le nombre d'espèces distinctes et la
+répartition des groupes taxonomiques selon le niveau de proximité aux
+ports et aux infrastructures offshore. Son echelle est de 1 à 10.
 
 \section{Descriptif des tables}\label{descriptif-des-tables}
 
@@ -360,20 +413,41 @@ après filtrage, lister les colonnes et donner pour chacune le type, la
 signification du champ et des caractéristiques (unique, clés, valeur
 manquante, \ldots) en remplissant le tableau ci-dessous.
 
-\begin{longtable}[]{@{}cccc@{}}
-\caption{Nom de la table (nombre de lignes \(\times\) nombre de
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1566}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0843}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3855}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3735}}@{}}
+\caption{Espece (nombre de lignes \(\times\) nombre de
 colonnes)}\tabularnewline
 \toprule\noalign{}
-Nom colonne & Type & Signification & Caractéristique \\
+\begin{minipage}[b]{\linewidth}\centering
+Nom colonne
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Caractéristique
+\end{minipage} \\
 \midrule\noalign{}
 \endfirsthead
 \toprule\noalign{}
-Nom colonne & Type & Signification & Caractéristique \\
+\begin{minipage}[b]{\linewidth}\centering
+Nom colonne
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Caractéristique
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-& & & \\
+id\_espece & Texte & Identifiant unique de l'espece & Clé primaire,
+unique, non nul \\
 \end{longtable}
 
 \section{Modèles MCD et MOD}\label{moduxe8les-mcd-et-mod}

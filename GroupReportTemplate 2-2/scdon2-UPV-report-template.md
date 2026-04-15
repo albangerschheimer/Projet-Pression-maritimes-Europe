@@ -5,7 +5,7 @@ author:
 - 'Omar Terras, '
 - 'Alfred Gyalay, '
 - Mia Portes.
-date: "14 April 2026"
+date: "15 April 2026"
 output:
   pdf_document:
     fig_caption: yes
@@ -41,8 +41,8 @@ Acknowledgements:
 - Nous remercions aussi ...
 biblio-style: elsarticle-harv
 session: 2026
-team: XXX
-groupeTD : TD1 ou TD2
+team: 5
+groupeTD : TD1
 Abstract: L'image ci-dessous vous donne quelques conseils pour rédiger un bon résumé.\newline
   ![](good-abstract.png){width=10cm height=10cm}
 always_allow_html: true
@@ -53,9 +53,9 @@ always_allow_html: true
 
 # Introduction {.label:s-intro}
 
-## Contenu d'une introduction
+## Introduction
 
-La biodiversité marine est aujourd’hui soumise à de nombreuses pressions humaines, notamment liées aux activités portuaires et aux installations offshore. Les ports concentrent une forte activité maritime, logistique et industrielle, tandis que les infrastructures offshore modifient également les espaces marins. Il est donc pertinent 
+La biodiversité marine est aujourd’hui soumise à de nombreuses pressions humaines, notamment liées aux activités portuaires et aux installations offshore. Les ports concentrent une forte activité maritime, logistique et industrielle, tandis que les infrastructures offshore modifient également les espaces marins. Il est donc pertinent de se poser la question suivante:
 
 
 \bigskip
@@ -70,33 +70,35 @@ La biodiversité marine est aujourd’hui soumise à de nombreuses pressions hum
 
 \justifying
 
-Il est important ensuite de bien motiver l'importance de la (des)
-question(s), et leur actualité. Pour qui et en quoi cette question
-est-elle importante? Quelles actions pourront être menées si l'on dipose
-d'éléments de réponse ?
+
+Cette problématique s’appuie sur plusieurs sources de données réelles : des occurrences d’espèces marines issues de GBIF(mettre lien), des données géographiques sur les ports maritimes(mettre lien), ainsi que des données sur des infrastructures offshore(mettre lien).
 
 \medskip
 
-Notez que la question de recherche ci-haut doit servir de fil
-conducteur, de guide, tout au long de votre rapport (dans le choix des
-données à collecter, des analyses à effectuer, de comment présenter les
-résultats, de vos analyses et conclusions, etc.).
+L’objectif est de construire une base de données relationnelle permettant de croiser ces informations, puis de réaliser des requêtes SQL afin de dégager des tendances exploitables dans le cadre du cours de Sciences des données 2.
 
 \medskip
-Nous suggérons que vous organisiez votre rapport en utilisant des
-chapitres mais, en fonction de votre projet, rien ne vous empêche
-d'adopter une structure différente.
+
+Le cadre du projet demande justement d’utiliser plusieurs sources réelles, de les intégrer dans une base relationnelle, puis de les interroger pour produire des tableaux et analyses.
+
+\medskip
+
+Nous avons retenu ces jeux de données car ils permettent de croiser une information biologique, à savoir les occurrences d’espèces marines, avec des informations spatiales décrivant certaines pressions anthropiques. Ce croisement est cohérent avec notre problématique, qui porte sur l’influence potentielle des ports et des infrastructures offshore sur la distribution observée de la biodiversité marine.
 
 
 
 ## Responsabilités et composition de l’équipe
-Vous devez décrire les principaux rôles de chaque membre du groupe dans l'équipe.
+Dans notre équipe, les taches ont été réparties de la manière suivante:
 
 \medskip
 
-Victor HUGO : Étudiant n°XXXX, Resp. de la collecte des données.
+Alban  Gerschheimer: Étudiant n°XXXX, Resp. de l'import de données et des requêtes SQL.
 
-Albert ENSTEIN : Étudiant n°XXXX, Resp. du rapport.
+Omar Terras: Étudiant n°XXXX, Resp.
+
+Alfred Gyalay: Étudiant n°XXXX, Resp. du code R.
+
+Mia Portes : Étudiant n°22406297, Resp. du rapport.
 
 ....
 
@@ -177,36 +179,58 @@ Table: une légende au-dessus du tableau. \label{tab7.1}
 
 ## Provenance des données
 
-Donner ici le ou les \textbf{lien}(s) vers le(s) jeu(x) de données que vous avez
-utiliser pour votre travail et présenter les rapidement. 
+Nous avons décidé de choisir des datas selon certains critères afin de garder une cohérence lors de cette recherche.
 
+Les critères appliqués sont les suivants :
+\begin{itemize}
+\item zone : \textbf{Europe maritime}
+\item période : \textbf{2010–2026}
+\item espèces : \textbf{uniquement 3 grands groupes}
+\item observations : \textbf{présentes uniquement}
+\item coordonnées : \textbf{obligatoires}
+\item problèmes spatiaux : \textbf{exclusion des observations avec un problème géospatial}
+\item profondeur : \textbf{plus petit ou égal à 0}
+\end{itemize}
+
+
+\textbf{METTRE IMAGES}
+  
+  Chaque observation d’espèce sera localisée à l’aide de ses coordonnées géographiques, puis comparée à la position des ports et des infrastructures offshore les plus proches. L’idée est que plus une observation est proche d’un port ou d’une infrastructure, plus elle est susceptible d’être soumise à une pression humaine potentielle. À l’inverse, les observations éloignées seront considérées comme situées dans des zones moins directement influencées.
+
+## Distance entre une observation et un port/plateforme
+
+Pour chaque observation, nous calculerons la distance avec les ports maritimes présents dans notre base.\newline
+Si une observation a pour coordonnées (lat_o, lon_o) et un port (lat_p, lon_p), alors on calcule une distance géographique entre les deux points à l'aide de la formule suivante:
+
+\textbf{METTRE FORMULE}
+
+Cette formule donne une distance euclidienne simplifiée entre une observation o et un port p.
 
 \bigskip
 
-  Dans le jeu de données récupéré, expliquer pourquoi vous avez sélectionné certaines tables ou pourquoi vous en avez rajouté. Vous devez indiquer comment les données sont stockées (le format csv, txt...), la taille des fichiers, le nombre de lignes et de colonnes, \ldots{}
+Ensuite, pour chaque observation, on garde seulement la distance au port \textbf{le plus proche}.
+On applique la même logique aux infrastructures offshore.
+Pour une observation o et une infrastructure i, la distance peut être notée :
 
-\bigskip
+\textbf{METTRE FORMULE}
 
-  Expliquer quels choix vous avez réalisés pour filtrer les lignes et les colonnes (éventuellement réduire le périmètre du projet) et décrire les critères de sélection (e.g., ne garder que 5 colonnes sur les 15, ne garder que les lignes qui correspondent à une ville en particulier, \ldots).
+Puis on retient la \textbf{distance minimale}.
 
-\bigskip
+## Construction de classes de distance
 
-  Finalement, définir
-clairement quelle est la \textbf{population étudiée}. Vous devez 
-expliquer quelles données vous avez utiliser et en quoi elles peuvent
-permettre d'apporter des éléments de réponses aux questions posées. Bien
-définir quelles sont les \textbf{unités statistiques}.
-
+  Afin de rendre l’analyse plus lisible, les distances minimales calculées entre chaque observation et le port ou l’infrastructure offshore les plus proches n’ont pas seulement été conservées sous forme numérique. Elles ont aussi été transformées en classes de proximité, enregistrées dans les variables classe_distance_port et classe_distance_infra.
+  
+  Dans notre codage, une valeur élevée correspond à une observation plus proche, tandis qu’une valeur faible correspond à une observation plus éloignée. Ce regroupement permet de comparer plus facilement la distribution des observations, le nombre d’espèces distinctes et la répartition des groupes taxonomiques selon le niveau de proximité aux ports et aux infrastructures offshore. Son echelle est de 1 à 10.
 
 ## Descriptif des tables
 
 Pour chaque table conservée, préciser le nombre de lignes et de colonnes après filtrage, lister les colonnes et donner pour chacune le type, la signification du champ et des caractéristiques (unique, clés, valeur manquante, ...) en remplissant le tableau ci-dessous.
 
-| Nom colonne | Type | Signification | Caractéristique |
-|:-----------:|:----:|:-------------:|:---------------:|
-|             |      |               |                 |
+| Nom colonne | Type  | Signification                  | Caractéristique               |
+|:-----------:|:-----:|:------------------------------:|:-----------------------------:|
+| id_espece   | Texte | Identifiant unique de l'espece | Clé primaire, unique, non nul |
 
-Table: Nom de la table (nombre de lignes $\times$ nombre de colonnes)
+Table: Espece (nombre de lignes $\times$ nombre de colonnes)
 
 
 ## Modèles MCD et MOD
@@ -252,8 +276,8 @@ digraph boxes_and_circles {
 ```
 
 ```{=html}
-<div class="grViz html-widget html-fill-item" id="htmlwidget-c035b06903d648426f83" style="width:468px;height:10cm;"></div>
-<script type="application/json" data-for="htmlwidget-c035b06903d648426f83">{"x":{"diagram":"\ndigraph boxes_and_circles {\n\n  # a \"graph\" statement\n  graph [overlap = true, fontsize = 10]\n\n  # several \"node\" statements\n  node [shape = box,\n        fontname = Helvetica]\n  A; B; C; D; E; F\n\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.9] // sets as circles\n  1; 2; 3; 4; 5; 6; 7; 8\n\n  # several \"edge\" statements\n  A->1 B->2 B->3 B->4 C->A\n  1->D E->A 2->4 1->5 1->F\n  E->6 4->6 5->7 6->7 3->8\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-1586b6e22b98fdf91ca5" style="width:468px;height:10cm;"></div>
+<script type="application/json" data-for="htmlwidget-1586b6e22b98fdf91ca5">{"x":{"diagram":"\ndigraph boxes_and_circles {\n\n  # a \"graph\" statement\n  graph [overlap = true, fontsize = 10]\n\n  # several \"node\" statements\n  node [shape = box,\n        fontname = Helvetica]\n  A; B; C; D; E; F\n\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.9] // sets as circles\n  1; 2; 3; 4; 5; 6; 7; 8\n\n  # several \"edge\" statements\n  A->1 B->2 B->3 B->4 C->A\n  1->D E->A 2->4 1->5 1->F\n  E->6 4->6 5->7 6->7 3->8\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 ```
 
 
