@@ -1,0 +1,10 @@
+INSERT INTO table_name (classe_distance_port, nb_especes_distinctes) VALUES ('1', 1857);
+INSERT INTO table_name (classe_distance_port, nb_especes_distinctes) VALUES ('10', 77);
+INSERT INTO table_name (classe_distance_port, nb_especes_distinctes) VALUES ('2', 163);
+INSERT INTO table_name (classe_distance_port, nb_especes_distinctes) VALUES ('3', 156);
+INSERT INTO table_name (classe_distance_port, nb_especes_distinctes) VALUES ('4', 257);
+INSERT INTO table_name (classe_distance_port, nb_especes_distinctes) VALUES ('5', 208);
+INSERT INTO table_name (classe_distance_port, nb_especes_distinctes) VALUES ('6', 118);
+INSERT INTO table_name (classe_distance_port, nb_especes_distinctes) VALUES ('7', 140);
+INSERT INTO table_name (classe_distance_port, nb_especes_distinctes) VALUES ('8', 99);
+INSERT INTO table_name (classe_distance_port, nb_especes_distinctes) VALUES ('9', 54);

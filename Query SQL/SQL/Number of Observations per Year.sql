@@ -1,0 +1,17 @@
+INSERT INTO table_name (year, nb_observations) VALUES (2010, 49789);
+INSERT INTO table_name (year, nb_observations) VALUES (2011, 46787);
+INSERT INTO table_name (year, nb_observations) VALUES (2012, 52694);
+INSERT INTO table_name (year, nb_observations) VALUES (2013, 42316);
+INSERT INTO table_name (year, nb_observations) VALUES (2014, 41941);
+INSERT INTO table_name (year, nb_observations) VALUES (2015, 36106);
+INSERT INTO table_name (year, nb_observations) VALUES (2016, 27259);
+INSERT INTO table_name (year, nb_observations) VALUES (2017, 23303);
+INSERT INTO table_name (year, nb_observations) VALUES (2018, 29042);
+INSERT INTO table_name (year, nb_observations) VALUES (2019, 25304);
+INSERT INTO table_name (year, nb_observations) VALUES (2020, 19396);
+INSERT INTO table_name (year, nb_observations) VALUES (2021, 36977);
+INSERT INTO table_name (year, nb_observations) VALUES (2022, 12993);
+INSERT INTO table_name (year, nb_observations) VALUES (2023, 11735);
+INSERT INTO table_name (year, nb_observations) VALUES (2024, 3699);
+INSERT INTO table_name (year, nb_observations) VALUES (2025, 416);
+INSERT INTO table_name (year, nb_observations) VALUES (2026, 16);
