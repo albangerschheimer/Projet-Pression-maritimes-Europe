@@ -1,0 +1,12 @@
+.DS_Store
+.Rhistory
+.Rproj.user/
+
+*.log
+*.aux
+*.out
+*.toc
+*.synctex.gz
+
+figure-latex/
+*_files/
