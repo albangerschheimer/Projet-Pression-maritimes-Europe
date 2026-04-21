@@ -408,16 +408,13 @@ ports et aux infrastructures offshore. Son echelle est de 1 à 10.
 
 \section{Descriptif des tables}\label{descriptif-des-tables}
 
-Pour chaque table conservée, préciser le nombre de lignes et de colonnes
-après filtrage, lister les colonnes et donner pour chacune le type, la
-signification du champ et des caractéristiques (unique, clés, valeur
-manquante, \ldots) en remplissant le tableau ci-dessous.
+\textbf{REMPLIR LE NOMBRE DE COLONNES ET DE LIGNES}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1566}}
-  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0843}}
-  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3855}}
-  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3735}}@{}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1604}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0755}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3585}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4057}}@{}}
 \caption{Espece (nombre de lignes \(\times\) nombre de
 colonnes)}\tabularnewline
 \toprule\noalign{}
@@ -446,8 +443,209 @@ Caractéristique
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-id\_espece & Texte & Identifiant unique de l'espece & Clé primaire,
+id\_espece & Entier & Identifiant unique de l'espèce & Clé primaire,
 unique, non nul \\
+scientific\_name & Texte & Nom scientifique complet de l'espèce & Non
+unique, non nul \\
+phylum & Texte & Embranchement taxonomique & Non unique, peut contenir
+des répétitions \\
+classe & Texte & Classe taxonomique de l'espèce & Non unique \\
+ordre & Texte & Ordre taxonomique de l'espèce & Non unique \\
+famille & Texte & Famille taxonomique de l'espèce & Non unique \\
+genre & Texte & Genre taxonomique de l'espèce & Non unique \\
+nom\_espece & Texte & Nom spécifique de l'espèce & Non unique, parfois
+valeur manquante \\
+\end{longtable}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1575}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1024}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3543}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3858}}@{}}
+\caption{Observation (nombre de lignes \(\times\) nombre de
+colonnes)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Nom colonne
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Caractéristique
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Nom colonne
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Caractéristique
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+id\_observation & Entier long & Identifiant unique de l'observation GBIF
+& Clé primaire, unique, non nul \\
+id\_espece & Entier & Identifiant de l'espèce observée & Clé étrangère
+vers ESPECE, non nul \\
+annee & Entier & Année de l'observation & Non unique, filtrée entre 2010
+et 2026 \\
+latitude & Décimal & Latitude de l'observation & Non nulle après
+nettoyage \\
+longitude & Décimal & Longitude de l'observation & Non nulle après
+nettoyage \\
+profondeur & Décimal & Profondeur de l'observation & Peut contenir des
+valeurs nulles \\
+country\_code & Texte court & Code du pays de l'observation & Non
+unique \\
+basis\_of\_record & Texte & Type d'enregistrement de l'observation & Non
+unique \\
+occurrence\_status & Texte & Statut de présence de l'espèce observée &
+Valeur conservée : present \\
+dataset\_key & Texte & Identifiant du jeu de données source & Non
+unique \\
+\end{longtable}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1527}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1679}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2977}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3817}}@{}}
+\caption{Port (nombre de lignes \(\times\) nombre de
+colonnes)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Nom colonne
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Caractéristique
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Nom colonne
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Caractéristique
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+id\_port & Entier ou texte court & Identifiant unique du port & Clé
+primaire, unique, non nul \\
+code\_port & Texte court & Code du port lorsqu'il existe & Peut être
+unique selon la source, parfois nul \\
+nom\_port & Texte & Nom du port maritime & Non unique dans l'absolu, non
+nul si conservé \\
+activite\_principale & Texte & Activité principale ou type de port &
+Peut contenir des répétitions, peut être nulle \\
+latitude\_port & Décimal & Latitude du port & Non nulle après
+nettoyage \\
+longitude\_port & Décimal & Longitude du port & Non nulle après
+nettoyage \\
+\end{longtable}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1298}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1679}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3740}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3282}}@{}}
+\caption{Infrastructure (nombre de lignes \(\times\) nombre de
+colonnes)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Nom colonne
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Caractéristique
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Nom colonne
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Caractéristique
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+id\_infra & Entier ou texte court & Identifiant unique de
+l'infrastructure offshore & Clé primaire, unique, non nul \\
+type\_infra & Texte & Type d'infrastructure offshore & Non unique \\
+label & Texte & Libellé ou nom de l'infrastructure & Non unique, peut
+être descriptif \\
+date\_releve & Date ou texte & Date du relevé ou de mise à jour &
+\textbf{MANQUANT} \\
+latitude\_infra & Décimal & Latitude de l'infrastructure & Non nulle
+après nettoyage \\
+longitude\_infra & Décimal & Longitude de l'infrastructure & Non nulle
+après nettoyage \\
+\end{longtable}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1631}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1560}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3191}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3617}}@{}}
+\caption{Localiser X (nombre de lignes \(\times\) nombre de
+colonnes)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Nom colonne
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Caractéristique
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Nom colonne
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Caractéristique
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+id\_observation & Entier long & Identifiant de l'observation étudiée &
+Clé étrangère vers OBSERVATION \\
+id\_X & Entier ou texte court & Identifiant de X lié à l'observation &
+Clé étrangère vers X \\
+distance\_X & Décimal & Distance calculée entre l'observation et X & Non
+négative \\
+categorie\_distance\_X & Texte & Classe de distance entre l'observation
+et X & Exemples : très\_proche, proche, moyenne, éloignée \\
 \end{longtable}
 
 \section{Modèles MCD et MOD}\label{moduxe8les-mcd-et-mod}
@@ -457,6 +655,7 @@ unique, non nul \\
   Pour le MCD, inclure une image réalisée avec le logiciel Mocodo
   {[}\url{https://www.mocodo.net/}{]} telle que celle visible sur la
   Figure\(~\)\ref{uml} ci-dessous :
+  \textbf{remplacer uml.png par l'image du mdc}
 
   \begin{figure}
   \centering
@@ -469,60 +668,48 @@ unique, non nul \\
 
 \bigskip
 
-Noter en passant qu'il est possible de créer des diagrammes en R
-Markdown au moyen du package \texttt{DiagrammeR}
-{[}\url{https://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html}{]}
-comme on peut le voir ci-dessous.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# install.packages("webshot",dependencies = TRUE)}
-\CommentTok{\# library(webshot)}
-\CommentTok{\# webshot::install\_phantomjs()}
-\FunctionTok{Sys.setenv}\NormalTok{(}\AttributeTok{OPENSSL\_CONF=}\StringTok{"/dev/null"}\NormalTok{)}
-\NormalTok{DiagrammeR}\SpecialCharTok{::}\FunctionTok{grViz}\NormalTok{(}\StringTok{"}
-\StringTok{digraph boxes\_and\_circles \{}
-
-\StringTok{  \# a \textquotesingle{}graph\textquotesingle{} statement}
-\StringTok{  graph [overlap = true, fontsize = 10]}
-
-\StringTok{  \# several \textquotesingle{}node\textquotesingle{} statements}
-\StringTok{  node [shape = box,}
-\StringTok{        fontname = Helvetica]}
-\StringTok{  A; B; C; D; E; F}
-
-\StringTok{  node [shape = circle,}
-\StringTok{        fixedsize = true,}
-\StringTok{        width = 0.9] // sets as circles}
-\StringTok{  1; 2; 3; 4; 5; 6; 7; 8}
-
-\StringTok{  \# several \textquotesingle{}edge\textquotesingle{} statements}
-\StringTok{  A{-}\textgreater{}1 B{-}\textgreater{}2 B{-}\textgreater{}3 B{-}\textgreater{}4 C{-}\textgreater{}A}
-\StringTok{  1{-}\textgreater{}D E{-}\textgreater{}A 2{-}\textgreater{}4 1{-}\textgreater{}5 1{-}\textgreater{}F}
-\StringTok{  E{-}\textgreater{}6 4{-}\textgreater{}6 5{-}\textgreater{}7 6{-}\textgreater{}7 3{-}\textgreater{}8}
-\StringTok{\}}
-\StringTok{"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
 \section{Import des données}\label{import-des-donnuxe9es}
 
-\begin{itemize}
-\tightlist
-\item
-  Préciser les nettoyages réalisés avant l'import comme l'uniformisation
-  des valeurs des champs (\emph{e.g.}, Mr, M., Monsieur, \ldots) ou le
-  remplissage des valeurs manquantes par une valeur moyenne \ldots{}
-\end{itemize}
+Avant l'importation des données, nous avons réalisé une phase de
+nettoyage. À partir de la table initiale, plusieurs tables ont été
+créées, afin de permettre l'exécution des requêtes nécessaires à l'étude
+et d'éliminer les données superflues. Pour cela, nous avons utilisé
+DBpro et Python, avec la bibliothèque pandas, et réalisé les étapes
+suivantes.
+
+Création d'une nouvelle Base de données nommée
+base\_maritime\_européenne.
+
+\textbf{METTRE IMG}
+
+Importation des tables.
+
+\textbf{METTRE SOURCE DONNÉES?}
+
+On renomme chaques tables avec ces noms :
 
 \begin{itemize}
-    \item  Source de données 1 :
-    \begin{itemize} 
-     \item Suppression des colonnes XXX, car XXX
-     \item  Suppression des doublons dans les colonnes XXX
-    \item  Filtrage en fonction de la colonne XXx, nous n'avons conservé que.... 
+    \item elasmobranchii\_europe
+    \item cnidaria\_europe
+    \item malacostraca\_europe
+    \item port\_\_maritime\_eur
+    \item offshore\_europe
 \end{itemize}
-\end{itemize}
+
+Création de clés primaires pour les tables elasmobranchii\_europe,
+cnidaria\_europe, malacostraca\_europe et offshore\_europe, car
+celles-ci n'en disposaient pas initialement et présentaient de nombreux
+doublons au niveau des identifiants. Les identifiants issus des jeux de
+données sources ne garantissaient pas toujours une unicité fiable après
+importation. Afin d'assurer l'intégrité relationnelle de la base, des
+identifiants techniques auto-incrémentés ont donc été ajoutés à
+certaines tables, notamment celles relatives aux observations
+biologiques et aux infrastructures offshore. Exemple de requête
+effectuée:
+
+ALTER TABLE cnidaria\_europe
+
+ADD COLUMN id\_obs INT NOT NULL AUTO\_INCREMENT PRIMARY KEY FIRST;
 
 \section{Requêtes réalisées}\label{requuxeates-ruxe9alisuxe9es}
 
@@ -618,11 +805,11 @@ exécutés à la volée (\emph{i.e.}, lors de la traduction de votre fichier
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-3-1} 
+{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-2-1} 
 
 }
 
-\caption{\label{fig:boxplots}Deux boxplots.}\label{fig:unnamed-chunk-3}
+\caption{\label{fig:boxplots}Deux boxplots.}\label{fig:unnamed-chunk-2}
 \end{figure}
 
 \begin{Shaded}
@@ -647,11 +834,11 @@ Ainsi on pourrait remplacer le chunk ci-dessous:
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-4-1} 
+{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-3-1} 
 
 }
 
-\caption{Pas super.}\label{fig:unnamed-chunk-4}
+\caption{Pas super.}\label{fig:unnamed-chunk-3}
 \end{figure}
 
 par celui-ci:
@@ -667,11 +854,11 @@ par celui-ci:
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-5-1} 
+{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-4-1} 
 
 }
 
-\caption{Déjà mieux.}\label{fig:unnamed-chunk-5}
+\caption{Déjà mieux.}\label{fig:unnamed-chunk-4}
 \end{figure}
 
 \normalsize
