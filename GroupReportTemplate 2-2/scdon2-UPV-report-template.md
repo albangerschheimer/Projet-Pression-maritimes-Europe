@@ -1,11 +1,11 @@
 ---
-title: "Rapport de groupe des\\newline deep learners anonymes\\newline  Bases de données + Sciences des Données 2"
+title: "Rapport de groupe des deep learners anonymes\\newline  Bases de données + Sciences des Données 2"
 author:
 - 'Alban Gerschheimer, '
 - 'Omar Terras, '
 - 'Alfred Gyalay, '
 - Mia Portes.
-date: "15 April 2026"
+date: "21 April 2026"
 output:
   pdf_document:
     fig_caption: yes
@@ -223,26 +223,74 @@ Puis on retient la \textbf{distance minimale}.
   Dans notre codage, une valeur élevée correspond à une observation plus proche, tandis qu’une valeur faible correspond à une observation plus éloignée. Ce regroupement permet de comparer plus facilement la distribution des observations, le nombre d’espèces distinctes et la répartition des groupes taxonomiques selon le niveau de proximité aux ports et aux infrastructures offshore. Son echelle est de 1 à 10.
 
 ## Descriptif des tables
+\textbf{REMPLIR LE NOMBRE DE COLONNES ET DE LIGNES}
 
-Pour chaque table conservée, préciser le nombre de lignes et de colonnes après filtrage, lister les colonnes et donner pour chacune le type, la signification du champ et des caractéristiques (unique, clés, valeur manquante, ...) en remplissant le tableau ci-dessous.
-
-| Nom colonne     | Type   | Signification                  | Caractéristique               |
-|:---------------:|:------:|:------------------------------:|:-----------------------------:|
-| id_espece       | Entier | Identifiant unique de l'espèce | Clé primaire, unique, non nul |
-| scientific_name | Texte  | Identifiant unique de l'espece | Clé primaire, unique, non nul |
-| phylum          | Texte  | Identifiant unique de l'espece | Clé primaire, unique, non nul |
-| classe          | Texte  | Identifiant unique de l'espece | Clé primaire, unique, non nul |
-| ordre           | Texte  | Identifiant unique de l'espece | Clé primaire, unique, non nul |
-| famille         | Texte  | Identifiant unique de l'espece | Clé primaire, unique, non nul |
-| genre           | Texte  | Identifiant unique de l'espece | Clé primaire, unique, non nul |
-| nom_espece      | Texte  | Identifiant unique de l'espece | Clé primaire, unique, non nul |
+| Nom colonne     | Type   | Signification                        | Caractéristique                           |
+|:---------------:|:------:|:------------------------------------:|:-----------------------------------------:|
+| id_espece       | Entier | Identifiant unique de l’espèce       | Clé primaire, unique, non nul             |
+| scientific_name | Texte  | Nom scientifique complet de l’espèce | Non unique, non nul                       |
+| phylum          | Texte  | Embranchement taxonomique            | Non unique, peut contenir des répétitions |
+| classe          | Texte  | Classe taxonomique de l’espèce       | Non unique                                |
+| ordre           | Texte  | Ordre taxonomique de l’espèce        | Non unique                                |
+| famille         | Texte  | Famille taxonomique de l’espèce      | Non unique                                |
+| genre           | Texte  | Genre taxonomique de l’espèce        | Non unique                                |
+| nom_espece      | Texte  | Nom spécifique de l’espèce           | Non unique, parfois valeur manquante      |
+ 
 
 Table: Espece (nombre de lignes $\times$ nombre de colonnes)
+
+| Nom colonne        | Type        | Signification                               | Caractéristique                                 |
+|:------------------:|:-----------:|:-------------------------------------------:|:-----------------------------------------------:|
+| id_observation     | Entier long | Identifiant unique de l’observation GBIF    | Clé primaire, unique, non nul                   |
+| id_espece          | Entier      | Identifiant de l’espèce observée            | Clé étrangère vers ESPECE, non nul              |
+| annee              | Entier      | Année de l’observation                      | Non unique, filtrée entre 2010 et 2026          |
+| latitude           | Décimal     | Latitude de l’observation                   | Non nulle après nettoyage                       |
+| longitude          | Décimal     | Longitude de l’observation                  | Non nulle après nettoyage                       |
+| profondeur         | Décimal     | Profondeur de l’observation                 | Peut contenir des valeurs nulles                |
+| country_code       | Texte court | Code du pays de l’observation               | Non unique                                      |
+| basis_of_record    | Texte       | Type d’enregistrement de l’observation      | Non unique                                      |
+| occurrence_status  | Texte       | Statut de présence de l’espèce observée     | Valeur conservée : present                      |
+| dataset_key        | Texte       | Identifiant du jeu de données source        | Non unique                                      |
+
+Table: Observation (nombre de lignes $\times$ nombre de colonnes)
+
+| Nom colonne        | Type                 | Signification                         | Caractéristique                                  |
+|:------------------:|:--------------------:|:-------------------------------------:|:------------------------------------------------:|
+| id_port            | Entier ou texte court| Identifiant unique du port            | Clé primaire, unique, non nul                    |
+| code_port          | Texte court          | Code du port lorsqu’il existe         | Peut être unique selon la source, parfois nul    |
+| nom_port           | Texte                | Nom du port maritime                  | Non unique dans l’absolu, non nul si conservé    |
+| activite_principale| Texte                | Activité principale ou type de port   | Peut contenir des répétitions, peut être nulle   |
+| latitude_port      | Décimal              | Latitude du port                      | Non nulle après nettoyage                        |
+| longitude_port     | Décimal              | Longitude du port                     | Non nulle après nettoyage                        |
+
+Table: Port (nombre de lignes $\times$ nombre de colonnes)
+
+| Nom colonne     | Type                 | Signification                                   | Caractéristique                           |
+|:---------------:|:--------------------:|:-----------------------------------------------:|:-----------------------------------------:|
+| id_infra        | Entier ou texte court| Identifiant unique de l’infrastructure offshore | Clé primaire, unique, non nul             |
+| type_infra      | Texte                | Type d’infrastructure offshore                  | Non unique                                |
+| label           | Texte                | Libellé ou nom de l’infrastructure              | Non unique, peut être descriptif          |
+| date_releve     | Date ou texte        | Date du relevé ou de mise à jour                | \textbf{MANQUANT}                         |
+| latitude_infra  | Décimal              | Latitude de l’infrastructure                    | Non nulle après nettoyage                 |
+| longitude_infra | Décimal              | Longitude de l’infrastructure                   | Non nulle après nettoyage                 |
+
+
+Table: Infrastructure (nombre de lignes $\times$ nombre de colonnes)
+
+| Nom colonne           | Type                 | Signification                               | Caractéristique                                   |
+|:---------------------:|:--------------------:|:-------------------------------------------:|:-------------------------------------------------:|
+| id_observation        | Entier long          | Identifiant de l’observation étudiée        | Clé étrangère vers OBSERVATION                    |
+| id_X                  | Entier ou texte court| Identifiant de X lié à l’observation        | Clé étrangère vers X                              |
+| distance_X            | Décimal              | Distance calculée entre l’observation et X  | Non négative                                      |
+| categorie_distance_X  | Texte                | Classe de distance entre l’observation et X | Exemples : très_proche, proche, moyenne, éloignée |
+
+Table: Localiser X (nombre de lignes $\times$ nombre de colonnes)
 
 
 ## Modèles MCD et MOD
 
 - Pour le MCD, inclure une image réalisée avec le logiciel Mocodo [https://www.mocodo.net/] telle que celle visible sur la Figure$~$\ref{uml} ci-dessous :
+\textbf{remplacer uml.png par l'image du mdc}
 
   ![Relations.](uml.png){#uml width="8cm" height="4cm"}
 
@@ -250,56 +298,36 @@ Table: Espece (nombre de lignes $\times$ nombre de colonnes)
 
 \bigskip
 
-Noter en passant qu'il est possible de créer des diagrammes en R Markdown au moyen du package `DiagrammeR` [\url{https://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html}] comme on peut le voir ci-dessous.
-
-
-``` r
-# install.packages("webshot",dependencies = TRUE)
-# library(webshot)
-# webshot::install_phantomjs()
-Sys.setenv(OPENSSL_CONF="/dev/null")
-DiagrammeR::grViz("
-digraph boxes_and_circles {
-
-  # a 'graph' statement
-  graph [overlap = true, fontsize = 10]
-
-  # several 'node' statements
-  node [shape = box,
-        fontname = Helvetica]
-  A; B; C; D; E; F
-
-  node [shape = circle,
-        fixedsize = true,
-        width = 0.9] // sets as circles
-  1; 2; 3; 4; 5; 6; 7; 8
-
-  # several 'edge' statements
-  A->1 B->2 B->3 B->4 C->A
-  1->D E->A 2->4 1->5 1->F
-  E->6 4->6 5->7 6->7 3->8
-}
-")
-```
-
-```{=html}
-<div class="grViz html-widget html-fill-item" id="htmlwidget-f72ab2fd5cf5c76790ce" style="width:468px;height:10cm;"></div>
-<script type="application/json" data-for="htmlwidget-f72ab2fd5cf5c76790ce">{"x":{"diagram":"\ndigraph boxes_and_circles {\n\n  # a \"graph\" statement\n  graph [overlap = true, fontsize = 10]\n\n  # several \"node\" statements\n  node [shape = box,\n        fontname = Helvetica]\n  A; B; C; D; E; F\n\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.9] // sets as circles\n  1; 2; 3; 4; 5; 6; 7; 8\n\n  # several \"edge\" statements\n  A->1 B->2 B->3 B->4 C->A\n  1->D E->A 2->4 1->5 1->F\n  E->6 4->6 5->7 6->7 3->8\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-```
-
-
 ## Import des données 
 
-- Préciser les nettoyages réalisés avant l'import comme l'uniformisation des valeurs des champs (_e.g._, Mr, M., Monsieur, ...) ou le remplissage des valeurs manquantes par une valeur moyenne ...
+Avant l’importation des données, nous avons réalisé une phase de nettoyage. À partir de la table initiale, plusieurs tables ont été créées, afin de permettre l’exécution des requêtes nécessaires à l’étude et d’éliminer les données superflues. Pour cela, nous avons utilisé DBpro et Python, avec la bibliothèque pandas, et réalisé les étapes suivantes.
 
+
+Création d'une nouvelle Base de données nommée base\_maritime\_européenne.
+
+\textbf{METTRE IMG}
+
+
+Importation des tables.
+
+\textbf{METTRE SOURCE DONNÉES?}
+
+
+On renomme chaques tables avec ces noms :
 \begin{itemize}
-    \item  Source de données 1 :
-    \begin{itemize} 
-     \item Suppression des colonnes XXX, car XXX
-     \item  Suppression des doublons dans les colonnes XXX
-    \item  Filtrage en fonction de la colonne XXx, nous n'avons conservé que.... 
+    \item elasmobranchii\_europe
+    \item cnidaria\_europe
+    \item malacostraca\_europe
+    \item port\_\_maritime\_eur
+    \item offshore\_europe
 \end{itemize}
-\end{itemize}
+
+Création de clés primaires pour les tables elasmobranchii_europe, cnidaria_europe, malacostraca_europe et offshore_europe, car celles-ci n’en disposaient pas initialement et présentaient de nombreux doublons au niveau des identifiants.
+Les identifiants issus des jeux de données sources ne garantissaient pas toujours une unicité fiable après importation. Afin d’assurer l’intégrité relationnelle de la base, des identifiants techniques auto-incrémentés ont donc été ajoutés à certaines tables, notamment celles relatives aux observations biologiques et aux infrastructures offshore. Exemple de requête effectuée:
+
+ALTER TABLE cnidaria_europe
+
+ADD COLUMN id_obs INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
 
 
 ## Requêtes réalisées
@@ -363,11 +391,11 @@ boxplot(cars, col = c("#5975a4", "#cc8963"))
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-3-1} 
+{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-2-1} 
 
 }
 
-\caption{\label{fig:boxplots}Deux boxplots.}\label{fig:unnamed-chunk-3}
+\caption{\label{fig:boxplots}Deux boxplots.}\label{fig:unnamed-chunk-2}
 \end{figure}
 
 ``` r
@@ -389,11 +417,11 @@ boxplot(cars, main = "Un titre qui est vraiment beaucoup trop long et qui dépas
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-4-1} 
+{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-3-1} 
 
 }
 
-\caption{Pas super.}\label{fig:unnamed-chunk-4}
+\caption{Pas super.}\label{fig:unnamed-chunk-3}
 \end{figure}
 
 par celui-ci:
@@ -408,11 +436,11 @@ boxplot(cars,
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-5-1} 
+{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-4-1} 
 
 }
 
-\caption{Déjà mieux.}\label{fig:unnamed-chunk-5}
+\caption{Déjà mieux.}\label{fig:unnamed-chunk-4}
 \end{figure}
 
 \normalsize
