@@ -341,7 +341,7 @@ L'objectif est de varier le type de requêtes et de répondre à votre probléma
 ## Quelques détails techniques
 
 
-On peut interagir avec une base de données directement depuis RMarkdown : i.e. requêter puis récupérer et afficher le résultat directement depuis le .Rmd. Un fichier connexionBDD.Rmd est fourni pour donner des exemples.
+On peut interagir avec une base de données directement depuis RMarkdown : i.e. requêter puis récupérer et afficher le résultat directement depuis le Rmd. Un fichier connexionBDD.Rmd est fourni pour donner des exemples.
 
 # Matériel et Méthodes
 
