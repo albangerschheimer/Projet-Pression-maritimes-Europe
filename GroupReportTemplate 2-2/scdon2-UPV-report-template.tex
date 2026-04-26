@@ -90,8 +90,6 @@ Portes. }
 
 \prefacesection{Déclaration de non plagiat}
 
-\textcolor{red}{À compléter avant la remise du rapport.}
-
 \vskip 2pc \noindent Nous déclarons que ce rapport est le fruit de notre seul travail, à part lorsque cela est indiqué  explicitement. 
 
 \vskip 2pc  \noindent Nous acceptons que la personne évaluant ce rapport puisse, pour les besoins de cette évaluation:
@@ -109,8 +107,10 @@ Portes. }
 %%Signature: \rule{7cm}{0.25pt} \hfill Date: \rule{4cm}{0.25pt} \\[1cm]
 %%Signature: \rule{7cm}{0.25pt} \hfill Date: \rule{4cm}{0.25pt} \\[1cm]
 %%\vskip 1pc
-Signature : Marine Demangeot \hfill Date: 04/05/2025\\[1cm]
-Signature : Marine Demangeot \hfill Date: 04/05/2025 \\[1cm]
+Signature : Alban Gerschheimer \hfill Date: 04/05/2025\\[1cm]
+Signature : Omar Terras \hfill Date: 04/05/2025 \\[1cm]
+Signature : Alfred Gyalay \hfill Date: 04/05/2025\\[1cm]
+Signature : Mia Portes \hfill Date: 04/05/2025\\[1cm]
 
 %\textcolor{red}{Mettre à jour la date.}
 
@@ -122,11 +122,12 @@ Signature : Marine Demangeot \hfill Date: 04/05/2025 \\[1cm]
 
 \prefacesection{Remerciements}
 
-\textcolor{red}{À compléter avant la remise du rapport.}
 
-{\bigskip}Nos plus sincères remerciements vont à notre encadrant
-pédagogique pour les conseils avisés sur notre travail.\\[1cm] Nous
-remercions aussi \ldots{}\\[1cm] 
+{\bigskip}Nous tenons à remercier nos enseignantes, Mme Sandra Bringay
+et Mme Marine Demangeot, pour leur soutien et leurs conseils précieux
+tout au long de ce projet.\\[1cm] Nous remercions également les membres
+de ce groupe pour leur sérieux et leur implication tout au long de sa
+réalisation.\\[1cm] 
 
 {\bigskip\bigskip\bigskip\noindent} \today
 
@@ -228,114 +229,6 @@ Alfred Gyalay: Étudiant n°XXXX, Resp. du code R.
 
 Mia Portes : Étudiant n°22406297, Resp. du rapport.
 
-\ldots.
-
-\section{Quelques détails
-techniques}\label{quelques-duxe9tails-techniques}
-
-\textbf{Ortographe} : Il est important de soigner l'orthographe. Vous
-devriez utiliser un correcteur en ligne tel que
-\texttt{languagetool}\footnote{Voir \href{https://www.overleaf.com/blog/635-languagetool-a-free-browser-add-on-to-check-your-grammar-and-spelling}{https://www.overleaf.com/blog/635-languagetool-a-free-browser-add-on-to-check-your-grammar-and-spelling} et \url{https://fr.overleaf.com/learn/how-to/Can_I_change_the_spell_check_language_to_e.g._Spanish\%3F}.}
-(\url{https://languagetool.org/fr}).
-
-\bigskip
-
-\textbf{R Markdown :} Pour créer ce rapport, on vous demande d'utiliser
-\texttt{R\ Markdown}, via le logiciel \texttt{RStudio}.
-
-Pour vous aider, on vous fournit un fichier \texttt{.Rmd} qui contient
-la structure du projet et qui présente quelques exemples de la syntaxe à
-utiliser. Vous pouvez donc partir de ce fichier et le modifier à votre
-guise. (Nous suggérons que vous organisiez votre rapport en utilisant
-des chapitres mais, en fonction de votre projet, rien ne vous empêche
-d'adopter une structure différente.)
-
-La «compilation» (\emph{i.e.}, «Kniter») du \texttt{Rmd} permet de créer
-soit un fichier PDF, soit un fichier Word, soit un fichier HTML (le PDF
-étant celui pour lequel les choses se passent le mieux, et aussi le
-format attendu pour ce cours).
-
-Vous pouvez incorporer des \emph{chunks} R qui seront exécutés à la
-volée. Vous pouvez inclure des commandes \LaTeX.
-
-Le désavantage de travailler avec un \texttt{.Rmd} sous \texttt{RStudio}
-est que vous travaillez en local : il faudra donc bien faire attention
-de prendre en compte les modifications de chacun.
-
-\bigskip
-
-\textbf{Editeur collaboratif : } Lorsque votre rapport sera proche de sa
-version finale, i.e.~lorsqu'il ne restera que du texte à modifier, vous
-pourrez utilier le logiciel Overleaf (\url{https://overleaf.com}) pour
-collaborer avec les autres membres de votre équipe directement sur la
-version \LaTeX~de ce document (qui est un sous-produit créé quand vous
-cliquez sur Knit depuis RStudio).
-
-\bigskip
-
-\textbf{Figure : } Pour inclure une figure, il faut qu'elle ait une
-légende (ce qui est le cas pour la Figure\(~\)\ref{myfigure} ci-après)
-et qu'elle soit référencée quelque part dans le document (ce qui est le
-cas dans les parenthèses qui précédent).
-
-\begin{figure}
-\centering
-\includegraphics[width=4cm,height=2cm]{scdon2-UPV-report-template_files/logo-upvm_4.jpg}
-\caption{Une légende sous la figure.}\label{myfigure}
-\end{figure}
-
-\bigskip
-
-\textbf{Tableau} : Notez que contrairement à une figure, la légende d'un
-tableau doit être mise \textbf{au-dessus} de celui-ci (\emph{e.g.}, voir
-la Table\(~\)\ref{tab7.1} ci-dessous). Comme pour les figures, tout
-tableau doit également être discuté dans le texte du rapport.
-
-Utiliser \url{https://www.tablesgenerator.com/markdown_tables} pour
-créer des tables Markdown simples, ou bien utiliser \LaTeX. Plus de
-précisions sur l'utilisation des tableaux sont données en Annexe
-
-\begin{longtable}[]{@{}lcr@{}}
-\toprule\noalign{}
-Les tables & sont & cool \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-col 1 est & alignée à gauche & \$1600 \\
-col 2 est & centrée & \$12 \\
-col 3 est & alignée à droite & \$1 \\
-\end{longtable}
-
-library(knitr)
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"knitr"}\NormalTok{)}
-\FunctionTok{library}\NormalTok{(knitr)}
-\CommentTok{\# Créer un tableau simple avec kable}
-\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Nom =} \FunctionTok{c}\NormalTok{(}\StringTok{"Alice"}\NormalTok{, }\StringTok{"Bob"}\NormalTok{), }\AttributeTok{Age =} \FunctionTok{c}\NormalTok{(}\DecValTok{25}\NormalTok{, }\DecValTok{30}\NormalTok{))}
-\FunctionTok{kable}\NormalTok{(df, }\AttributeTok{format =} \StringTok{"latex"}\NormalTok{) }\CommentTok{\# Peut aussi être "html", "latex"}
-\end{Highlighting}
-\end{Shaded}
-
-Table: une légende au-dessus du tableau. \label{tab7.1}
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|c|c|c|}
-        \hline
-        Nom & Âge & Ville \\
-        \hline
-        Alice & 25 & Paris \\
-        Bob & 30 & Lyon \\
-        Charlie & 22 & Marseille \\
-        \hline
-    \end{tabular}
-    \caption{Exemple de tableau en LaTeX}
-    \label{tab:exemple}
-\end{table}
-
 \chapter{Base de données}\label{base-de-donnuxe9es}
 
 \section{Provenance des données}\label{provenance-des-donnuxe9es}
@@ -355,7 +248,8 @@ Les critères appliqués sont les suivants :
 \item profondeur : \textbf{plus petit ou égal à 0}
 \end{itemize}
 
-\textbf{METTRE IMAGES}
+\includegraphics[width=4cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/img1.png}
+\includegraphics[width=\linewidth,height=3cm,keepaspectratio]{scdon2-UPV-report-template_files/img2.png}
 
 Chaque observation d'espèce sera localisée à l'aide de ses coordonnées
 géographiques, puis comparée à la position des ports et des
@@ -364,6 +258,8 @@ observation est proche d'un port ou d'une infrastructure, plus elle est
 susceptible d'être soumise à une pression humaine potentielle. À
 l'inverse, les observations éloignées seront considérées comme situées
 dans des zones moins directement influencées.
+
+\bigskip
 
 \section{Distance entre une observation et un
 port/plateforme}\label{distance-entre-une-observation-et-un-portplateforme}
@@ -374,7 +270,9 @@ coordonnées (lat\_o, lon\_o) et un port (lat\_p, lon\_p), alors on
 calcule une distance géographique entre les deux points à l'aide de la
 formule suivante:
 
-\textbf{METTRE FORMULE}
+\[
+d_{port}(o,p)=\sqrt{(lat_o - lat_p)^2 + (lon_o - lon_p)^2}
+\]
 
 Cette formule donne une distance euclidienne simplifiée entre une
 observation o et un port p.
@@ -386,9 +284,9 @@ Ensuite, pour chaque observation, on garde seulement la distance au port
 offshore. Pour une observation o et une infrastructure i, la distance
 peut être notée :
 
-\textbf{METTRE FORMULE}
-
-Puis on retient la \textbf{distance minimale}.
+\[
+d_{infra}(o,i)=\sqrt{(lat_o - lat_i)^2 + (lon_o - lon_i)^2}
+\] Puis on retient la \textbf{distance minimale}.
 
 \section{Construction de classes de
 distance}\label{construction-de-classes-de-distance}
@@ -648,83 +546,559 @@ categorie\_distance\_X & Texte & Classe de distance entre l'observation
 et X & Exemples : très\_proche, proche, moyenne, éloignée \\
 \end{longtable}
 
-\section{Modèles MCD et MOD}\label{moduxe8les-mcd-et-mod}
+\section{Modèle MCD:}\label{moduxe8le-mcd}
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/MCD.png}
+\caption{Relations.}\label{uml}
+\end{figure}
+
+\section{Modèle MOD:}\label{moduxe8le-mod}
+
+OBSERVATION(id\_observation, occurrenceid, taxonkey, phylum, class,
+order, family, genus, species, year, decimalLatitude, decimalLongitude,
+depth, distance\_port\_min, distance\_infra\_min,
+classe\_distance\_port, classe\_distance\_infra, gid\_port\_proche\#,
+id\_offshore\_proche\#)
+
+PORT(gid, cdport, nomport, latitude, longitude)
+
+OFFSHORE(id\_offshore, structure\_id, label, latitude, longitude)
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/MOD.png}
+\caption{Tables.}\label{uml2}
+\end{figure}
+
+\section{Importation et préparation des
+données}\label{importation-et-pruxe9paration-des-donnuxe9es}
+
+\subsection{Création de la base de
+données}\label{cruxe9ation-de-la-base-de-donnuxe9es}
+
+Dans cette partie nous allons utiliser DBpro et Python ainsi que la
+bibliothèque pandas. Avant l'importation des données, une phase de
+préparation a été réalisée afin de garantir la qualité et la cohérence
+des informations exploitées. Une nouvelle base de données nommée
+\textbf{base\_maritime\_europeenne} a été créée.
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/base.png}
+\caption{Base.}\label{uml}
+\end{figure}
+
+\subsection{Importation et organisation des
+tables}\label{importation-et-organisation-des-tables}
+
+Les différentes tables ont ensuite été importées dans la base de
+données.
+
+\begin{figure}
+\centering
+\includegraphics[width=5cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/import.png}
+\caption{Importation.}\label{uml}
+\end{figure}
+
+Après importation, les tables ont été renommées comme suit :
 
 \begin{itemize}
+\tightlist
 \item
-  Pour le MCD, inclure une image réalisée avec le logiciel Mocodo
-  {[}\url{https://www.mocodo.net/}{]} telle que celle visible sur la
-  Figure\(~\)\ref{uml} ci-dessous :
-  \textbf{remplacer uml.png par l'image du mdc}
-
-  \begin{figure}
-  \centering
-  \includegraphics[width=8cm,height=4cm]{scdon2-UPV-report-template_files/uml.png}
-  \caption{Relations.}\label{uml}
-  \end{figure}
+  elasmobranchii\_europe
 \item
-  Pour le MOD, inclure une image réalisée avec le designer de phpmyadmin
+  cnidaria\_europe
+\item
+  malacostraca\_europe
+\item
+  port\_maritime\_eur
+\item
+  offshore\_europe
 \end{itemize}
 
-\bigskip
+\subsection{Création des clés
+primaires}\label{cruxe9ation-des-cluxe9s-primaires}
 
-\section{Import des données}\label{import-des-donnuxe9es}
+Certaines tables ne possédaient pas de clé primaire fiable et
+contenaient des doublons. Afin d'assurer l'intégrité des données, des
+identifiants techniques auto-incrémentés ont été ajoutés.
 
-Avant l'importation des données, nous avons réalisé une phase de
-nettoyage. À partir de la table initiale, plusieurs tables ont été
-créées, afin de permettre l'exécution des requêtes nécessaires à l'étude
-et d'éliminer les données superflues. Pour cela, nous avons utilisé
-DBpro et Python, avec la bibliothèque pandas, et réalisé les étapes
-suivantes.
+Exemple :
 
-Création d'une nouvelle Base de données nommée
-base\_maritime\_européenne.
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ALTER} \KeywordTok{TABLE}\NormalTok{ cnidaria\_europe}
+\KeywordTok{ADD} \KeywordTok{COLUMN}\NormalTok{ id\_obs }\DataTypeTok{INT} \KeywordTok{NOT} \KeywordTok{NULL}\NormalTok{ AUTO\_INCREMENT }\KeywordTok{PRIMARY} \KeywordTok{KEY} \FunctionTok{FIRST}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
 
-\textbf{METTRE IMG}
+\section{Nettoyage des données
+biologiques}\label{nettoyage-des-donnuxe9es-biologiques}
 
-Importation des tables.
+\subsection{Filtrage des années
+d'observation}\label{filtrage-des-annuxe9es-dobservation}
 
-\textbf{METTRE SOURCE DONNÉES?}
-
-On renomme chaques tables avec ces noms :
+Les observations incohérentes ont été supprimées, notamment :
 
 \begin{itemize}
-    \item elasmobranchii\_europe
-    \item cnidaria\_europe
-    \item malacostraca\_europe
-    \item port\_\_maritime\_eur
-    \item offshore\_europe
+\tightlist
+\item
+  les années en dehors de l'intervalle {[}2010 ; 2026{]}
+\item
+  les années manquantes
 \end{itemize}
 
-Création de clés primaires pour les tables elasmobranchii\_europe,
-cnidaria\_europe, malacostraca\_europe et offshore\_europe, car
-celles-ci n'en disposaient pas initialement et présentaient de nombreux
-doublons au niveau des identifiants. Les identifiants issus des jeux de
-données sources ne garantissaient pas toujours une unicité fiable après
-importation. Afin d'assurer l'intégrité relationnelle de la base, des
-identifiants techniques auto-incrémentés ont donc été ajoutés à
-certaines tables, notamment celles relatives aux observations
-biologiques et aux infrastructures offshore. Exemple de requête
-effectuée:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{DELETE} \KeywordTok{FROM}\NormalTok{ cnidaria\_europe}
+\KeywordTok{WHERE}\NormalTok{ \textasciigrave{}year\textasciigrave{} }\OperatorTok{\textless{}} \DecValTok{2010} \KeywordTok{OR}\NormalTok{ \textasciigrave{}year\textasciigrave{} }\OperatorTok{\textgreater{}} \DecValTok{2026} \KeywordTok{OR}\NormalTok{ \textasciigrave{}year\textasciigrave{} }\KeywordTok{IS} \KeywordTok{NULL}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
 
-ALTER TABLE cnidaria\_europe
+\subsection{Filtrage des coordonnées
+géographiques}\label{filtrage-des-coordonnuxe9es-guxe9ographiques}
 
-ADD COLUMN id\_obs INT NOT NULL AUTO\_INCREMENT PRIMARY KEY FIRST;
+Les observations avec coordonnées invalides ont été supprimées :
 
-\section{Requêtes réalisées}\label{requuxeates-ruxe9alisuxe9es}
+\begin{itemize}
+\tightlist
+\item
+  latitude hors de {[}-90 ; 90{]}
+\item
+  longitude hors de {[}-180 ; 180{]}
+\item
+  valeurs manquantes
+\end{itemize}
 
-Pour chaque requête, l'exprimer en langage naturel puis en SQL. Puis
-donner le résultat obtenu (ou un extrait) et expliquer ce résultat.
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{DELETE} \KeywordTok{FROM}\NormalTok{ cnidaria\_europe}
+\KeywordTok{WHERE}\NormalTok{ decimalLatitude }\OperatorTok{\textless{}} \OperatorTok{{-}}\DecValTok{90} 
+   \KeywordTok{OR}\NormalTok{ decimalLatitude }\OperatorTok{\textgreater{}} \DecValTok{90}
+   \KeywordTok{OR}\NormalTok{ decimalLongitude }\OperatorTok{\textless{}} \OperatorTok{{-}}\DecValTok{180} 
+   \KeywordTok{OR}\NormalTok{ decimalLongitude }\OperatorTok{\textgreater{}} \DecValTok{180}
+   \KeywordTok{OR}\NormalTok{ decimalLatitude }\KeywordTok{IS} \KeywordTok{NULL}
+   \KeywordTok{OR}\NormalTok{ decimalLongitude }\KeywordTok{IS} \KeywordTok{NULL}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
 
-L'objectif est de varier le type de requêtes et de répondre à votre
-problématique initiale.
+\subsection{Création de la table
+d'observations}\label{cruxe9ation-de-la-table-dobservations}
+
+Une table unifiée a été construite afin de regrouper les différentes
+observations biologiques.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{CREATE} \KeywordTok{TABLE}\NormalTok{ observation\_europe }\KeywordTok{AS}
+\KeywordTok{SELECT}\NormalTok{ occurrenceid, taxonkey, \textasciigrave{}year\textasciigrave{}, decimalLatitude, decimalLongitude, }\FunctionTok{depth}\NormalTok{, datasetkey,}
+\NormalTok{       phylum, \textasciigrave{}class\textasciigrave{}, \textasciigrave{}order\textasciigrave{}, family, genus, species}
+\KeywordTok{FROM}\NormalTok{ cnidaria\_europe}
+
+\KeywordTok{UNION} \KeywordTok{ALL}
+
+\KeywordTok{SELECT}\NormalTok{ occurrenceid, taxonkey, \textasciigrave{}year\textasciigrave{}, decimalLatitude, decimalLongitude, }\FunctionTok{depth}\NormalTok{, datasetkey,}
+\NormalTok{       phylum, \textasciigrave{}class\textasciigrave{}, \textasciigrave{}order\textasciigrave{}, family, genus, species}
+\KeywordTok{FROM}\NormalTok{ elasmobranchii\_europe}
+
+\KeywordTok{UNION} \KeywordTok{ALL}
+
+\KeywordTok{SELECT}\NormalTok{ occurrenceid, taxonkey, \textasciigrave{}year\textasciigrave{}, decimalLatitude, decimalLongitude, }\FunctionTok{depth}\NormalTok{, datasetkey,}
+\NormalTok{       phylum, \textasciigrave{}class\textasciigrave{}, \textasciigrave{}order\textasciigrave{}, family, genus, species}
+\KeywordTok{FROM}\NormalTok{ malacostraca\_europe;}
+\end{Highlighting}
+\end{Shaded}
+
+Ajout d'une clé primaire :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ALTER} \KeywordTok{TABLE}\NormalTok{ observation\_europe}
+\KeywordTok{ADD} \KeywordTok{COLUMN}\NormalTok{ id\_observation }\DataTypeTok{INT} \KeywordTok{NOT} \KeywordTok{NULL}\NormalTok{ AUTO\_INCREMENT }\KeywordTok{PRIMARY} \KeywordTok{KEY} \FunctionTok{FIRST}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Préparation des données
+géographiques}\label{pruxe9paration-des-donnuxe9es-guxe9ographiques}
+
+\subsection{Traitement des données
+offshore}\label{traitement-des-donnuxe9es-offshore}
+
+Le fichier offshore initial étant volumineux (environ 120 Mo), un
+prétraitement a été réalisé en Python (bibliothèque pandas) afin de
+limiter les données à une zone européenne.
+
+Zone géographique utilisée :
+
+\begin{itemize}
+\tightlist
+\item
+  longitude : {[}-25 ; 45{]}
+\item
+  latitude : {[}10 ; 80{]}
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/code.png}
+\caption{Code.}\label{uml}
+\end{figure}
+
+Le fichier final obtenu est : \textbf{offshore\_europe.csv}
+
+\subsection{Nettoyage des ports et
+offshore}\label{nettoyage-des-ports-et-offshore}
+
+Suppression des entrées sans coordonnées :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{DELETE} \KeywordTok{FROM}\NormalTok{ port\_maritime\_eur}
+\KeywordTok{WHERE}\NormalTok{ latitude }\KeywordTok{IS} \KeywordTok{NULL} \KeywordTok{OR}\NormalTok{ longitude }\KeywordTok{IS} \KeywordTok{NULL}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Calcul des distances}\label{calcul-des-distances}
+
+\subsection{Ajout des variables de
+distance}\label{ajout-des-variables-de-distance}
+
+De nouvelles colonnes ont été ajoutées pour mesurer la proximité des
+observations :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ALTER} \KeywordTok{TABLE}\NormalTok{ observation\_europe}
+\KeywordTok{ADD} \KeywordTok{COLUMN}\NormalTok{ distance\_port\_min }\DataTypeTok{DECIMAL}\NormalTok{(}\DecValTok{12}\NormalTok{,}\DecValTok{6}\NormalTok{),}
+\KeywordTok{ADD} \KeywordTok{COLUMN}\NormalTok{ distance\_infra\_min }\DataTypeTok{DECIMAL}\NormalTok{(}\DecValTok{12}\NormalTok{,}\DecValTok{6}\NormalTok{),}
+\KeywordTok{ADD} \KeywordTok{COLUMN}\NormalTok{ classe\_distance\_port }\DataTypeTok{VARCHAR}\NormalTok{(}\DecValTok{30}\NormalTok{),}
+\KeywordTok{ADD} \KeywordTok{COLUMN}\NormalTok{ classe\_distance\_infra }\DataTypeTok{VARCHAR}\NormalTok{(}\DecValTok{30}\NormalTok{);}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Distance aux port et infrastructures
+offshore}\label{distance-aux-port-et-infrastructures-offshore}
+
+Nous avons utilisé une distance euclidienne simplifiée entre les
+coordonnées de l'observation et celles des ports et fait de même pour
+les infrastructures offshore:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{UPDATE}\NormalTok{ observation\_europe }
+\KeywordTok{SET}\NormalTok{ distance\_infra\_min }\OperatorTok{=}\NormalTok{ (}
+    \KeywordTok{SELECT} \FunctionTok{MIN}\NormalTok{(}
+        \FunctionTok{SQRT}\NormalTok{(}
+\NormalTok{            POW(observation\_europe.decimalLatitude }\OperatorTok{{-}}\NormalTok{ offshore\_europe.latitude, }\DecValTok{2}\NormalTok{) }\OperatorTok{+}
+\NormalTok{            POW(observation\_europe.decimalLongitude }\OperatorTok{{-}}\NormalTok{ offshore\_europe.longitude, }\DecValTok{2}\NormalTok{)}
+\NormalTok{        )}
+\NormalTok{    )}
+    \KeywordTok{FROM}\NormalTok{ offshore\_europe }
+\NormalTok{);}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Construction des classes de
+distance}\label{construction-des-classes-de-distance}
+
+Les distances ont été regroupées en classes :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{UPDATE}\NormalTok{ observation\_europe}
+\KeywordTok{SET}\NormalTok{ classe\_distance\_port }\OperatorTok{=}
+    \ControlFlowTok{CASE}
+        \ControlFlowTok{WHEN}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}} \FloatTok{0.01} \ControlFlowTok{THEN} \DecValTok{10}
+        \ControlFlowTok{WHEN}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}} \FloatTok{0.02} \ControlFlowTok{THEN} \DecValTok{9}
+        \ControlFlowTok{WHEN}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}} \FloatTok{0.03} \ControlFlowTok{THEN} \DecValTok{8}
+        \ControlFlowTok{WHEN}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}} \FloatTok{0.05} \ControlFlowTok{THEN} \DecValTok{7}
+        \ControlFlowTok{WHEN}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}} \FloatTok{0.07} \ControlFlowTok{THEN} \DecValTok{6}
+        \ControlFlowTok{WHEN}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}} \FloatTok{0.10} \ControlFlowTok{THEN} \DecValTok{5}
+        \ControlFlowTok{WHEN}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}} \FloatTok{0.15} \ControlFlowTok{THEN} \DecValTok{4}
+        \ControlFlowTok{WHEN}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}} \FloatTok{0.20} \ControlFlowTok{THEN} \DecValTok{3}
+        \ControlFlowTok{WHEN}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}} \FloatTok{0.30} \ControlFlowTok{THEN} \DecValTok{2}
+        \ControlFlowTok{ELSE} \DecValTok{1}
+    \ControlFlowTok{END}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Liaison avec les infrastructures
+offshore}\label{liaison-avec-les-infrastructures-offshore}
+
+On crée alors une liaison entre les 2 en ajoutant le port le plus proche
+et en liant les collones en FK.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{UPDATE}\NormalTok{ observation\_europe o}
+\KeywordTok{SET}\NormalTok{ id\_offshore\_proche }\OperatorTok{=}\NormalTok{ (}
+    \KeywordTok{SELECT}\NormalTok{ i.id\_offshore}
+    \KeywordTok{FROM}\NormalTok{ offshore\_europe i}
+    \KeywordTok{ORDER} \KeywordTok{BY} 
+\NormalTok{        ((o.decimalLatitude }\OperatorTok{{-}}\NormalTok{ i.latitude) }\OperatorTok{*}\NormalTok{ (o.decimalLatitude }\OperatorTok{{-}}\NormalTok{ i.latitude)) }\OperatorTok{+}
+\NormalTok{        ((o.decimalLongitude }\OperatorTok{{-}}\NormalTok{ i.longitude) }\OperatorTok{*}\NormalTok{ (o.decimalLongitude }\OperatorTok{{-}}\NormalTok{ i.longitude))}
+    \KeywordTok{LIMIT} \DecValTok{1}
+\NormalTok{);}
+\end{Highlighting}
+\end{Shaded}
+
+Ajout de la clé étrangère :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ALTER} \KeywordTok{TABLE}\NormalTok{ observation\_europe}
+\KeywordTok{ADD} \KeywordTok{CONSTRAINT}\NormalTok{ fk\_obs\_offshore}
+\KeywordTok{FOREIGN} \KeywordTok{KEY}\NormalTok{ (id\_offshore\_proche) }\KeywordTok{REFERENCES}\NormalTok{ offshore\_europe(id\_offshore);}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Analyse des données}\label{analyse-des-donnuxe9es}
+
+L'objectif de cette analyse est d'étudier l'influence de la proximité
+aux ports sur la répartition des observations biologiques.
+
+\subsection{Distance moyenne au port par
+phylum}\label{distance-moyenne-au-port-par-phylum}
+
+Cette requête permet de calculer la distance moyenne des observations
+par phylum, afin d'identifier les groupes biologiques les plus proches
+ou éloignés des infrastructures portuaires.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ phylum, }\FunctionTok{AVG}\NormalTok{(distance\_port\_min) }\KeywordTok{AS}\NormalTok{ distance\_port\_moyenne}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ phylum;}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/dist.png}
+\caption{Code.}\label{uml}
+\end{figure}
+
+\subsection{Répartition des observations selon la distance au
+port}\label{ruxe9partition-des-observations-selon-la-distance-au-port}
+
+On analyse ici le nombre d'observations en fonction des classes de
+distance aux ports, ce qui permet de visualiser la distribution spatiale
+des données.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ classe\_distance\_port, }\FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ classe\_distance\_port}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ classe\_distance\_port;}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/diff.png}
+\caption{Code.}\label{uml}
+\end{figure}
+
+\subsection{Nombre d'espèces distinctes selon la distance au
+port}\label{nombre-despuxe8ces-distinctes-selon-la-distance-au-port}
+
+Cette requête met en évidence la pression exercée par les
+infrastructures
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ classe\_distance\_port, }\FunctionTok{COUNT}\NormalTok{(}\KeywordTok{DISTINCT}\NormalTok{ species) }\KeywordTok{AS}\NormalTok{ nb\_especes\_distinctes}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{WHERE}\NormalTok{ species }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ classe\_distance\_port}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ classe\_distance\_port;}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/impact.png}
+\caption{Code.}\label{uml}
+\end{figure}
+
+\subsection{Distance moyenne au port par classe
+taxonomique}\label{distance-moyenne-au-port-par-classe-taxonomique}
+
+Analyse de la distance moyenne aux ports selon les classes taxonomiques.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ \textasciigrave{}class\textasciigrave{}, }\FunctionTok{AVG}\NormalTok{(distance\_port\_min) }\KeywordTok{AS}\NormalTok{ distance\_port\_moyenne}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{WHERE}\NormalTok{ \textasciigrave{}class\textasciigrave{} }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ \textasciigrave{}class\textasciigrave{}}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ distance\_port\_moyenne;}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/taxo.png}
+\caption{Code.}\label{uml}
+\end{figure}
+
+\subsection{Espèces les plus observées à proximité immédiate des
+ports}\label{espuxe8ces-les-plus-observuxe9es-uxe0-proximituxe9-immuxe9diate-des-ports}
+
+Identification des espèces les plus fréquentes dans les zones très
+proches des ports (classe 10).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ species, }\FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{WHERE}\NormalTok{ species }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
+  \KeywordTok{AND}\NormalTok{ classe\_distance\_port }\OperatorTok{=} \DecValTok{10}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ species}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ nb\_observations }\KeywordTok{DESC}
+\KeywordTok{LIMIT} \DecValTok{20}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Espèces les plus observées loin des
+ports}\label{espuxe8ces-les-plus-observuxe9es-loin-des-ports}
+
+Analyse équivalente pour les zones les plus éloignées des ports (classe
+1).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ species, }\FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{WHERE}\NormalTok{ species }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
+  \KeywordTok{AND}\NormalTok{ classe\_distance\_port }\OperatorTok{=} \DecValTok{1}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ species}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ nb\_observations }\KeywordTok{DESC}
+\KeywordTok{LIMIT} \DecValTok{20}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Nombre d'observations par
+année}\label{nombre-dobservations-par-annuxe9e}
+
+Permet d'étudier l'évolution temporelle du nombre d'observations.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ \textasciigrave{}year\textasciigrave{}, }\FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ \textasciigrave{}year\textasciigrave{}}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ \textasciigrave{}year\textasciigrave{};}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/annee.png}
+\caption{Code.}\label{uml}
+\end{figure}
+
+\subsection{Phylums proches des ports avec un nombre significatif
+d'observations}\label{phylums-proches-des-ports-avec-un-nombre-significatif-dobservations}
+
+On sélectionne les phylums ayant au moins 20 observations afin d'assurer
+une certaine robustesse statistique.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ phylum,}
+       \FunctionTok{AVG}\NormalTok{(distance\_port\_min) }\KeywordTok{AS}\NormalTok{ distance\_port\_moyenne,}
+       \FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{WHERE}\NormalTok{ phylum }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ phylum}
+\KeywordTok{HAVING} \FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\OperatorTok{\textgreater{}=} \DecValTok{20}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ distance\_port\_moyenne }\KeywordTok{ASC}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/phy.png}
+\caption{Code.}\label{uml}
+\end{figure}
+
+\subsection{Association des observations avec le port le plus
+proche}\label{association-des-observations-avec-le-port-le-plus-proche}
+
+Jointure entre les observations et la table des ports pour récupérer le
+nom du port le plus proche.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT} 
+\NormalTok{    o.id\_observation,}
+\NormalTok{    o.species,}
+\NormalTok{    o.distance\_port\_min,}
+\NormalTok{    p.nomport}
+\KeywordTok{FROM}\NormalTok{ observation\_europe o}
+\KeywordTok{INNER} \KeywordTok{JOIN}\NormalTok{ port\_maritime\_eur p}
+    \KeywordTok{ON}\NormalTok{ o.gid\_port\_proche }\OperatorTok{=}\NormalTok{ p.gid;}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Observations situées à une distance inférieure à la
+moyenne}\label{observations-situuxe9es-uxe0-une-distance-infuxe9rieure-uxe0-la-moyenne}
+
+Sélection des observations plus proches des ports que la moyenne
+globale.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT} 
+\NormalTok{    id\_observation,}
+\NormalTok{    species,}
+\NormalTok{    distance\_port\_min}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{WHERE}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}}\NormalTok{ (}
+    \KeywordTok{SELECT} \FunctionTok{AVG}\NormalTok{(distance\_port\_min)}
+    \KeywordTok{FROM}\NormalTok{ observation\_europe}
+\NormalTok{);}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Phylums abondants et proches des
+ports}\label{phylums-abondants-et-proches-des-ports}
+
+Identification des phylums ayant un nombre important d'observations
+(\textgreater= 100) et une distance moyenne faible aux ports.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT} 
+\NormalTok{    phylum,}
+    \FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations,}
+    \FunctionTok{AVG}\NormalTok{(distance\_port\_min) }\KeywordTok{AS}\NormalTok{ distance\_port\_moyenne}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{WHERE}\NormalTok{ phylum }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ phylum}
+\KeywordTok{HAVING} \FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\OperatorTok{\textgreater{}=} \DecValTok{100}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ distance\_port\_moyenne }\KeywordTok{ASC}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/abond.png}
+\caption{Code.}\label{uml}
+\end{figure}
 
 \section{Quelques détails
-techniques}\label{quelques-duxe9tails-techniques-1}
+techniques}\label{quelques-duxe9tails-techniques}
 
 On peut interagir avec une base de données directement depuis RMarkdown
 : i.e.~requêter puis récupérer et afficher le résultat directement
-depuis le .Rmd. Un fichier connexionBDD.Rmd est fourni pour donner des
+depuis le Rmd. Un fichier connexionBDD.Rmd est fourni pour donner des
 exemples.
 
 \chapter{Matériel et Méthodes}\label{matuxe9riel-et-muxe9thodes}
@@ -805,11 +1179,11 @@ exécutés à la volée (\emph{i.e.}, lors de la traduction de votre fichier
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-2-1} 
+{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-1-1} 
 
 }
 
-\caption{\label{fig:boxplots}Deux boxplots.}\label{fig:unnamed-chunk-2}
+\caption{\label{fig:boxplots}Deux boxplots.}\label{fig:unnamed-chunk-1}
 \end{figure}
 
 \begin{Shaded}
@@ -834,11 +1208,11 @@ Ainsi on pourrait remplacer le chunk ci-dessous:
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-3-1} 
+{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-2-1} 
 
 }
 
-\caption{Pas super.}\label{fig:unnamed-chunk-3}
+\caption{Pas super.}\label{fig:unnamed-chunk-2}
 \end{figure}
 
 par celui-ci:
@@ -854,11 +1228,11 @@ par celui-ci:
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-4-1} 
+{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-3-1} 
 
 }
 
-\caption{Déjà mieux.}\label{fig:unnamed-chunk-4}
+\caption{Déjà mieux.}\label{fig:unnamed-chunk-3}
 \end{figure}
 
 \normalsize

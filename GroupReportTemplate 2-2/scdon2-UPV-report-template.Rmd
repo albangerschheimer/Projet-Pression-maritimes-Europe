@@ -36,9 +36,9 @@ bibliography: references.bib
 coursecode: TV15MI-TV25MI
 csl: iso690-author-date-fr-no-abstract.csl
 Acknowledgements:
-- Nos plus sincères remerciements vont à notre encadrant pédagogique pour les conseils
-  avisés sur notre travail.
-- Nous remercions aussi ...
+- Nous tenons à remercier nos enseignantes, Mme Sandra Bringay et Mme Marine Demangeot, pour leur soutien et leurs conseils précieux tout au long de ce projet. 
+- Nous remercions également les membres de ce groupe pour leur sérieux et leur implication tout au long de sa réalisation.
+
 biblio-style: elsarticle-harv
 session: 2026
 team: 5
@@ -102,80 +102,6 @@ Alfred Gyalay: Étudiant n°XXXX, Resp. du code R.
 
 Mia Portes : Étudiant n°22406297, Resp. du rapport.
 
-....
-
-
-
-## Quelques détails techniques
-
-
-**Ortographe** : Il est important de soigner l'orthographe. Vous devriez utiliser un correcteur en ligne tel que \texttt{languagetool}\footnote{Voir \href{https://www.overleaf.com/blog/635-languagetool-a-free-browser-add-on-to-check-your-grammar-and-spelling}{https://www.overleaf.com/blog/635-languagetool-a-free-browser-add-on-to-check-your-grammar-and-spelling} et \url{https://fr.overleaf.com/learn/how-to/Can_I_change_the_spell_check_language_to_e.g._Spanish\%3F}.} (\url{https://languagetool.org/fr}).
-
-\bigskip
-
-**R Markdown :** Pour créer ce rapport, on vous demande d'utiliser `R Markdown`, via le logiciel `RStudio`.
-
-Pour vous aider, on vous fournit un fichier `.Rmd` qui contient la structure du projet et qui présente quelques exemples de la syntaxe à utiliser. Vous pouvez donc partir de ce fichier et le modifier à votre guise. (Nous suggérons que vous organisiez votre rapport en utilisant des chapitres mais, en fonction de votre projet, rien ne vous empêche d'adopter une structure différente.) 
-
-La «compilation» (_i.e._, «Kniter») du `Rmd` permet de créer soit un fichier PDF, soit un fichier Word, soit un fichier HTML (le PDF étant celui pour lequel les choses se passent le mieux, et aussi le format attendu pour ce cours).
-
-Vous pouvez incorporer des _chunks_ R qui seront exécutés à la volée. Vous pouvez inclure des commandes \LaTeX. 
-
-Le désavantage de travailler avec un `.Rmd` sous `RStudio` est que vous travaillez en local : il faudra donc bien faire attention de prendre en compte les modifications de chacun. 
-
-\bigskip
-
-**Editeur collaboratif : ** Lorsque votre rapport sera proche de sa version finale, i.e. lorsqu'il ne restera que du texte à modifier, vous pourrez utilier le logiciel Overleaf (https://overleaf.com) pour collaborer avec les autres membres de votre équipe directement sur la version \LaTeX\ de ce document (qui est un sous-produit créé quand vous cliquez sur Knit depuis RStudio).
-
-\bigskip
-
-
-
-**Figure : ** Pour inclure une figure, il faut qu'elle ait une légende (ce qui est le cas pour la Figure$~$\ref{myfigure} ci-après) et qu'elle soit référencée quelque part dans le document (ce qui est le cas dans les parenthèses qui précédent). 
-
-
-![Une légende sous la figure.](logo-upvm_4.jpg){#myfigure width="4cm" height="2cm"}
-
-\bigskip
-
-**Tableau** : 
-Notez que contrairement à une figure, la légende d'un tableau doit être mise **au-dessus** de celui-ci (_e.g._, voir la Table$~$\ref{tab7.1} ci-dessous). Comme pour les figures, tout tableau doit également être discuté dans le texte du rapport.
-
-Utiliser https://www.tablesgenerator.com/markdown_tables pour créer des tables Markdown simples, ou bien utiliser \LaTeX. Plus de précisions sur l'utilisation des tableaux sont données en Annexe
-
-| Les tables   |        sont       |  cool |
-|--------------|:-----------------:|------:|
-| col 1 est    |  alignée à gauche | $1600 |
-| col 2 est    |     centrée       |   $12 |
-| col 3 est    | alignée à droite  |    $1 |
-
-library(knitr)
-
-```{r,eval=F}
-install.packages("knitr")
-library(knitr)
-# Créer un tableau simple avec kable
-df <- data.frame(Nom = c("Alice", "Bob"), Age = c(25, 30))
-kable(df, format = "latex") # Peut aussi être "html", "latex"
-```
-
-Table: une légende au-dessus du tableau. \label{tab7.1}
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|c|c|c|}
-        \hline
-        Nom & Âge & Ville \\
-        \hline
-        Alice & 25 & Paris \\
-        Bob & 30 & Lyon \\
-        Charlie & 22 & Marseille \\
-        \hline
-    \end{tabular}
-    \caption{Exemple de tableau en LaTeX}
-    \label{tab:exemple}
-\end{table}
-
 # Base de données
 
 ## Provenance des données
@@ -193,17 +119,27 @@ Les critères appliqués sont les suivants :
 \item profondeur : \textbf{plus petit ou égal à 0}
 \end{itemize}
 
+![img1](img1.png){#myfigure width="4cm"}
+![img2](img2.png){#myfigure height="3cm"}
 
-\textbf{METTRE IMAGES}
+
+
+
   
   Chaque observation d’espèce sera localisée à l’aide de ses coordonnées géographiques, puis comparée à la position des ports et des infrastructures offshore les plus proches. L’idée est que plus une observation est proche d’un port ou d’une infrastructure, plus elle est susceptible d’être soumise à une pression humaine potentielle. À l’inverse, les observations éloignées seront considérées comme situées dans des zones moins directement influencées.
+
+\bigskip
 
 ## Distance entre une observation et un port/plateforme
 
 Pour chaque observation, nous calculerons la distance avec les ports maritimes présents dans notre base.\newline
 Si une observation a pour coordonnées (lat_o, lon_o) et un port (lat_p, lon_p), alors on calcule une distance géographique entre les deux points à l'aide de la formule suivante:
 
-\textbf{METTRE FORMULE}
+$$
+d_{port}(o,p)=\sqrt{(lat_o - lat_p)^2 + (lon_o - lon_p)^2}
+$$
+
+
 
 Cette formule donne une distance euclidienne simplifiée entre une observation o et un port p.
 
@@ -213,8 +149,9 @@ Ensuite, pour chaque observation, on garde seulement la distance au port \textbf
 On applique la même logique aux infrastructures offshore.
 Pour une observation o et une infrastructure i, la distance peut être notée :
 
-\textbf{METTRE FORMULE}
-
+$$
+d_{infra}(o,i)=\sqrt{(lat_o - lat_i)^2 + (lon_o - lon_i)^2}
+$$
 Puis on retient la \textbf{distance minimale}.
 
 ## Construction de classes de distance
@@ -222,6 +159,7 @@ Puis on retient la \textbf{distance minimale}.
   Afin de rendre l’analyse plus lisible, les distances minimales calculées entre chaque observation et le port ou l’infrastructure offshore les plus proches n’ont pas seulement été conservées sous forme numérique. Elles ont aussi été transformées en classes de proximité, enregistrées dans les variables classe_distance_port et classe_distance_infra.
   
   Dans notre codage, une valeur élevée correspond à une observation plus proche, tandis qu’une valeur faible correspond à une observation plus éloignée. Ce regroupement permet de comparer plus facilement la distribution des observations, le nombre d’espèces distinctes et la répartition des groupes taxonomiques selon le niveau de proximité aux ports et aux infrastructures offshore. Son echelle est de 1 à 10.
+
 
 ## Descriptif des tables
 \textbf{REMPLIR LE NOMBRE DE COLONNES ET DE LIGNES}
@@ -288,55 +226,389 @@ Table: Infrastructure (nombre de lignes $\times$ nombre de colonnes)
 Table: Localiser X (nombre de lignes $\times$ nombre de colonnes)
 
 
-## Modèles MCD et MOD
 
-- Pour le MCD, inclure une image réalisée avec le logiciel Mocodo [https://www.mocodo.net/] telle que celle visible sur la Figure$~$\ref{uml} ci-dessous :
-\textbf{remplacer uml.png par l'image du mdc}
+## Modèle MCD:
+  
+  ![Relations.](MCD.png){#uml width="7cm" }
 
-  ![Relations.](uml.png){#uml width="8cm" height="4cm"}
-
-- Pour le MOD, inclure une image réalisée avec le designer de phpmyadmin
-
-\bigskip
-
-## Import des données 
-
-Avant l’importation des données, nous avons réalisé une phase de nettoyage. À partir de la table initiale, plusieurs tables ont été créées, afin de permettre l’exécution des requêtes nécessaires à l’étude et d’éliminer les données superflues. Pour cela, nous avons utilisé DBpro et Python, avec la bibliothèque pandas, et réalisé les étapes suivantes.
+## Modèle MOD:
 
 
-Création d'une nouvelle Base de données nommée base\_maritime\_européenne.
+OBSERVATION(id_observation, occurrenceid, taxonkey, phylum, class, order, family, genus, species, year, decimalLatitude, decimalLongitude, depth, distance_port_min, distance_infra_min, classe_distance_port, classe_distance_infra, gid_port_proche#, id_offshore_proche#)
 
-\textbf{METTRE IMG}
+PORT(gid, cdport, nomport, latitude, longitude)
+
+OFFSHORE(id_offshore, structure_id, label, latitude, longitude)
+
+![Tables.](MOD.png){#uml2 width="8cm" }
+
+## Importation et préparation des données
+
+### Création de la base de données
+
+Dans cette partie nous allons utiliser DBpro et Python ainsi que la  bibliothèque pandas. Avant l’importation des données, une phase de préparation a été réalisée afin de garantir la qualité et la cohérence des informations exploitées.
+Une nouvelle base de données nommée **base_maritime_europeenne** a été créée.
+
+![Base.](base.png){#uml width="7cm" }
+
+### Importation et organisation des tables
+
+Les différentes tables ont ensuite été importées dans la base de données.
+
+![Importation.](import.png){#uml width="5cm" }
+
+Après importation, les tables ont été renommées comme suit :
+
+* elasmobranchii_europe
+* cnidaria_europe
+* malacostraca_europe
+* port_maritime_eur
+* offshore_europe
 
 
-Importation des tables.
+### Création des clés primaires
 
-\textbf{METTRE SOURCE DONNÉES?}
+Certaines tables ne possédaient pas de clé primaire fiable et contenaient des doublons.
+Afin d’assurer l’intégrité des données, des identifiants techniques auto-incrémentés ont été ajoutés.
 
+Exemple :
 
-On renomme chaques tables avec ces noms :
-\begin{itemize}
-    \item elasmobranchii\_europe
-    \item cnidaria\_europe
-    \item malacostraca\_europe
-    \item port\_\_maritime\_eur
-    \item offshore\_europe
-\end{itemize}
-
-Création de clés primaires pour les tables elasmobranchii_europe, cnidaria_europe, malacostraca_europe et offshore_europe, car celles-ci n’en disposaient pas initialement et présentaient de nombreux doublons au niveau des identifiants.
-Les identifiants issus des jeux de données sources ne garantissaient pas toujours une unicité fiable après importation. Afin d’assurer l’intégrité relationnelle de la base, des identifiants techniques auto-incrémentés ont donc été ajoutés à certaines tables, notamment celles relatives aux observations biologiques et aux infrastructures offshore. Exemple de requête effectuée:
-
+```sql
 ALTER TABLE cnidaria_europe
-
 ADD COLUMN id_obs INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
+```
+
+## Nettoyage des données biologiques
+
+### Filtrage des années d’observation
+
+Les observations incohérentes ont été supprimées, notamment :
+
+* les années en dehors de l’intervalle [2010 ; 2026]
+* les années manquantes
+
+```sql
+DELETE FROM cnidaria_europe
+WHERE `year` < 2010 OR `year` > 2026 OR `year` IS NULL;
+```
+
+### Filtrage des coordonnées géographiques
+
+Les observations avec coordonnées invalides ont été supprimées :
+
+* latitude hors de [-90 ; 90]
+* longitude hors de [-180 ; 180]
+* valeurs manquantes
+
+```sql
+DELETE FROM cnidaria_europe
+WHERE decimalLatitude < -90 
+   OR decimalLatitude > 90
+   OR decimalLongitude < -180 
+   OR decimalLongitude > 180
+   OR decimalLatitude IS NULL
+   OR decimalLongitude IS NULL;
+```
+
+### Création de la table d’observations
+
+Une table unifiée a été construite afin de regrouper les différentes observations biologiques.
+
+```sql
+CREATE TABLE observation_europe AS
+SELECT occurrenceid, taxonkey, `year`, decimalLatitude, decimalLongitude, depth, datasetkey,
+       phylum, `class`, `order`, family, genus, species
+FROM cnidaria_europe
+
+UNION ALL
+
+SELECT occurrenceid, taxonkey, `year`, decimalLatitude, decimalLongitude, depth, datasetkey,
+       phylum, `class`, `order`, family, genus, species
+FROM elasmobranchii_europe
+
+UNION ALL
+
+SELECT occurrenceid, taxonkey, `year`, decimalLatitude, decimalLongitude, depth, datasetkey,
+       phylum, `class`, `order`, family, genus, species
+FROM malacostraca_europe;
+```
+
+Ajout d’une clé primaire :
+
+```sql
+ALTER TABLE observation_europe
+ADD COLUMN id_observation INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
+```
 
 
-## Requêtes réalisées
+## Préparation des données géographiques
+
+### Traitement des données offshore
+
+Le fichier offshore initial étant volumineux (environ 120 Mo), un prétraitement a été réalisé en Python (bibliothèque pandas) afin de limiter les données à une zone européenne.
+
+Zone géographique utilisée :
+
+* longitude : [-25 ; 45]
+* latitude : [10 ; 80]
+
+![Code.](code.png){#uml width="7cm" }
+
+Le fichier final obtenu est : **offshore_europe.csv**
 
 
-Pour chaque requête, l'exprimer en langage naturel puis en SQL. Puis donner le résultat obtenu (ou un extrait) et expliquer ce résultat.
+### Nettoyage des ports et offshore
 
-L'objectif est de varier le type de requêtes et de répondre à votre problématique initiale.
+Suppression des entrées sans coordonnées :
+
+```sql
+DELETE FROM port_maritime_eur
+WHERE latitude IS NULL OR longitude IS NULL;
+```
+
+## Calcul des distances
+
+### Ajout des variables de distance
+
+De nouvelles colonnes ont été ajoutées pour mesurer la proximité des observations :
+
+```sql
+ALTER TABLE observation_europe
+ADD COLUMN distance_port_min DECIMAL(12,6),
+ADD COLUMN distance_infra_min DECIMAL(12,6),
+ADD COLUMN classe_distance_port VARCHAR(30),
+ADD COLUMN classe_distance_infra VARCHAR(30);
+```
+
+
+### Distance aux port et infrastructures offshore
+
+Nous avons utilisé une distance euclidienne simplifiée entre les coordonnées de l’observation et celles des ports et fait de même pour les infrastructures offshore:
+
+```sql
+UPDATE observation_europe 
+SET distance_infra_min = (
+    SELECT MIN(
+        SQRT(
+            POW(observation_europe.decimalLatitude - offshore_europe.latitude, 2) +
+            POW(observation_europe.decimalLongitude - offshore_europe.longitude, 2)
+        )
+    )
+    FROM offshore_europe 
+);
+```
+
+
+### Construction des classes de distance
+
+Les distances ont été regroupées en classes :
+
+```sql
+UPDATE observation_europe
+SET classe_distance_port =
+    CASE
+        WHEN distance_port_min < 0.01 THEN 10
+        WHEN distance_port_min < 0.02 THEN 9
+        WHEN distance_port_min < 0.03 THEN 8
+        WHEN distance_port_min < 0.05 THEN 7
+        WHEN distance_port_min < 0.07 THEN 6
+        WHEN distance_port_min < 0.10 THEN 5
+        WHEN distance_port_min < 0.15 THEN 4
+        WHEN distance_port_min < 0.20 THEN 3
+        WHEN distance_port_min < 0.30 THEN 2
+        ELSE 1
+    END;
+```
+
+
+### Liaison avec les infrastructures offshore
+
+On crée alors une liaison entre les 2 en ajoutant le port le plus proche et en liant les collones en FK.
+
+```sql
+UPDATE observation_europe o
+SET id_offshore_proche = (
+    SELECT i.id_offshore
+    FROM offshore_europe i
+    ORDER BY 
+        ((o.decimalLatitude - i.latitude) * (o.decimalLatitude - i.latitude)) +
+        ((o.decimalLongitude - i.longitude) * (o.decimalLongitude - i.longitude))
+    LIMIT 1
+);
+```
+
+Ajout de la clé étrangère :
+
+```sql
+ALTER TABLE observation_europe
+ADD CONSTRAINT fk_obs_offshore
+FOREIGN KEY (id_offshore_proche) REFERENCES offshore_europe(id_offshore);
+```
+---
+
+## Analyse des données
+
+L’objectif de cette analyse est d’étudier l’influence de la proximité aux ports sur la répartition des observations biologiques.
+
+### Distance moyenne au port par phylum
+
+Cette requête permet de calculer la distance moyenne des observations par phylum, afin d’identifier les groupes biologiques les plus proches ou éloignés des infrastructures portuaires.
+
+```sql
+SELECT phylum, AVG(distance_port_min) AS distance_port_moyenne
+FROM observation_europe
+GROUP BY phylum;
+```
+![Code.](dist.png){#uml width="7cm" }
+
+###  Répartition des observations selon la distance au port
+
+On analyse ici le nombre d’observations en fonction des classes de distance aux ports, ce qui permet de visualiser la distribution spatiale des données.
+
+```sql
+SELECT classe_distance_port, COUNT(*) AS nb_observations
+FROM observation_europe
+GROUP BY classe_distance_port
+ORDER BY classe_distance_port;
+```
+![Code.](diff.png){#uml width="7cm" }
+
+
+###  Nombre d’espèces distinctes selon la distance au port
+
+Cette requête met en évidence la pression exercée par les infrastructures
+
+```sql
+SELECT classe_distance_port, COUNT(DISTINCT species) AS nb_especes_distinctes
+FROM observation_europe
+WHERE species IS NOT NULL
+GROUP BY classe_distance_port
+ORDER BY classe_distance_port;
+```
+
+![Code.](impact.png){#uml width="7cm" }
+
+
+### Distance moyenne au port par classe taxonomique
+
+Analyse de la distance moyenne aux ports selon les classes taxonomiques.
+
+```sql
+SELECT `class`, AVG(distance_port_min) AS distance_port_moyenne
+FROM observation_europe
+WHERE `class` IS NOT NULL
+GROUP BY `class`
+ORDER BY distance_port_moyenne;
+```
+
+![Code.](taxo.png){#uml width="7cm" }
+
+### Espèces les plus observées à proximité immédiate des ports
+
+Identification des espèces les plus fréquentes dans les zones très proches des ports (classe 10).
+
+```sql
+SELECT species, COUNT(*) AS nb_observations
+FROM observation_europe
+WHERE species IS NOT NULL
+  AND classe_distance_port = 10
+GROUP BY species
+ORDER BY nb_observations DESC
+LIMIT 20;
+```
+
+### Espèces les plus observées loin des ports
+
+Analyse équivalente pour les zones les plus éloignées des ports (classe 1).
+
+```sql
+SELECT species, COUNT(*) AS nb_observations
+FROM observation_europe
+WHERE species IS NOT NULL
+  AND classe_distance_port = 1
+GROUP BY species
+ORDER BY nb_observations DESC
+LIMIT 20;
+```
+
+### Nombre d’observations par année
+
+Permet d’étudier l’évolution temporelle du nombre d’observations.
+
+```sql
+SELECT `year`, COUNT(*) AS nb_observations
+FROM observation_europe
+GROUP BY `year`
+ORDER BY `year`;
+```
+![Code.](annee.png){#uml width="7cm" }
+
+
+### Phylums proches des ports avec un nombre significatif d’observations
+
+On sélectionne les phylums ayant au moins 20 observations afin d’assurer une certaine robustesse statistique.
+
+```sql
+SELECT phylum,
+       AVG(distance_port_min) AS distance_port_moyenne,
+       COUNT(*) AS nb_observations
+FROM observation_europe
+WHERE phylum IS NOT NULL
+GROUP BY phylum
+HAVING COUNT(*) >= 20
+ORDER BY distance_port_moyenne ASC;
+```
+
+![Code.](phy.png){#uml width="7cm" }
+
+###  Association des observations avec le port le plus proche
+
+Jointure entre les observations et la table des ports pour récupérer le nom du port le plus proche.
+
+```sql
+SELECT 
+    o.id_observation,
+    o.species,
+    o.distance_port_min,
+    p.nomport
+FROM observation_europe o
+INNER JOIN port_maritime_eur p
+    ON o.gid_port_proche = p.gid;
+```
+
+### Observations situées à une distance inférieure à la moyenne
+
+Sélection des observations plus proches des ports que la moyenne globale.
+
+```sql
+SELECT 
+    id_observation,
+    species,
+    distance_port_min
+FROM observation_europe
+WHERE distance_port_min < (
+    SELECT AVG(distance_port_min)
+    FROM observation_europe
+);
+```
+
+
+### Phylums abondants et proches des ports
+
+Identification des phylums ayant un nombre important d’observations (>= 100) et une distance moyenne faible aux ports.
+
+```sql
+SELECT 
+    phylum,
+    COUNT(*) AS nb_observations,
+    AVG(distance_port_min) AS distance_port_moyenne
+FROM observation_europe
+WHERE phylum IS NOT NULL
+GROUP BY phylum
+HAVING COUNT(*) >= 100
+ORDER BY distance_port_moyenne ASC;
+```
+![Code.](abond.png){#uml width="7cm" }
 
 ## Quelques détails techniques
 
