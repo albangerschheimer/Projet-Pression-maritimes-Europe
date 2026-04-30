@@ -12,7 +12,7 @@ $endif$
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{Projet réalisé par\\[0.5cm] l'équipe $team$ du groupe de $groupeTD$ \\[3cm]$title$}
+\title{$title$}
 
 \authornameonly{$for(author)$$author$ $endfor$}
 
@@ -37,6 +37,38 @@ $endif$
 
 \renewcommand{\chaptername}{Chapitre}
 
+\makeatletter
+\renewcommand{\titlep}{%
+        \pagestyle{empty}%
+        \begin{center}
+        \vspace*{0.35cm}
+        \includegraphics[width=3.4cm]{logo-upvm_4.jpg}\\[0.7cm]
+        {\large\textsc{Université Paul-Valéry Montpellier 3}}\\[0.15cm]
+        {\normalsize UFR 6 - MIASHS}\\[0.8cm]
+        \upvline\\[0.5cm]
+        {\Large\bfseries\textcolor{upvblue}{Projet Bases de données\\[0.08cm] et Sciences des données 2}}\\[0.35cm]
+        {\normalsize\textbf{Équipe $team$ - $groupeTD$}}\\[0.5cm]
+        \upvline\\[1.1cm]
+        \begin{minipage}{0.86\textwidth}
+        \centering
+        {\Large\bfseries \@title}
+        \end{minipage}\\[1.1cm]
+        {\large\underlinebold{Membres du groupe}}\\[0.35cm]
+        {\normalsize \@author}\\[1cm]
+        \begin{tabular}{c}
+        \textbf{Cours :} TV15MI-TV25MI\\
+        \textbf{Session :} $session$
+        \end{tabular}\\[1cm]
+        \vfill
+        {\normalsize \@submitdate}
+        \end{center}
+        \newpage}
+\renewcommand{\prefacesection}[1]{%
+        \chapter*{\textcolor{upvblue}{#1}}
+        \begin{center}\upvline\end{center}
+    }
+\makeatother
+
 
 
 
@@ -50,30 +82,40 @@ $endif$
 
 \prefacesection{Déclaration de non plagiat}
 
-\vskip 2pc \noindent Nous déclarons que ce rapport est le fruit de notre seul travail, à part lorsque cela est indiqué  explicitement. 
+\begin{center}
+\begin{minipage}{0.88\textwidth}
+\justifying
 
-\vskip 2pc  \noindent Nous acceptons que la personne évaluant ce rapport puisse, pour les besoins de cette évaluation:
+\vskip 1pc \noindent Nous déclarons que ce rapport est le fruit de notre seul travail, à part lorsque cela est indiqué explicitement. 
+
+\vskip 1pc  \noindent Nous acceptons que la personne évaluant ce rapport puisse, pour les besoins de cette évaluation:
 \begin{itemize}
 \item la reproduire et en fournir une copie à un autre membre de l'université; et/ou,
 \item en communiquer une copie à un service en ligne de détection de plagiat (qui pourra en retenir une copie pour les besoins d'évaluation future).
 \end{itemize}
 
-\vskip 2pc \noindent Nous certifions que nous avons lu et compris les règles ci-dessus.\vspace{24pt}
+\vskip 1pc \noindent Nous certifions que nous avons lu et compris les règles ci-dessus.\vspace{18pt}
 
-\vskip 2pc \noindent En signant cette déclaration, nous acceptons ce qui précède.
-\vskip 2pc \noindent
+\vskip 1pc \noindent En signant cette déclaration, nous acceptons ce qui précède.
+\vskip 1pc \noindent
 %$for(author)$
 %Signature: \rule{7cm}{0.25pt} \hfill Date: \rule{4cm}{0.25pt} \\[1cm]
 %$endfor$
 %\vskip 1pc
-Signature : Alban Gerschheimer \hfill Date: 04/05/2025\\[1cm]
-Signature : Omar Terras \hfill Date: 04/05/2025 \\[1cm]
-Signature : Alfred Gyalay \hfill Date: 04/05/2025\\[1cm]
-Signature : Mia Portes \hfill Date: 04/05/2025\\[1cm]
+\begin{center}
+\begin{tabular}{@{}p{0.48\textwidth}p{0.32\textwidth}@{}}
+\underlinebold{Signature :} Alban Gerschheimer & Date: 04/05/2025\\[0.7cm]
+\underlinebold{Signature :} Omar Terras & Date: 04/05/2025\\[0.7cm]
+\underlinebold{Signature :} Alfred Gyalay & Date: 04/05/2025\\[0.7cm]
+\underlinebold{Signature :} Mia Portes & Date: 04/05/2025\\[0.7cm]
+\end{tabular}
+\end{center}
 
 %\textcolor{red}{Mettre à jour la date.}
 
-{\bigskip\bigskip\bigskip\noindent} \today
+{\bigskip\begin{center}\today\end{center}}
+\end{minipage}
+\end{center}
 %\afterpage{\blankpage}
 
 % Acknowledgements are optional
@@ -82,9 +124,14 @@ Signature : Mia Portes \hfill Date: 04/05/2025\\[1cm]
 \prefacesection{Remerciements}
 
 
-{\bigskip}$for(Acknowledgements)$$Acknowledgements$\\[1cm] $endfor$
+\begin{center}
+\begin{minipage}{0.86\textwidth}
+\centering
+{\bigskip}$for(Acknowledgements)$$Acknowledgements$\\[0.8cm] $endfor$
+\end{minipage}
+\end{center}
 
-{\bigskip\bigskip\bigskip\noindent} \today
+{\bigskip\bigskip\begin{center}\today\end{center}}
 
 %\afterpage{\blankpage}
 
@@ -92,7 +139,12 @@ Signature : Mia Portes \hfill Date: 04/05/2025\\[1cm]
 
 \prefacesection{Résumé}
 
+\begin{center}
+\begin{minipage}{0.86\textwidth}
+\justifying
 $Abstract$
+\end{minipage}
+\end{center}
 
 %\afterpage{\blankpage}
 
@@ -126,5 +178,3 @@ $body$
 
 
 \end{document}
-
-

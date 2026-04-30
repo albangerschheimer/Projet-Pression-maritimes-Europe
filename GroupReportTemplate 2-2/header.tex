@@ -29,6 +29,7 @@
 \usepackage{latexsym,amsmath}
 \usepackage{graphicx}
 \usepackage{afterpage}
+\usepackage[normalem]{ulem}
 \usepackage[colorlinks]{hyperref}
  \hypersetup{
      colorlinks=true,
@@ -56,6 +57,26 @@
 %fonctionnement tableau
 \usepackage{array}
 \usepackage{calc}
+
+% Centrage global du bloc de texte sur la page.
+\setlength{\textwidth}{14.9cm}
+\setlength{\oddsidemargin}{0.55cm}
+\setlength{\evensidemargin}{0.55cm}
+
+% Éléments de mise en forme ajoutés pour donner un rendu plus soigné au rapport.
+\definecolor{upvblue}{rgb}{0.02,0.20,0.34}
+\definecolor{upvteal}{rgb}{0.00,0.43,0.50}
+\newcommand{\upvline}{\textcolor{upvteal}{\rule{0.78\linewidth}{0.8pt}}}
+\newcommand{\underlinebold}[1]{\textbf{\uline{#1}}}
+\newcommand{\questionbox}[1]{%
+  \begin{center}
+  \setlength{\fboxsep}{8pt}%
+  \setlength{\fboxrule}{0.8pt}%
+  \fbox{\begin{minipage}{0.86\textwidth}
+  \centering\bfseries\itshape #1
+  \end{minipage}}
+  \end{center}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -196,7 +217,5 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\maxof{\widthof{#1}}{\csllabelwidth}}{#1}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth}{#1}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
-
-
 
 

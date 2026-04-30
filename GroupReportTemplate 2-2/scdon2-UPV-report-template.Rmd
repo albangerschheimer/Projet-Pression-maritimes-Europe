@@ -1,5 +1,5 @@
 ---
-title: "Rapport de groupe des\\newline deep learners anonymes\\newline  Bases de données + Sciences des Données 2"
+title: "Rapport de groupe des\\newline deep learners anonymes\\newline Bases de données\\newline et Sciences des Données 2"
 author:
 - 'Alban Gerschheimer, '
 - 'Omar Terras, '
@@ -43,8 +43,14 @@ biblio-style: elsarticle-harv
 session: 2026
 team: 5
 groupeTD : TD1
-Abstract: L'image ci-dessous vous donne quelques conseils pour rédiger un bon résumé.\newline
-  ![](good-abstract.png){width=6cm height=6cm}
+Abstract: |
+  Ce projet étudie l'influence potentielle des ports maritimes et des infrastructures offshore sur la distribution spatiale des observations de biodiversité marine en Europe. Pour répondre à cette problématique, nous avons construit une base de données relationnelle à partir de plusieurs sources réelles : des observations biologiques marines issues de GBIF, des données géographiques sur les ports maritimes et des données sur les infrastructures offshore européennes.
+
+  Après nettoyage des données, le jeu final regroupe 459 773 observations biologiques géoréférencées, associées à 400 ports et 8 103 infrastructures offshore. Chaque observation a été reliée au port et à l'infrastructure les plus proches grâce au calcul d'une distance minimale, puis classée selon un niveau de proximité. Ces variables ont permis de réaliser des requêtes SQL, des visualisations et des analyses statistiques exploratoires.
+
+  Les résultats montrent une distribution très déséquilibrée des observations, dominée par le phylum Arthropoda, qui représente plus de 99 % du jeu de données. La majorité des observations se situe loin des ports, tandis que les zones proches des ports et des infrastructures présentent des profils de diversité et de profondeur différents. Les tests statistiques mettent en évidence des différences significatives entre groupes taxonomiques, mais leur interprétation doit rester prudente en raison du déséquilibre des effectifs, des biais d'échantillonnage et de l'utilisation d'une distance euclidienne simplifiée.
+
+  Ce travail met donc en évidence une association entre proximité aux infrastructures maritimes et organisation spatiale des observations de biodiversité, sans permettre d'affirmer un lien causal direct. Les principales perspectives consistent à utiliser une distance géodésique plus précise, à intégrer l'effort de collecte et à enrichir l'analyse avec d'autres variables environnementales ou données de trafic maritime.
 always_allow_html: true
 ---
 
@@ -62,12 +68,7 @@ La biodiversité marine est aujourd’hui soumise à de nombreuses pressions hum
 
 \bigskip
 
-\begin{center}
-
-\textbf{Dans quelle mesure la proximité des ports maritimes et des infrastructures offshore influence-t-elle la distribution spatiale des observations de biodiversité marine en Europe ?
-}
-
-\end{center}
+\questionbox{Dans quelle mesure la proximité des ports maritimes et des infrastructures offshore influence-t-elle la distribution spatiale des observations de biodiversité marine en Europe ?}
 \medskip 
 
 \justifying
@@ -77,7 +78,7 @@ Cette problématique s’appuie sur plusieurs sources de données réelles : des
 
 \medskip
 
-L’objectif est de construire une base de données relationnelle permettant de croiser ces informations, puis de réaliser des requêtes SQL afin de dégager des tendances exploitables dans le cadre du cours de Sciences des données 2.
+\underlinebold{L'objectif} est de construire une base de données relationnelle permettant de croiser ces informations, puis de réaliser des requêtes SQL afin de dégager des tendances exploitables dans le cadre du cours de Sciences des données 2.
 
 \medskip
 
@@ -89,18 +90,19 @@ Nous avons retenu ces jeux de données car ils permettent de croiser une informa
 
 
 
-## Responsabilités et composition de l’équipe
+## Responsabilités et composition de l'équipe
 Dans notre équipe, les tâches ont été réparties de la manière suivante:
 
 \medskip
 
-Alban Gerschheimer: Étudiant n°XXXX, Resp. de l'import de données et des requêtes SQL.
-
-Omar Terras: Étudiant n°XXXX, Resp.
-
-Alfred Gyalay: Étudiant n°XXXX, Resp. du code R.
-
-Mia Portes : Étudiant n°22406297, Resp. du rapport.
+\begin{center}
+\begin{tabular}{p{0.28\textwidth}p{0.58\textwidth}}
+\textbf{Alban Gerschheimer} & Étudiant numéro XXXX, Resp. de l'import de données et des requêtes SQL.\\
+\textbf{Omar Terras} & Étudiant numéro XXXX, Resp.\\
+\textbf{Alfred Gyalay} & Étudiant numéro XXXX, Resp. du code R.\\
+\textbf{Mia Portes} & Étudiant numéro 22406297, Resp. du rapport.
+\end{tabular}
+\end{center}
 
 # Base de données
 
@@ -108,7 +110,7 @@ Mia Portes : Étudiant n°22406297, Resp. du rapport.
 
 Nous avons décidé de choisir des données selon certains critères afin de garder une cohérence lors de cette recherche.
 
-Les critères appliqués sont les suivants :
+\underlinebold{Les critères appliqués sont les suivants :}
 \begin{itemize}
 \item zone : \textbf{Europe maritime}
 \item période : \textbf{2010-2026}
@@ -119,8 +121,11 @@ Les critères appliqués sont les suivants :
 \item profondeur : \textbf{inférieure ou égale à 0}
 \end{itemize}
 
-![img1](img1.png){#fig-source-gbif width="4cm"}
-![img2](img2.png){#fig-source-filtres height="3cm"}
+\begin{center}
+\includegraphics[width=4cm]{img1.png}
+\hspace{0.8cm}
+\includegraphics[height=3cm]{img2.png}
+\end{center}
 
 
 
@@ -162,70 +167,7 @@ Puis on retient la \textbf{distance minimale}.
 
 
 ## Descriptif des tables
-\textbf{REMPLIR LE NOMBRE DE COLONNES ET DE LIGNES}
-
-| Nom colonne     | Type   | Signification                        | Caractéristique                           |
-|:---------------:|:------:|:------------------------------------:|:-----------------------------------------:|
-| id_espece       | Entier | Identifiant unique de l’espèce       | Clé primaire, unique, non nul             |
-| scientific_name | Texte  | Nom scientifique complet de l’espèce | Non unique, non nul                       |
-| phylum          | Texte  | Embranchement taxonomique            | Non unique, peut contenir des répétitions |
-| classe          | Texte  | Classe taxonomique de l’espèce       | Non unique                                |
-| ordre           | Texte  | Ordre taxonomique de l’espèce        | Non unique                                |
-| famille         | Texte  | Famille taxonomique de l’espèce      | Non unique                                |
-| genre           | Texte  | Genre taxonomique de l’espèce        | Non unique                                |
-| nom_espece      | Texte  | Nom spécifique de l’espèce           | Non unique, parfois valeur manquante      |
- 
-
-Table: Espece (nombre de lignes $\times$ nombre de colonnes)
-
-| Nom colonne        | Type        | Signification                               | Caractéristique                                 |
-|:------------------:|:-----------:|:-------------------------------------------:|:-----------------------------------------------:|
-| id_observation     | Entier long | Identifiant unique de l’observation GBIF    | Clé primaire, unique, non nul                   |
-| id_espece          | Entier      | Identifiant de l’espèce observée            | Clé étrangère vers ESPECE, non nul              |
-| annee              | Entier      | Année de l’observation                      | Non unique, filtrée entre 2010 et 2026          |
-| latitude           | Décimal     | Latitude de l’observation                   | Non nulle après nettoyage                       |
-| longitude          | Décimal     | Longitude de l’observation                  | Non nulle après nettoyage                       |
-| profondeur         | Décimal     | Profondeur de l’observation                 | Peut contenir des valeurs nulles                |
-| country_code       | Texte court | Code du pays de l’observation               | Non unique                                      |
-| basis_of_record    | Texte       | Type d’enregistrement de l’observation      | Non unique                                      |
-| occurrence_status  | Texte       | Statut de présence de l’espèce observée     | Valeur conservée : present                      |
-| dataset_key        | Texte       | Identifiant du jeu de données source        | Non unique                                      |
-
-Table: Observation (nombre de lignes $\times$ nombre de colonnes)
-
-| Nom colonne        | Type                 | Signification                         | Caractéristique                                  |
-|:------------------:|:--------------------:|:-------------------------------------:|:------------------------------------------------:|
-| id_port            | Entier ou texte court| Identifiant unique du port            | Clé primaire, unique, non nul                    |
-| code_port          | Texte court          | Code du port lorsqu’il existe         | Peut être unique selon la source, parfois nul    |
-| nom_port           | Texte                | Nom du port maritime                  | Non unique dans l’absolu, non nul si conservé    |
-| activite_principale| Texte                | Activité principale ou type de port   | Peut contenir des répétitions, peut être nulle   |
-| latitude_port      | Décimal              | Latitude du port                      | Non nulle après nettoyage                        |
-| longitude_port     | Décimal              | Longitude du port                     | Non nulle après nettoyage                        |
-
-Table: Port (nombre de lignes $\times$ nombre de colonnes)
-
-| Nom colonne     | Type                 | Signification                                   | Caractéristique                           |
-|:---------------:|:--------------------:|:-----------------------------------------------:|:-----------------------------------------:|
-| id_infra        | Entier ou texte court| Identifiant unique de l’infrastructure offshore | Clé primaire, unique, non nul             |
-| type_infra      | Texte                | Type d’infrastructure offshore                  | Non unique                                |
-| label           | Texte                | Libellé ou nom de l’infrastructure              | Non unique, peut être descriptif          |
-| date_releve     | Date ou texte        | Date du relevé ou de mise à jour                | \textbf{MANQUANT}                         |
-| latitude_infra  | Décimal              | Latitude de l’infrastructure                    | Non nulle après nettoyage                 |
-| longitude_infra | Décimal              | Longitude de l’infrastructure                   | Non nulle après nettoyage                 |
-
-
-Table: Infrastructure (nombre de lignes $\times$ nombre de colonnes)
-
-| Nom colonne           | Type                 | Signification                               | Caractéristique                                   |
-|:---------------------:|:--------------------:|:-------------------------------------------:|:-------------------------------------------------:|
-| id_observation        | Entier long          | Identifiant de l’observation étudiée        | Clé étrangère vers OBSERVATION                    |
-| id_X                  | Entier ou texte court| Identifiant de X lié à l’observation        | Clé étrangère vers X                              |
-| distance_X            | Décimal              | Distance calculée entre l’observation et X  | Non négative                                      |
-| categorie_distance_X  | Texte                | Classe de distance entre l’observation et X | Exemples : très_proche, proche, moyenne, éloignée |
-
-Table: Localiser X (nombre de lignes $\times$ nombre de colonnes)
-
-
+Le descriptif détaillé des tables a été placé en fin de rapport : [Descriptif en ANNEXE](#annexe-descriptif-tables).
 
 ## Modèle MCD:
   
@@ -347,7 +289,7 @@ ADD COLUMN id_observation INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
 
 Le fichier offshore initial étant volumineux (environ 120 Mo), un prétraitement a été réalisé en Python (bibliothèque pandas) afin de limiter les données à une zone européenne.
 
-Zone géographique utilisée :
+\underlinebold{Zone géographique utilisée :}
 
 * longitude : [-25 ; 45]
 * latitude : [10 ; 80]
@@ -683,7 +625,7 @@ statistiques « toutes espèces confondues » pourraient être considérées com
 knitr::include_graphics("figures/U02_distrib_classes_port.png")
 ```
 
-Comme le montre la Figure \ref{fig:u02}, la classe 1 (observations les plus éloignées des ports, distance > 0,30°) concentre à elle seule 443 637 observations, soit **96,5 % du total**. Les neuf classes restantes se partagent les 16 136 observations restantes (3,5 %). Cette distribution est extrêmement asymétrique et traduit le fait que la très grande majorité des relevés biologiques GBIF sont situés en pleine mer, loin des ports.
+Comme le montre la Figure \ref{fig:u02}, la classe 1 (observations les plus éloignées des ports, distance > 0,30 degré) concentre à elle seule 443 637 observations, soit **96,5 % du total**. Les neuf classes restantes se partagent les 16 136 observations restantes (3,5 %). Cette distribution est extrêmement asymétrique et traduit le fait que la très grande majorité des relevés biologiques GBIF sont situés en pleine mer, loin des ports.
 
 ```{r aed-stats, echo=FALSE}
 # Résumé numérique des distances (valeurs issues des CSV U5/U6)
@@ -725,7 +667,7 @@ knitr::include_graphics("figures/Q2_ratio_diversite_FINAL.png")
 
 La Figure \ref{fig:q2} présente le ratio de diversité spécifique (nombre d'espèces distinctes rapporté au nombre d'observations) pour chaque classe de distance.
 
-**Proximité aux ports (panneau A)** : le ratio est effondré en classe 1 (0,41 %, soit 1 857 espèces pour 448 375 observations) dû au nombre d'observations bien plus important, qui conduit à une diversité relative plus faible malgré un nombre d'espèces différentes plus élevé qu'ailleurs, puis remonte fortement dès la classe 2 (9,2 %) et atteint un pic en classe 8 (21,9 %). La classe 9 présente une anomalie (1,0 % pour 5 405 obs.) qui correspond probablement à un biais d'échantillonnage localisé plutôt qu'à un signal biologique. En classe 10 (observations très proches des ports, < 0,01°), le ratio est de 18,3 % pour 421 observations.
+**Proximité aux ports (panneau A)** : le ratio est effondré en classe 1 (0,41 %, soit 1 857 espèces pour 448 375 observations) dû au nombre d'observations bien plus important, qui conduit à une diversité relative plus faible malgré un nombre d'espèces différentes plus élevé qu'ailleurs, puis remonte fortement dès la classe 2 (9,2 %) et atteint un pic en classe 8 (21,9 %). La classe 9 présente une anomalie (1,0 % pour 5 405 obs.) qui correspond probablement à un biais d'échantillonnage localisé plutôt qu'à un signal biologique. En classe 10 (observations très proches des ports, < 0,01 degré), le ratio est de 18,3 % pour 421 observations.
 
 **Proximité aux infrastructures (panneau B)** : le gradient est plus régulier.
 Le ratio augmente progressivement de 0,73 % en classe 1 (234 356 obs.) jusqu'à 4,7 % en classe 8 (9 923 obs.), avant de redescendre légèrement en classe 9 (3,95 %) et 10 (1,52 %). Ce profil indique que les zones de forte densité d'infrastructures correspondent à des zones de faible diversité relative, ce
@@ -949,3 +891,71 @@ le déséquilibre taxonomique massif a rendu caduques plusieurs approches initia
 envisagées (régression multiple toutes espèces confondues, clustering k-means
 sur l'ensemble du jeu de données) ; la carte Leaflet interactive, non intégrable
 directement dans un PDF, est disponible via le lien en annexe.
+
+\clearpage
+
+# Annexes
+
+## Descriptif des tables {#annexe-descriptif-tables}
+\textbf{REMPLIR LE NOMBRE DE COLONNES ET DE LIGNES}
+
+| Nom colonne     | Type   | Signification                        | Caractéristique                           |
+|:---------------:|:------:|:------------------------------------:|:-----------------------------------------:|
+| id_espece       | Entier | Identifiant unique de l’espèce       | Clé primaire, unique, non nul             |
+| scientific_name | Texte  | Nom scientifique complet de l’espèce | Non unique, non nul                       |
+| phylum          | Texte  | Embranchement taxonomique            | Non unique, peut contenir des répétitions |
+| classe          | Texte  | Classe taxonomique de l’espèce       | Non unique                                |
+| ordre           | Texte  | Ordre taxonomique de l’espèce        | Non unique                                |
+| famille         | Texte  | Famille taxonomique de l’espèce      | Non unique                                |
+| genre           | Texte  | Genre taxonomique de l’espèce        | Non unique                                |
+| nom_espece      | Texte  | Nom spécifique de l’espèce           | Non unique, parfois valeur manquante      |
+ 
+
+Table: Espece (nombre de lignes $\times$ nombre de colonnes)
+
+| Nom colonne        | Type        | Signification                               | Caractéristique                                 |
+|:------------------:|:-----------:|:-------------------------------------------:|:-----------------------------------------------:|
+| id_observation     | Entier long | Identifiant unique de l’observation GBIF    | Clé primaire, unique, non nul                   |
+| id_espece          | Entier      | Identifiant de l’espèce observée            | Clé étrangère vers ESPECE, non nul              |
+| annee              | Entier      | Année de l’observation                      | Non unique, filtrée entre 2010 et 2026          |
+| latitude           | Décimal     | Latitude de l’observation                   | Non nulle après nettoyage                       |
+| longitude          | Décimal     | Longitude de l’observation                  | Non nulle après nettoyage                       |
+| profondeur         | Décimal     | Profondeur de l’observation                 | Peut contenir des valeurs nulles                |
+| country_code       | Texte court | Code du pays de l’observation               | Non unique                                      |
+| basis_of_record    | Texte       | Type d’enregistrement de l’observation      | Non unique                                      |
+| occurrence_status  | Texte       | Statut de présence de l’espèce observée     | Valeur conservée : present                      |
+| dataset_key        | Texte       | Identifiant du jeu de données source        | Non unique                                      |
+
+Table: Observation (nombre de lignes $\times$ nombre de colonnes)
+
+| Nom colonne        | Type                 | Signification                         | Caractéristique                                  |
+|:------------------:|:--------------------:|:-------------------------------------:|:------------------------------------------------:|
+| id_port            | Entier ou texte court| Identifiant unique du port            | Clé primaire, unique, non nul                    |
+| code_port          | Texte court          | Code du port lorsqu’il existe         | Peut être unique selon la source, parfois nul    |
+| nom_port           | Texte                | Nom du port maritime                  | Non unique dans l’absolu, non nul si conservé    |
+| activite_principale| Texte                | Activité principale ou type de port   | Peut contenir des répétitions, peut être nulle   |
+| latitude_port      | Décimal              | Latitude du port                      | Non nulle après nettoyage                        |
+| longitude_port     | Décimal              | Longitude du port                     | Non nulle après nettoyage                        |
+
+Table: Port (nombre de lignes $\times$ nombre de colonnes)
+
+| Nom colonne     | Type                 | Signification                                   | Caractéristique                           |
+|:---------------:|:--------------------:|:-----------------------------------------------:|:-----------------------------------------:|
+| id_infra        | Entier ou texte court| Identifiant unique de l’infrastructure offshore | Clé primaire, unique, non nul             |
+| type_infra      | Texte                | Type d’infrastructure offshore                  | Non unique                                |
+| label           | Texte                | Libellé ou nom de l’infrastructure              | Non unique, peut être descriptif          |
+| date_releve     | Date ou texte        | Date du relevé ou de mise à jour                | \textbf{MANQUANT}                         |
+| latitude_infra  | Décimal              | Latitude de l’infrastructure                    | Non nulle après nettoyage                 |
+| longitude_infra | Décimal              | Longitude de l’infrastructure                   | Non nulle après nettoyage                 |
+
+
+Table: Infrastructure (nombre de lignes $\times$ nombre de colonnes)
+
+| Nom colonne           | Type                 | Signification                               | Caractéristique                                   |
+|:---------------------:|:--------------------:|:-------------------------------------------:|:-------------------------------------------------:|
+| id_observation        | Entier long          | Identifiant de l’observation étudiée        | Clé étrangère vers OBSERVATION                    |
+| id_X                  | Entier ou texte court| Identifiant de X lié à l’observation        | Clé étrangère vers X                              |
+| distance_X            | Décimal              | Distance calculée entre l’observation et X  | Non négative                                      |
+| categorie_distance_X  | Texte                | Classe de distance entre l’observation et X | Exemples : très_proche, proche, moyenne, éloignée |
+
+Table: Localiser X (nombre de lignes $\times$ nombre de colonnes)
