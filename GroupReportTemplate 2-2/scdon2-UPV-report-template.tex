@@ -324,12 +324,6 @@ garder une cohérence lors de cette recherche.
 \item profondeur : \textbf{inférieure ou égale à 0}
 \end{itemize}
 
-\begin{center}
-\includegraphics[width=4cm]{img1.png}
-\hspace{0.8cm}
-\includegraphics[height=3cm]{img2.png}
-\end{center}
-
 Chaque observation d'espèce sera localisée à l'aide de ses coordonnées
 géographiques, puis comparée à la position des ports et des
 infrastructures offshore les plus proches. L'idée est que plus une
@@ -408,12 +402,6 @@ PORT(gid, cdport, nomport, latitude, longitude)
 
 OFFSHORE(id\_offshore, structure\_id, label, latitude, longitude)
 
-\begin{figure}
-\centering
-\includegraphics[width=6.5cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/MOD.png}
-\caption{Tables.}\label{fig-mod}
-\end{figure}
-
 \section{Importation et préparation des
 données}\label{importation-et-pruxe9paration-des-donnuxe9es}
 
@@ -437,12 +425,6 @@ tables}\label{importation-et-organisation-des-tables}
 
 Les différentes tables ont ensuite été importées dans la base de
 données.
-
-\begin{figure}
-\centering
-\includegraphics[width=4.5cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/import.png}
-\caption{Importation.}\label{fig-importation}
-\end{figure}
 
 Après importation, les tables ont été renommées comme suit :
 
@@ -479,86 +461,71 @@ Exemple :
 \section{Nettoyage des données
 biologiques}\label{nettoyage-des-donnuxe9es-biologiques}
 
-\subsection{Filtrage des années
-d'observation}\label{filtrage-des-annuxe9es-dobservation}
+Le détail du nettoyage des données a été placé en fin de rapport :
+\hyperref[annexe-nettoyage-donnees]{Nettoyage en ANNEXE}.
 
-Les observations incohérentes ont été supprimées, notamment :
+\subsection{\texorpdfstring{Création de la table
+\texttt{observation\_europe}}{Création de la table observation\_europe}}\label{cruxe9ation-de-la-table-observation_europe}
 
-\begin{itemize}
-\tightlist
-\item
-  les années en dehors de l'intervalle {[}2010 ; 2026{]}
-\item
-  les années manquantes
-\end{itemize}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{DELETE} \KeywordTok{FROM}\NormalTok{ cnidaria\_europe}
-\KeywordTok{WHERE}\NormalTok{ \textasciigrave{}year\textasciigrave{} }\OperatorTok{\textless{}} \DecValTok{2010} \KeywordTok{OR}\NormalTok{ \textasciigrave{}year\textasciigrave{} }\OperatorTok{\textgreater{}} \DecValTok{2026} \KeywordTok{OR}\NormalTok{ \textasciigrave{}year\textasciigrave{} }\KeywordTok{IS} \KeywordTok{NULL}\NormalTok{;}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Filtrage des coordonnées
-géographiques}\label{filtrage-des-coordonnuxe9es-guxe9ographiques}
-
-Les observations avec coordonnées invalides ont été supprimées :
-
-\begin{itemize}
-\tightlist
-\item
-  latitude hors de {[}-90 ; 90{]}
-\item
-  longitude hors de {[}-180 ; 180{]}
-\item
-  valeurs manquantes
-\end{itemize}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{DELETE} \KeywordTok{FROM}\NormalTok{ cnidaria\_europe}
-\KeywordTok{WHERE}\NormalTok{ decimalLatitude }\OperatorTok{\textless{}} \OperatorTok{{-}}\DecValTok{90} 
-   \KeywordTok{OR}\NormalTok{ decimalLatitude }\OperatorTok{\textgreater{}} \DecValTok{90}
-   \KeywordTok{OR}\NormalTok{ decimalLongitude }\OperatorTok{\textless{}} \OperatorTok{{-}}\DecValTok{180} 
-   \KeywordTok{OR}\NormalTok{ decimalLongitude }\OperatorTok{\textgreater{}} \DecValTok{180}
-   \KeywordTok{OR}\NormalTok{ decimalLatitude }\KeywordTok{IS} \KeywordTok{NULL}
-   \KeywordTok{OR}\NormalTok{ decimalLongitude }\KeywordTok{IS} \KeywordTok{NULL}\NormalTok{;}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Création de la table
-d'observations}\label{cruxe9ation-de-la-table-dobservations}
-
-Une table unifiée a été construite afin de regrouper les différentes
-observations biologiques.
+Nous avons ensuite créé la table \texttt{observation\_europe}, qui
+contient les informations directement liées à chaque observation :
+coordonnées, date, profondeur, origine du jeu de données et lien vers
+l'espèce.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{CREATE} \KeywordTok{TABLE}\NormalTok{ observation\_europe }\KeywordTok{AS}
-\KeywordTok{SELECT}\NormalTok{ occurrenceid, taxonkey, \textasciigrave{}year\textasciigrave{}, decimalLatitude, decimalLongitude, }\FunctionTok{depth}\NormalTok{, datasetkey,}
-\NormalTok{       phylum, \textasciigrave{}class\textasciigrave{}, \textasciigrave{}order\textasciigrave{}, family, genus, species}
+\KeywordTok{SELECT}
+\NormalTok{    occurrenceid,}
+\NormalTok{    taxonkey,}
+\NormalTok{    \textasciigrave{}year\textasciigrave{},}
+\NormalTok{    decimalLatitude,}
+\NormalTok{    decimalLongitude,}
+    \FunctionTok{depth}\NormalTok{,}
+\NormalTok{    datasetkey,}
+\NormalTok{    phylum,}
+\NormalTok{    \textasciigrave{}class\textasciigrave{},}
+\NormalTok{    \textasciigrave{}order\textasciigrave{},}
+\NormalTok{    family,}
+\NormalTok{    genus,}
+\NormalTok{    species}
 \KeywordTok{FROM}\NormalTok{ cnidaria\_europe}
 
 \KeywordTok{UNION} \KeywordTok{ALL}
 
-\KeywordTok{SELECT}\NormalTok{ occurrenceid, taxonkey, \textasciigrave{}year\textasciigrave{}, decimalLatitude, decimalLongitude, }\FunctionTok{depth}\NormalTok{, datasetkey,}
-\NormalTok{       phylum, \textasciigrave{}class\textasciigrave{}, \textasciigrave{}order\textasciigrave{}, family, genus, species}
+\KeywordTok{SELECT}
+\NormalTok{    occurrenceid,}
+\NormalTok{    taxonkey,}
+\NormalTok{    \textasciigrave{}year\textasciigrave{},}
+\NormalTok{    decimalLatitude,}
+\NormalTok{    decimalLongitude,}
+    \FunctionTok{depth}\NormalTok{,}
+\NormalTok{    datasetkey,}
+\NormalTok{    phylum,}
+\NormalTok{    \textasciigrave{}class\textasciigrave{},}
+\NormalTok{    \textasciigrave{}order\textasciigrave{},}
+\NormalTok{    family,}
+\NormalTok{    genus,}
+\NormalTok{    species}
 \KeywordTok{FROM}\NormalTok{ elasmobranchii\_europe}
 
 \KeywordTok{UNION} \KeywordTok{ALL}
 
-\KeywordTok{SELECT}\NormalTok{ occurrenceid, taxonkey, \textasciigrave{}year\textasciigrave{}, decimalLatitude, decimalLongitude, }\FunctionTok{depth}\NormalTok{, datasetkey,}
-\NormalTok{       phylum, \textasciigrave{}class\textasciigrave{}, \textasciigrave{}order\textasciigrave{}, family, genus, species}
+\KeywordTok{SELECT}
+\NormalTok{    occurrenceid,}
+\NormalTok{    taxonkey,}
+\NormalTok{    \textasciigrave{}year\textasciigrave{},}
+\NormalTok{    decimalLatitude,}
+\NormalTok{    decimalLongitude,}
+    \FunctionTok{depth}\NormalTok{,}
+\NormalTok{    datasetkey,}
+\NormalTok{    phylum,}
+\NormalTok{    \textasciigrave{}class\textasciigrave{},}
+\NormalTok{    \textasciigrave{}order\textasciigrave{},}
+\NormalTok{    family,}
+\NormalTok{    genus,}
+\NormalTok{    species}
 \KeywordTok{FROM}\NormalTok{ malacostraca\_europe;}
-\end{Highlighting}
-\end{Shaded}
-
-Ajout d'une clé primaire :
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{ALTER} \KeywordTok{TABLE}\NormalTok{ observation\_europe}
-\KeywordTok{ADD} \KeywordTok{COLUMN}\NormalTok{ id\_observation }\DataTypeTok{INT} \KeywordTok{NOT} \KeywordTok{NULL}\NormalTok{ AUTO\_INCREMENT }\KeywordTok{PRIMARY} \KeywordTok{KEY} \FunctionTok{FIRST}\NormalTok{;}
 \end{Highlighting}
 \end{Shaded}
 
@@ -593,14 +560,8 @@ Le fichier final obtenu est : \textbf{offshore\_europe.csv}
 \subsection{Nettoyage des ports et
 offshore}\label{nettoyage-des-ports-et-offshore}
 
-Suppression des entrées sans coordonnées :
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{DELETE} \KeywordTok{FROM}\NormalTok{ port\_maritime\_eur}
-\KeywordTok{WHERE}\NormalTok{ latitude }\KeywordTok{IS} \KeywordTok{NULL} \KeywordTok{OR}\NormalTok{ longitude }\KeywordTok{IS} \KeywordTok{NULL}\NormalTok{;}
-\end{Highlighting}
-\end{Shaded}
+Le nettoyage des ports et des infrastructures offshore est détaillé en
+annexe : \hyperref[annexe-nettoyage-donnees]{Nettoyage en ANNEXE}.
 
 \section{Calcul des distances}\label{calcul-des-distances}
 
@@ -789,61 +750,10 @@ Analyse de la distance moyenne aux ports selon les classes taxonomiques.
 \caption{Code.}\label{fig-sql-distance-classe}
 \end{figure}
 
-\subsection{Espèces les plus observées à proximité immédiate des
-ports}\label{espuxe8ces-les-plus-observuxe9es-uxe0-proximituxe9-immuxe9diate-des-ports}
-
-Identification des espèces les plus fréquentes dans les zones très
-proches des ports (classe 10).
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{SELECT}\NormalTok{ species, }\FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations}
-\KeywordTok{FROM}\NormalTok{ observation\_europe}
-\KeywordTok{WHERE}\NormalTok{ species }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
-  \KeywordTok{AND}\NormalTok{ classe\_distance\_port }\OperatorTok{=} \DecValTok{10}
-\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ species}
-\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ nb\_observations }\KeywordTok{DESC}
-\KeywordTok{LIMIT} \DecValTok{20}\NormalTok{;}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Espèces les plus observées loin des
-ports}\label{espuxe8ces-les-plus-observuxe9es-loin-des-ports}
-
-Analyse équivalente pour les zones les plus éloignées des ports (classe
-1).
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{SELECT}\NormalTok{ species, }\FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations}
-\KeywordTok{FROM}\NormalTok{ observation\_europe}
-\KeywordTok{WHERE}\NormalTok{ species }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
-  \KeywordTok{AND}\NormalTok{ classe\_distance\_port }\OperatorTok{=} \DecValTok{1}
-\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ species}
-\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ nb\_observations }\KeywordTok{DESC}
-\KeywordTok{LIMIT} \DecValTok{20}\NormalTok{;}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Nombre d'observations par
-année}\label{nombre-dobservations-par-annuxe9e}
-
-Permet d'étudier l'évolution temporelle du nombre d'observations.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{SELECT}\NormalTok{ \textasciigrave{}year\textasciigrave{}, }\FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations}
-\KeywordTok{FROM}\NormalTok{ observation\_europe}
-\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ \textasciigrave{}year\textasciigrave{}}
-\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ \textasciigrave{}year\textasciigrave{};}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{figure}
-\centering
-\includegraphics[width=5.5cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/annee.png}
-\caption{Code.}\label{fig-sql-observations-annee}
-\end{figure}
+Les requêtes complémentaires sur les espèces les plus observées et
+l'évolution annuelle ont été placées en fin de rapport :
+\hyperref[annexe-requetes-complementaires]{Requêtes complémentaires en
+ANNEXE}.
 
 \subsection{Phylums proches des ports avec un nombre significatif
 d'observations}\label{phylums-proches-des-ports-avec-un-nombre-significatif-dobservations}
@@ -889,51 +799,10 @@ nom du port le plus proche.
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{Observations situées à une distance inférieure à la
-moyenne}\label{observations-situuxe9es-uxe0-une-distance-infuxe9rieure-uxe0-la-moyenne}
-
-Sélection des observations plus proches des ports que la moyenne
-globale.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{SELECT} 
-\NormalTok{    id\_observation,}
-\NormalTok{    species,}
-\NormalTok{    distance\_port\_min}
-\KeywordTok{FROM}\NormalTok{ observation\_europe}
-\KeywordTok{WHERE}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}}\NormalTok{ (}
-    \KeywordTok{SELECT} \FunctionTok{AVG}\NormalTok{(distance\_port\_min)}
-    \KeywordTok{FROM}\NormalTok{ observation\_europe}
-\NormalTok{);}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Phylums abondants et proches des
-ports}\label{phylums-abondants-et-proches-des-ports}
-
-Identification des phylums ayant un nombre important d'observations
-(\textgreater= 100) et une distance moyenne faible aux ports.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{SELECT} 
-\NormalTok{    phylum,}
-    \FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations,}
-    \FunctionTok{AVG}\NormalTok{(distance\_port\_min) }\KeywordTok{AS}\NormalTok{ distance\_port\_moyenne}
-\KeywordTok{FROM}\NormalTok{ observation\_europe}
-\KeywordTok{WHERE}\NormalTok{ phylum }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
-\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ phylum}
-\KeywordTok{HAVING} \FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\OperatorTok{\textgreater{}=} \DecValTok{100}
-\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ distance\_port\_moyenne }\KeywordTok{ASC}\NormalTok{;}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{figure}
-\centering
-\includegraphics[width=6cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/abond.png}
-\caption{Code.}\label{fig-sql-phylum-abondant}
-\end{figure}
+Les requêtes sur les observations situées sous la distance moyenne et
+les phylums abondants proches des ports sont aussi disponibles en annexe
+: \hyperref[annexe-requetes-complementaires]{Requêtes complémentaires en
+ANNEXE}.
 
 \section{Quelques détails
 techniques}\label{quelques-duxe9tails-techniques}
@@ -942,46 +811,6 @@ On peut interagir avec une base de données directement depuis RMarkdown
 : i.e.~requêter puis récupérer et afficher le résultat directement
 depuis le Rmd. Un fichier connexionBDD.Rmd est fourni pour donner des
 exemples.
-
-\chapter{Matériel et Méthodes}\label{matuxe9riel-et-muxe9thodes}
-
-\section{Logiciels}\label{logiciels}
-
-Lister tous les logiciels utilisés pour la partie statistique du rapport
-(et également ceux pour gérer et communiquer entre les membres du projet
-s'il y en a en particulier)
-
-\medskip
-
-R (ou Python) est le logiciel à privilégier pour la Science des Données.
-Pour assurer une reproductibilité maximale, vous devriez utiliser R
-Markdown (ou un Notebook Jupyter, et éventuellement un outil de gestion
-des versions tel que \texttt{Git}), par exemple via Google Colab ou
-RStudio dans les nuages. Évitez d'utiliser Word!
-
-\bigskip
-
-Il est de votre responsabilité de donner les versions des logiciels que
-vous utilisez, ainsi que de donner des informations techniques sur
-l'ordinateur qui vous a servi pour les analyses (système d'exploitation,
-vitesse du processeur, etc.). Penser à fournir des citations pour les
-logiciels utilisés, par exemple
-\footnote{L'entrée BibTeX ajoutée dans le fichier \texttt{references.bib} a été obtenue grâce à la commande \texttt{citation(package = "tidyverse")} tapée dans la console de R.}.
-
-\section{Modélisation statistique}\label{moduxe9lisation-statistique}
-
-Quels outils ou méthodes de statistiques allez-vous utiliser? Donner des
-équations mathématiques s'il y a lieu et lister les éventuels
-présupposés («assumptions» en anglais) que vous devez faire sur les
-données afin d'utiliser ces outils ou méthodes (\emph{e.g.}, normalité,
-absence de valeurs aberrantes, etc.).
-
-Il est également bon d'indiquer quelles sont les avantages et les
-limites de ces méthodes.
-
-Vous pourrez consulter avec profit les Chapitre 11--13 du livre sur R :
-
-\url{http://biostatisticien.eu/springeR/livreR.pdf}
 
 \chapter{Analyse Exploratoire des
 Données}\label{analyse-exploratoire-des-donnuxe9es}
@@ -1501,6 +1330,9 @@ le lien en annexe.
 
 \textbf{REMPLIR LE NOMBRE DE COLONNES ET DE LIGNES}
 
+\begingroup
+\scriptsize
+
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1604}}
   >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0755}}
@@ -1738,6 +1570,248 @@ négative \\
 categorie\_distance\_X & Texte & Classe de distance entre l'observation
 et X & Exemples : très\_proche, proche, moyenne, éloignée \\
 \end{longtable}
+
+\endgroup
+
+\section{Nettoyage des données}\label{annexe-nettoyage-donnees}
+
+\subsection{Filtrage des années
+d'observation}\label{filtrage-des-annuxe9es-dobservation}
+
+Les observations incohérentes ont été supprimées, notamment :
+
+\begin{itemize}
+\tightlist
+\item
+  les années en dehors de l'intervalle {[}2010 ; 2026{]}
+\item
+  les années manquantes
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{DELETE} \KeywordTok{FROM}\NormalTok{ cnidaria\_europe}
+\KeywordTok{WHERE}\NormalTok{ \textasciigrave{}year\textasciigrave{} }\OperatorTok{\textless{}} \DecValTok{2010} \KeywordTok{OR}\NormalTok{ \textasciigrave{}year\textasciigrave{} }\OperatorTok{\textgreater{}} \DecValTok{2026} \KeywordTok{OR}\NormalTok{ \textasciigrave{}year\textasciigrave{} }\KeywordTok{IS} \KeywordTok{NULL}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Filtrage des coordonnées
+géographiques}\label{filtrage-des-coordonnuxe9es-guxe9ographiques}
+
+Les observations avec coordonnées invalides ont été supprimées :
+
+\begin{itemize}
+\tightlist
+\item
+  latitude hors de {[}-90 ; 90{]}
+\item
+  longitude hors de {[}-180 ; 180{]}
+\item
+  valeurs manquantes
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{DELETE} \KeywordTok{FROM}\NormalTok{ cnidaria\_europe}
+\KeywordTok{WHERE}\NormalTok{ decimalLatitude }\OperatorTok{\textless{}} \OperatorTok{{-}}\DecValTok{90} 
+   \KeywordTok{OR}\NormalTok{ decimalLatitude }\OperatorTok{\textgreater{}} \DecValTok{90}
+   \KeywordTok{OR}\NormalTok{ decimalLongitude }\OperatorTok{\textless{}} \OperatorTok{{-}}\DecValTok{180} 
+   \KeywordTok{OR}\NormalTok{ decimalLongitude }\OperatorTok{\textgreater{}} \DecValTok{180}
+   \KeywordTok{OR}\NormalTok{ decimalLatitude }\KeywordTok{IS} \KeywordTok{NULL}
+   \KeywordTok{OR}\NormalTok{ decimalLongitude }\KeywordTok{IS} \KeywordTok{NULL}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{\texorpdfstring{Création de la table
+\texttt{observation\_europe}}{Création de la table observation\_europe}}\label{cruxe9ation-de-la-table-observation_europe-1}
+
+Nous avons ensuite créé la table \texttt{observation\_europe}, qui
+contient les informations directement liées à chaque observation :
+coordonnées, date, profondeur, origine du jeu de données et lien vers
+l'espèce.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{CREATE} \KeywordTok{TABLE}\NormalTok{ observation\_europe }\KeywordTok{AS}
+\KeywordTok{SELECT}
+\NormalTok{    occurrenceid,}
+\NormalTok{    taxonkey,}
+\NormalTok{    \textasciigrave{}year\textasciigrave{},}
+\NormalTok{    decimalLatitude,}
+\NormalTok{    decimalLongitude,}
+    \FunctionTok{depth}\NormalTok{,}
+\NormalTok{    datasetkey,}
+\NormalTok{    phylum,}
+\NormalTok{    \textasciigrave{}class\textasciigrave{},}
+\NormalTok{    \textasciigrave{}order\textasciigrave{},}
+\NormalTok{    family,}
+\NormalTok{    genus,}
+\NormalTok{    species}
+\KeywordTok{FROM}\NormalTok{ cnidaria\_europe}
+
+\KeywordTok{UNION} \KeywordTok{ALL}
+
+\KeywordTok{SELECT}
+\NormalTok{    occurrenceid,}
+\NormalTok{    taxonkey,}
+\NormalTok{    \textasciigrave{}year\textasciigrave{},}
+\NormalTok{    decimalLatitude,}
+\NormalTok{    decimalLongitude,}
+    \FunctionTok{depth}\NormalTok{,}
+\NormalTok{    datasetkey,}
+\NormalTok{    phylum,}
+\NormalTok{    \textasciigrave{}class\textasciigrave{},}
+\NormalTok{    \textasciigrave{}order\textasciigrave{},}
+\NormalTok{    family,}
+\NormalTok{    genus,}
+\NormalTok{    species}
+\KeywordTok{FROM}\NormalTok{ elasmobranchii\_europe}
+
+\KeywordTok{UNION} \KeywordTok{ALL}
+
+\KeywordTok{SELECT}
+\NormalTok{    occurrenceid,}
+\NormalTok{    taxonkey,}
+\NormalTok{    \textasciigrave{}year\textasciigrave{},}
+\NormalTok{    decimalLatitude,}
+\NormalTok{    decimalLongitude,}
+    \FunctionTok{depth}\NormalTok{,}
+\NormalTok{    datasetkey,}
+\NormalTok{    phylum,}
+\NormalTok{    \textasciigrave{}class\textasciigrave{},}
+\NormalTok{    \textasciigrave{}order\textasciigrave{},}
+\NormalTok{    family,}
+\NormalTok{    genus,}
+\NormalTok{    species}
+\KeywordTok{FROM}\NormalTok{ malacostraca\_europe;}
+\end{Highlighting}
+\end{Shaded}
+
+Ajout d'une clé primaire :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ALTER} \KeywordTok{TABLE}\NormalTok{ observation\_europe}
+\KeywordTok{ADD} \KeywordTok{COLUMN}\NormalTok{ id\_observation }\DataTypeTok{INT} \KeywordTok{NOT} \KeywordTok{NULL}\NormalTok{ AUTO\_INCREMENT }\KeywordTok{PRIMARY} \KeywordTok{KEY} \FunctionTok{FIRST}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Nettoyage des ports et
+offshore}\label{nettoyage-des-ports-et-offshore-1}
+
+Suppression des entrées sans coordonnées :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{DELETE} \KeywordTok{FROM}\NormalTok{ port\_maritime\_eur}
+\KeywordTok{WHERE}\NormalTok{ latitude }\KeywordTok{IS} \KeywordTok{NULL} \KeywordTok{OR}\NormalTok{ longitude }\KeywordTok{IS} \KeywordTok{NULL}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Requêtes SQL
+complémentaires}\label{annexe-requetes-complementaires}
+
+\subsection{Espèces les plus observées à proximité immédiate des
+ports}\label{espuxe8ces-les-plus-observuxe9es-uxe0-proximituxe9-immuxe9diate-des-ports}
+
+Identification des espèces les plus fréquentes dans les zones très
+proches des ports (classe 10).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ species, }\FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{WHERE}\NormalTok{ species }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
+  \KeywordTok{AND}\NormalTok{ classe\_distance\_port }\OperatorTok{=} \DecValTok{10}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ species}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ nb\_observations }\KeywordTok{DESC}
+\KeywordTok{LIMIT} \DecValTok{20}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Espèces les plus observées loin des
+ports}\label{espuxe8ces-les-plus-observuxe9es-loin-des-ports}
+
+Analyse équivalente pour les zones les plus éloignées des ports (classe
+1).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ species, }\FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{WHERE}\NormalTok{ species }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
+  \KeywordTok{AND}\NormalTok{ classe\_distance\_port }\OperatorTok{=} \DecValTok{1}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ species}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ nb\_observations }\KeywordTok{DESC}
+\KeywordTok{LIMIT} \DecValTok{20}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Nombre d'observations par
+année}\label{nombre-dobservations-par-annuxe9e}
+
+Permet d'étudier l'évolution temporelle du nombre d'observations.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ \textasciigrave{}year\textasciigrave{}, }\FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ \textasciigrave{}year\textasciigrave{}}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ \textasciigrave{}year\textasciigrave{};}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics[width=5.5cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/annee.png}
+\caption{Code.}\label{fig-sql-observations-annee}
+\end{figure}
+
+\subsection{Observations situées à une distance inférieure à la
+moyenne}\label{observations-situuxe9es-uxe0-une-distance-infuxe9rieure-uxe0-la-moyenne}
+
+Sélection des observations plus proches des ports que la moyenne
+globale.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT} 
+\NormalTok{    id\_observation,}
+\NormalTok{    species,}
+\NormalTok{    distance\_port\_min}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{WHERE}\NormalTok{ distance\_port\_min }\OperatorTok{\textless{}}\NormalTok{ (}
+    \KeywordTok{SELECT} \FunctionTok{AVG}\NormalTok{(distance\_port\_min)}
+    \KeywordTok{FROM}\NormalTok{ observation\_europe}
+\NormalTok{);}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Phylums abondants et proches des
+ports}\label{phylums-abondants-et-proches-des-ports}
+
+Identification des phylums ayant un nombre important d'observations
+(\textgreater= 100) et une distance moyenne faible aux ports.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT} 
+\NormalTok{    phylum,}
+    \FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ nb\_observations,}
+    \FunctionTok{AVG}\NormalTok{(distance\_port\_min) }\KeywordTok{AS}\NormalTok{ distance\_port\_moyenne}
+\KeywordTok{FROM}\NormalTok{ observation\_europe}
+\KeywordTok{WHERE}\NormalTok{ phylum }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ phylum}
+\KeywordTok{HAVING} \FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\OperatorTok{\textgreater{}=} \DecValTok{100}
+\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ distance\_port\_moyenne }\KeywordTok{ASC}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics[width=6cm,height=\textheight,keepaspectratio]{scdon2-UPV-report-template_files/abond.png}
+\caption{Code.}\label{fig-sql-phylum-abondant}
+\end{figure}
 
 
 

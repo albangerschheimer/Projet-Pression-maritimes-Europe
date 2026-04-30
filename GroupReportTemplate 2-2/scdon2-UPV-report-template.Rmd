@@ -121,16 +121,6 @@ Nous avons décidé de choisir des données selon certains critères afin de gar
 \item profondeur : \textbf{inférieure ou égale à 0}
 \end{itemize}
 
-\begin{center}
-\includegraphics[width=4cm]{img1.png}
-\hspace{0.8cm}
-\includegraphics[height=3cm]{img2.png}
-\end{center}
-
-
-
-
-  
   Chaque observation d’espèce sera localisée à l’aide de ses coordonnées géographiques, puis comparée à la position des ports et des infrastructures offshore les plus proches. L’idée est que plus une observation est proche d’un port ou d’une infrastructure, plus elle est susceptible d’être soumise à une pression humaine potentielle. À l’inverse, les observations éloignées seront considérées comme situées dans des zones moins directement influencées.
 
 \bigskip
@@ -182,8 +172,6 @@ PORT(gid, cdport, nomport, latitude, longitude)
 
 OFFSHORE(id_offshore, structure_id, label, latitude, longitude)
 
-![Tables.](MOD.png){#fig-mod width="6.5cm" }
-
 ## Importation et préparation des données
 
 ### Création de la base de données
@@ -196,8 +184,6 @@ Une nouvelle base de données nommée **base_maritime_europeenne** a été cré�
 ### Importation et organisation des tables
 
 Les différentes tables ont ensuite été importées dans la base de données.
-
-![Importation.](import.png){#fig-importation width="4.5cm" }
 
 Après importation, les tables ont été renommées comme suit :
 
@@ -222,64 +208,65 @@ ADD COLUMN id_obs INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
 
 ## Nettoyage des données biologiques
 
-### Filtrage des années d’observation
+Le détail du nettoyage des données a été placé en fin de rapport : [Nettoyage en ANNEXE](#annexe-nettoyage-donnees).
 
-Les observations incohérentes ont été supprimées, notamment :
+### Création de la table `observation_europe`
 
-* les années en dehors de l’intervalle [2010 ; 2026]
-* les années manquantes
-
-```sql
-DELETE FROM cnidaria_europe
-WHERE `year` < 2010 OR `year` > 2026 OR `year` IS NULL;
-```
-
-### Filtrage des coordonnées géographiques
-
-Les observations avec coordonnées invalides ont été supprimées :
-
-* latitude hors de [-90 ; 90]
-* longitude hors de [-180 ; 180]
-* valeurs manquantes
-
-```sql
-DELETE FROM cnidaria_europe
-WHERE decimalLatitude < -90 
-   OR decimalLatitude > 90
-   OR decimalLongitude < -180 
-   OR decimalLongitude > 180
-   OR decimalLatitude IS NULL
-   OR decimalLongitude IS NULL;
-```
-
-### Création de la table d’observations
-
-Une table unifiée a été construite afin de regrouper les différentes observations biologiques.
+Nous avons ensuite créé la table `observation_europe`, qui contient les informations directement liées à chaque observation : coordonnées, date, profondeur, origine du jeu de données et lien vers l’espèce.
 
 ```sql
 CREATE TABLE observation_europe AS
-SELECT occurrenceid, taxonkey, `year`, decimalLatitude, decimalLongitude, depth, datasetkey,
-       phylum, `class`, `order`, family, genus, species
+SELECT
+    occurrenceid,
+    taxonkey,
+    `year`,
+    decimalLatitude,
+    decimalLongitude,
+    depth,
+    datasetkey,
+    phylum,
+    `class`,
+    `order`,
+    family,
+    genus,
+    species
 FROM cnidaria_europe
 
 UNION ALL
 
-SELECT occurrenceid, taxonkey, `year`, decimalLatitude, decimalLongitude, depth, datasetkey,
-       phylum, `class`, `order`, family, genus, species
+SELECT
+    occurrenceid,
+    taxonkey,
+    `year`,
+    decimalLatitude,
+    decimalLongitude,
+    depth,
+    datasetkey,
+    phylum,
+    `class`,
+    `order`,
+    family,
+    genus,
+    species
 FROM elasmobranchii_europe
 
 UNION ALL
 
-SELECT occurrenceid, taxonkey, `year`, decimalLatitude, decimalLongitude, depth, datasetkey,
-       phylum, `class`, `order`, family, genus, species
+SELECT
+    occurrenceid,
+    taxonkey,
+    `year`,
+    decimalLatitude,
+    decimalLongitude,
+    depth,
+    datasetkey,
+    phylum,
+    `class`,
+    `order`,
+    family,
+    genus,
+    species
 FROM malacostraca_europe;
-```
-
-Ajout d’une clé primaire :
-
-```sql
-ALTER TABLE observation_europe
-ADD COLUMN id_observation INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
 ```
 
 
@@ -301,12 +288,7 @@ Le fichier final obtenu est : **offshore_europe.csv**
 
 ### Nettoyage des ports et offshore
 
-Suppression des entrées sans coordonnées :
-
-```sql
-DELETE FROM port_maritime_eur
-WHERE latitude IS NULL OR longitude IS NULL;
-```
+Le nettoyage des ports et des infrastructures offshore est détaillé en annexe : [Nettoyage en ANNEXE](#annexe-nettoyage-donnees).
 
 ## Calcul des distances
 
@@ -445,45 +427,7 @@ ORDER BY distance_port_moyenne;
 
 ![Code.](taxo.png){#fig-sql-distance-classe width="6cm" }
 
-### Espèces les plus observées à proximité immédiate des ports
-
-Identification des espèces les plus fréquentes dans les zones très proches des ports (classe 10).
-
-```sql
-SELECT species, COUNT(*) AS nb_observations
-FROM observation_europe
-WHERE species IS NOT NULL
-  AND classe_distance_port = 10
-GROUP BY species
-ORDER BY nb_observations DESC
-LIMIT 20;
-```
-
-### Espèces les plus observées loin des ports
-
-Analyse équivalente pour les zones les plus éloignées des ports (classe 1).
-
-```sql
-SELECT species, COUNT(*) AS nb_observations
-FROM observation_europe
-WHERE species IS NOT NULL
-  AND classe_distance_port = 1
-GROUP BY species
-ORDER BY nb_observations DESC
-LIMIT 20;
-```
-
-### Nombre d’observations par année
-
-Permet d’étudier l’évolution temporelle du nombre d’observations.
-
-```sql
-SELECT `year`, COUNT(*) AS nb_observations
-FROM observation_europe
-GROUP BY `year`
-ORDER BY `year`;
-```
-![Code.](annee.png){#fig-sql-observations-annee width="5.5cm" }
+Les requêtes complémentaires sur les espèces les plus observées et l’évolution annuelle ont été placées en fin de rapport : [Requêtes complémentaires en ANNEXE](#annexe-requetes-complementaires).
 
 
 ### Phylums proches des ports avec un nombre significatif d’observations
@@ -518,72 +462,12 @@ INNER JOIN port_maritime_eur p
     ON o.gid_port_proche = p.gid;
 ```
 
-### Observations situées à une distance inférieure à la moyenne
-
-Sélection des observations plus proches des ports que la moyenne globale.
-
-```sql
-SELECT 
-    id_observation,
-    species,
-    distance_port_min
-FROM observation_europe
-WHERE distance_port_min < (
-    SELECT AVG(distance_port_min)
-    FROM observation_europe
-);
-```
-
-
-### Phylums abondants et proches des ports
-
-Identification des phylums ayant un nombre important d’observations (>= 100) et une distance moyenne faible aux ports.
-
-```sql
-SELECT 
-    phylum,
-    COUNT(*) AS nb_observations,
-    AVG(distance_port_min) AS distance_port_moyenne
-FROM observation_europe
-WHERE phylum IS NOT NULL
-GROUP BY phylum
-HAVING COUNT(*) >= 100
-ORDER BY distance_port_moyenne ASC;
-```
-![Code.](abond.png){#fig-sql-phylum-abondant width="6cm" }
+Les requêtes sur les observations situées sous la distance moyenne et les phylums abondants proches des ports sont aussi disponibles en annexe : [Requêtes complémentaires en ANNEXE](#annexe-requetes-complementaires).
 
 ## Quelques détails techniques
 
 
 On peut interagir avec une base de données directement depuis RMarkdown : i.e. requêter puis récupérer et afficher le résultat directement depuis le Rmd. Un fichier connexionBDD.Rmd est fourni pour donner des exemples.
-
-# Matériel et Méthodes
-
-## Logiciels
-
-Lister tous les logiciels utilisés pour la partie statistique du rapport (et également ceux pour gérer et communiquer entre les membres du projet s'il y en a en particulier)
-
-\medskip
-
-R (ou Python) est le logiciel à privilégier pour la Science des Données. Pour assurer une reproductibilité maximale, vous devriez utiliser R Markdown (ou un Notebook Jupyter, et éventuellement un outil de gestion des versions tel que `Git`), par exemple via Google Colab ou RStudio dans les nuages. Évitez d'utiliser Word!
-
-\bigskip
-
-Il est de votre responsabilité de donner les versions des logiciels que vous utilisez, ainsi que de donner des informations techniques sur l'ordinateur qui vous a servi pour les analyses (système d'exploitation, vitesse du processeur, etc.). Penser à fournir des citations pour les logiciels utilisés, par exemple \footnote{L'entrée BibTeX ajoutée dans le fichier \texttt{references.bib} a été obtenue grâce à la commande \texttt{citation(package = "tidyverse")} tapée dans la console de R.}.
- 
-
-
-
-
-## Modélisation statistique
-
-Quels outils ou méthodes de statistiques allez-vous utiliser? Donner des équations mathématiques s'il y a lieu et lister les éventuels présupposés («assumptions» en anglais) que vous devez faire sur les données afin d'utiliser ces outils ou méthodes (_e.g._, normalité, absence de valeurs aberrantes, etc.).
-
-Il est également bon d'indiquer quelles sont les avantages et les limites de ces méthodes.
-
-Vous pourrez consulter avec profit les Chapitre 11--13 du livre sur R :
-
-<http://biostatisticien.eu/springeR/livreR.pdf>
 
 # Analyse Exploratoire des Données
 
@@ -899,6 +783,9 @@ directement dans un PDF, est disponible via le lien en annexe.
 ## Descriptif des tables {#annexe-descriptif-tables}
 \textbf{REMPLIR LE NOMBRE DE COLONNES ET DE LIGNES}
 
+\begingroup
+\scriptsize
+
 | Nom colonne     | Type   | Signification                        | Caractéristique                           |
 |:---------------:|:------:|:------------------------------------:|:-----------------------------------------:|
 | id_espece       | Entier | Identifiant unique de l’espèce       | Clé primaire, unique, non nul             |
@@ -959,3 +846,189 @@ Table: Infrastructure (nombre de lignes $\times$ nombre de colonnes)
 | categorie_distance_X  | Texte                | Classe de distance entre l’observation et X | Exemples : très_proche, proche, moyenne, éloignée |
 
 Table: Localiser X (nombre de lignes $\times$ nombre de colonnes)
+
+\endgroup
+
+## Nettoyage des données {#annexe-nettoyage-donnees}
+
+### Filtrage des années d’observation
+
+Les observations incohérentes ont été supprimées, notamment :
+
+* les années en dehors de l’intervalle [2010 ; 2026]
+* les années manquantes
+
+```sql
+DELETE FROM cnidaria_europe
+WHERE `year` < 2010 OR `year` > 2026 OR `year` IS NULL;
+```
+
+### Filtrage des coordonnées géographiques
+
+Les observations avec coordonnées invalides ont été supprimées :
+
+* latitude hors de [-90 ; 90]
+* longitude hors de [-180 ; 180]
+* valeurs manquantes
+
+```sql
+DELETE FROM cnidaria_europe
+WHERE decimalLatitude < -90 
+   OR decimalLatitude > 90
+   OR decimalLongitude < -180 
+   OR decimalLongitude > 180
+   OR decimalLatitude IS NULL
+   OR decimalLongitude IS NULL;
+```
+
+### Création de la table `observation_europe`
+
+Nous avons ensuite créé la table `observation_europe`, qui contient les informations directement liées à chaque observation : coordonnées, date, profondeur, origine du jeu de données et lien vers l’espèce.
+
+```sql
+CREATE TABLE observation_europe AS
+SELECT
+    occurrenceid,
+    taxonkey,
+    `year`,
+    decimalLatitude,
+    decimalLongitude,
+    depth,
+    datasetkey,
+    phylum,
+    `class`,
+    `order`,
+    family,
+    genus,
+    species
+FROM cnidaria_europe
+
+UNION ALL
+
+SELECT
+    occurrenceid,
+    taxonkey,
+    `year`,
+    decimalLatitude,
+    decimalLongitude,
+    depth,
+    datasetkey,
+    phylum,
+    `class`,
+    `order`,
+    family,
+    genus,
+    species
+FROM elasmobranchii_europe
+
+UNION ALL
+
+SELECT
+    occurrenceid,
+    taxonkey,
+    `year`,
+    decimalLatitude,
+    decimalLongitude,
+    depth,
+    datasetkey,
+    phylum,
+    `class`,
+    `order`,
+    family,
+    genus,
+    species
+FROM malacostraca_europe;
+```
+
+Ajout d’une clé primaire :
+
+```sql
+ALTER TABLE observation_europe
+ADD COLUMN id_observation INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
+```
+
+### Nettoyage des ports et offshore
+
+Suppression des entrées sans coordonnées :
+
+```sql
+DELETE FROM port_maritime_eur
+WHERE latitude IS NULL OR longitude IS NULL;
+```
+
+## Requêtes SQL complémentaires {#annexe-requetes-complementaires}
+
+### Espèces les plus observées à proximité immédiate des ports
+
+Identification des espèces les plus fréquentes dans les zones très proches des ports (classe 10).
+
+```sql
+SELECT species, COUNT(*) AS nb_observations
+FROM observation_europe
+WHERE species IS NOT NULL
+  AND classe_distance_port = 10
+GROUP BY species
+ORDER BY nb_observations DESC
+LIMIT 20;
+```
+
+### Espèces les plus observées loin des ports
+
+Analyse équivalente pour les zones les plus éloignées des ports (classe 1).
+
+```sql
+SELECT species, COUNT(*) AS nb_observations
+FROM observation_europe
+WHERE species IS NOT NULL
+  AND classe_distance_port = 1
+GROUP BY species
+ORDER BY nb_observations DESC
+LIMIT 20;
+```
+
+### Nombre d’observations par année
+
+Permet d’étudier l’évolution temporelle du nombre d’observations.
+
+```sql
+SELECT `year`, COUNT(*) AS nb_observations
+FROM observation_europe
+GROUP BY `year`
+ORDER BY `year`;
+```
+
+![Code.](annee.png){#fig-sql-observations-annee width="5.5cm" }
+
+### Observations situées à une distance inférieure à la moyenne
+
+Sélection des observations plus proches des ports que la moyenne globale.
+
+```sql
+SELECT 
+    id_observation,
+    species,
+    distance_port_min
+FROM observation_europe
+WHERE distance_port_min < (
+    SELECT AVG(distance_port_min)
+    FROM observation_europe
+);
+```
+
+### Phylums abondants et proches des ports
+
+Identification des phylums ayant un nombre important d’observations (>= 100) et une distance moyenne faible aux ports.
+
+```sql
+SELECT 
+    phylum,
+    COUNT(*) AS nb_observations,
+    AVG(distance_port_min) AS distance_port_moyenne
+FROM observation_europe
+WHERE phylum IS NOT NULL
+GROUP BY phylum
+HAVING COUNT(*) >= 100
+ORDER BY distance_port_moyenne ASC;
+```
+
+![Code.](abond.png){#fig-sql-phylum-abondant width="6cm" }
