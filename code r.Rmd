@@ -1,0 +1,889 @@
+# --- installation packages
+```{r}
+install.packages(c("tidyverse","ggplot2","scales","ggridges","patchwork","viridis","ggrepel","moments","sf","leaflet","tmap","gganimate","gifski","htmlwidgets","RColorBrewer","kableExtra","rnaturalearth", "rnaturalearthdata","dunn.test", "broom","car"))
+```
+
+
+
+```{r}
+
+library(tidyverse)
+library(ggplot2)
+library(scales)
+library(ggridges)    # github.com/wilkelab/ggridges    [REF-5]
+library(patchwork)   # github.com/thomasp85/patchwork  [REF-6]
+library(viridis)     # github.com/sjmgarnier/viridis   [REF-7]
+library(ggrepel)     # github.com/slowkow/ggrepel
+library(moments)
+library(sf)          # github.com/r-spatial/sf         [REF-1]
+library(leaflet)     # github.com/rstudio/leaflet      [REF-8]
+library(tmap)        # github.com/r-tmap/tmap          [REF-4]
+library(gganimate)   # github.com/thomasp85/gganimate  [REF-3]
+library(gifski)
+library(htmlwidgets)
+library(moments)
+library(car) 
+library(knitr)
+library(dunn.test)
+
+```
+
+
+
+# --- Thème global -----------------------------------------------------------
+```{r}
+theme_biodiv <- theme_minimal(base_size = 13) +
+  theme(
+    plot.title      = element_text(face = "bold", size = 15, color = "#1a3a4a"),
+    plot.subtitle   = element_text(color = "#4a6e7a", size = 11),
+    plot.caption    = element_text(color = "grey50", size = 8, hjust = 0),
+    axis.title      = element_text(face = "bold", color = "#1a3a4a"),
+    legend.position = "bottom",
+    panel.grid.minor = element_blank(),
+    strip.text      = element_text(face = "bold"),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+theme_set(theme_biodiv)
+
+palette_phylum <- c("Arthropoda" = "#2196F3",
+                    "Cnidaria"   = "#FF7043",
+                    "Chordata"   = "#66BB6A")
+
+palette_infra <- c("oil"           = "#B71C1C",
+                   "wind"          = "#1B5E20",
+                   "possible_oil"  = "#E57373",
+                   "probable_oil"  = "#EF9A9A",
+                   "possible_wind" = "#81C784",
+                   "probable_wind" = "#C8E6C9",
+                   "unknown"       = "#9E9E9E")
+
+dir.create("figures", showWarnings = FALSE)
+cat("✅ Configuration terminée.\n")
+```
+
+# ================================================================
+# SECTION 1 : IMPORT & NETTOYAGE
+# ================================================================
+
+```{r}
+PATH_U <- "SQL requettes/univarier/"
+PATH_B <- "SQL requettes/bivarier/"
+PATH_Q <- "SQL requettes/enrichissement/"  # dossier pour les nouveaux CSV
+
+u1_annees  <- read_csv(paste0(PATH_U, "U1 Années.csv"),        show_col_types = FALSE)
+u2_port    <- read_csv(paste0(PATH_U, "U2 port.csv"),           show_col_types = FALSE)
+u3_infra   <- read_csv(paste0(PATH_U, "U3 infra.csv"),          show_col_types = FALSE)
+u4_phylum  <- read_csv(paste0(PATH_U, "U4 representation phylum.csv"), show_col_types = FALSE)
+u5_stats_p <- read_csv(paste0(PATH_U, "U5 Stats port.csv"),     show_col_types = FALSE)
+u6_stats_i <- read_csv(paste0(PATH_U, "U6 Stat infra.csv"),     show_col_types = FALSE)
+u7_nb      <- read_csv(paste0(PATH_U, "U7 nb port et infra.csv"), show_col_types = FALSE)
+
+b1_dist_p   <- read_csv(paste0(PATH_B, "B1 DistanceP par phylum.csv"),  show_col_types = FALSE)
+b2_dist_i   <- read_csv(paste0(PATH_B, "B2 DistantI par phylum.csv"),   show_col_types = FALSE)
+b3_phylum_p <- read_csv(paste0(PATH_B, "B3 phylum ET par classe de distance au port.csv"), show_col_types = FALSE)
+b6_temporal <- read_csv(paste0(PATH_B, "B6  distance moyenne port et offshore par année.csv"), show_col_types = FALSE)
+b7_scatter  <- read_csv(paste0(PATH_B, "B07.csv"), show_col_types = FALSE)
+
+q1_geo     <- read_csv(paste0(PATH_Q, "Q1.csv"),          show_col_types = FALSE)
+q2_port    <- read_csv(paste0(PATH_Q, "q2 port.csv"),     show_col_types = FALSE)
+q2_infra   <- read_csv(paste0(PATH_Q, "q2 infra.csv"),    show_col_types = FALSE)
+q3_richesse<- read_csv(paste0(PATH_Q, "q3.csv"),          show_col_types = FALSE)
+q4_temporal<- read_csv(paste0(PATH_Q, "q4.csv"),          show_col_types = FALSE)
+q5_profond <- read_csv(paste0(PATH_Q, "q5.csv"),          show_col_types = FALSE)
+top_ports  <- read_csv(paste0(PATH_Q, "top 20 port.csv"), show_col_types = FALSE)
+top_infra  <- read_csv(paste0(PATH_Q, "top infra.csv"),   show_col_types = FALSE)
+```
+
+# --- Nettoyage et préparation des données -----------------------------------
+
+```{r}
+
+# On force les classes de distance en entiers pour que les axes soient propres
+u2_port$classe_distance_port     <- as.integer(u2_port$classe_distance_port)
+u3_infra$classe_distance_infra   <- as.integer(u3_infra$classe_distance_infra)
+b3_phylum_p$classe_distance_port <- as.integer(b3_phylum_p$classe_distance_port)
+
+# On range les données de diversité par distance
+q2_port  <- q2_port  %>% mutate(classe_distance_port = as.integer(classe_distance_port)) %>% arrange(classe_distance_port)
+q2_infra <- q2_infra %>% mutate(classe_distance_infra = as.integer(classe_distance_infra)) %>% arrange(classe_distance_infra)
+
+# Préparation de la table principale Q1 (GPS et Phylums)
+q1_geo <- q1_geo %>%
+  mutate(
+    latitude  = as.numeric(latitude),
+    longitude = as.numeric(longitude),
+    # Fixer l'ordre des phylums pour les légendes du rapport
+    phylum    = factor(phylum, levels = c("Arthropoda", "Cnidaria", "Chordata")),
+    year      = as.integer(year),
+    
+    # On traduit les types d'infrastructures en français pour les graphiques
+    type_infra_clean = case_when(
+      infra_la_plus_proche == "wind" ~ "Éolien",
+      infra_la_plus_proche == "oil"  ~ "Pétrolier",
+      infra_la_plus_proche %in% c("possible_oil", "probable_oil") ~ "Pétrolier (probable)",
+      infra_la_plus_proche %in% c("possible_wind", "probable_wind") ~ "Éolien (probable)",
+      TRUE ~ "Inconnu"
+    )
+  ) %>%
+  # Suppression des lignes sans coordonnées (inutilisables sur carte)
+  filter(!is.na(latitude), !is.na(longitude))
+
+# --- Filtre temporel (Arrêt à 2023) -----------------------------------------
+# On coupe à 2023 car les données SQL montrent que 2024/2025 sont incomplètes
+q1_complet <- q1_geo      %>% filter(year <= 2023)
+q4_complet <- q4_temporal %>% filter(year <= 2023)
+b6_complet <- b6_temporal %>% filter(year <= 2023)
+
+# Vérification finale du volume de données
+cat(sprintf("✅ C'est bon : %s observations prêtes à l'analyse\n", 
+            format(nrow(q1_geo), big.mark = " ")))
+```
+# ============================================================================
+# SECTION 2 : ANALYSE UNIVARIÉE
+# ============================================================================
+
+```{r}
+# --- U-01 : Distribution temporelle ----------------------------------------
+u1_complet <- u1_annees %>% filter(year <= 2023)
+
+fig_u01 <- ggplot(u1_complet, aes(x = factor(year), y = nb_observations)) +
+  geom_col(aes(fill = nb_observations), color = "white", width = 0.75) +
+  geom_text(aes(label = label_number(big.mark = " ")(nb_observations)),
+            vjust = -0.4, size = 3, color = "#1a3a4a") +
+  scale_fill_viridis_c(option = "plasma", guide = "none") +
+  scale_y_continuous(labels = label_number(big.mark = " "),
+                     expand = expansion(mult = c(0, 0.12))) +
+  labs(title    = "U-01 · Distribution temporelle des observations (2010–2023)",
+       subtitle = "Tendance décroissante visible à partir de 2016",
+       x = "Année", y = "Nombre d'observations",
+       caption = "Source : Requête SQL U1 | Années partielles 2024–2026 exclues")
+ggsave("figures/U01_distribution_temporelle.png", fig_u01,
+       width = 11, height = 6, dpi = 300, bg = "white")
+
+cat("  → Figures U-01 esauvegardées\n")
+
+```
+
+```{r}
+# --- U-04 : Représentation des phylums (camembert)
+u4_phylum <- u4_phylum %>%
+  arrange(desc(phylum)) %>%
+  mutate(pct   = nb_observations / sum(nb_observations) * 100,
+         label = paste0(phylum, "\n", comma(nb_observations, big.mark = " "),
+                        "\n(", round(pct, 1), "%)"),
+         # Calcul de la position pour que les étiquettes ne se chevauchent pas
+         ypos = cumsum(pct) - 0.5 * pct)
+
+fig_u04 <- ggplot(u4_phylum, aes(x = "", y = pct, fill = phylum)) +
+  geom_col(width = 1, color = "white", linewidth = 1.2) +
+  coord_polar("y", start = 0) +
+  
+  # REMPLACEMENT : geom_label_repel au lieu de geom_text pour la lisibilité
+  geom_label_repel(aes(y = ypos, label = label), 
+                   nudge_x = 0.8, size = 3.8, fontface = "bold", 
+                   show.legend = FALSE, alpha = 0.9) +
+  
+  scale_fill_manual(values = palette_phylum) +
+  
+  theme_void(base_size = 13) +
+  theme(legend.position = "right", 
+        plot.title = element_text(face = "bold", hjust = 0.5, size = 15, color = "#1a3a4a"),
+        plot.subtitle = element_text(hjust = 0.5, color = "#4a6e7a")) +
+  
+  labs(title    = "U-04 · Représentation des phylums",
+       subtitle = paste("N total =", comma(sum(u4_phylum$nb_observations),
+                                           big.mark = " ")),
+       caption = "Note : Les étiquettes sont déportées pour faciliter la lecture des petits groupes")
+
+ggsave("figures/U04_representation_phylum.png", fig_u04,
+       width = 10, height = 10, dpi = 300, bg = "white")
+
+cat("  → fIGURE U-04 sauvegardées\n")
+```
+```{r}
+# --- U-02 : Distribution des classes de distance aux ports ----------------
+
+fig_u02 <- ggplot(u2_port, aes(x = factor(classe_distance_port), y = nb_observations)) +
+  geom_col(fill = "#2196F3", color = "white", alpha = 0.8, width = 0.8) +
+  
+  # Ajout des chiffres au-dessus des barres pour la précision
+  geom_text(aes(label = format(nb_observations, big.mark = " ")),
+            vjust = -0.5, size = 3, color = "#1a3a4a", fontface = "bold") +
+  
+  labs(title    = "U-02 · Répartition par classes de distance aux ports",
+       subtitle = "Échelle de 1 (éloigné) à 10 (très proche)",
+       x = "Classe de proximité", 
+       y = "Nombre d'observations",
+       caption = "Source : Données traitées SQL | Classes 1 à 10") +
+  
+  # Nettoyage de l'axe Y pour la lisibilité
+  scale_y_continuous(labels = label_number(big.mark = " "), 
+                     expand = expansion(mult = c(0, 0.15)))
+
+ggsave("figures/U02_distrib_classes_port.png", fig_u02, 
+       width = 11, height = 5, dpi = 300)
+
+cat("  → Figure U-02 (Classes de distance) sauvegardée avec succès\n")
+```
+# ============================================================================
+# SECTION 3 : ANALYSE BIVARIÉE
+# ============================================================================
+
+```{r}
+# --- B-01/02 : Distance par phylum ------------------------------------------
+fig_b01 <- ggplot(b1_dist_p,
+                  aes(x = reorder(phylum, moyenne), y = moyenne, fill = phylum)) +
+  geom_col(width = 0.55, alpha = 0.9) +
+  geom_errorbar(aes(ymin = pmax(0, moyenne - ecart_type),
+                    ymax = moyenne + ecart_type),
+                width = 0.2, linewidth = 0.9, color = "#1a3a4a") +
+  geom_text(aes(label = paste0(round(moyenne, 2), " km")),
+            vjust = -2.8, size = 3.5, fontface = "bold") +
+  scale_fill_manual(values = palette_phylum) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.22)),
+                     labels = label_number(suffix = " km")) +
+  labs(title   = "B-01 · Distance moyenne au port par phylum",
+       subtitle = "Arthropoda significativement plus éloigné (moy. 12.6 km vs 3.8–4.9 km)",
+       x = "Phylum", y = "Distance moyenne (km)",
+       caption = "Barres d'erreur = ± écart-type | B1 : agrégation SQL par phylum") +
+  theme(legend.position = "none")
+ggsave("figures/B01_distance_port_phylum.png", fig_b01,
+       width = 9, height = 7, dpi = 300, bg = "white")
+cat("  → figure generé\n")
+```
+
+#: Q2 Ratio de diversité par classe de distance -----------------
+
+```{r} 
+#port
+
+fig_q2_port <- ggplot(q2_port, aes(x = classe_distance_port, y = ratio_diversite)) +
+  
+  geom_line(color = "#2196F3", linewidth = 1.2, alpha = 0.6) +
+  
+  geom_point(color = "#2196F3", size = 3) +
+  
+  geom_text_repel(aes(label = paste0(round(ratio_diversite * 100, 1), "%\n", 
+                                     format(nb_observations, big.mark = " "), " obs.")),
+                  size = 3.5, 
+                  lineheight = 0.8,
+                  color = "#1a3a4a", 
+                  fontface = "bold",
+                  nudge_y = 0.02,
+                  segment.color = NA) + 
+  
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(labels = label_percent(), 
+                     expand = expansion(mult = c(0.1, 0.2))) +
+  
+  labs(title    = "Q2-PORT · Diversité spécifique et Effort d'échantillonnage",
+       subtitle  = "Le ratio chute en classe 9 malgré un volume d'observations massif",
+       x = "Classe de distance au port (1 = plus proche)",
+       y = "Ratio de diversité (%)",
+       caption = "Note : Le nombre d'observations (obs.) indique la robustesse de chaque point.") +
+  
+  theme_minimal(base_size = 13) +
+  theme(panel.grid.minor = element_blank(),
+        plot.title      = element_text(face = "bold", color = "#1a3a4a"),
+        plot.subtitle   = element_text(color = "grey40"))
+
+ggsave("figures/Q2_port.png", fig_q2_port, 
+       width = 10, height = 6, dpi = 300, bg = "white")
+cat("  → figure generé\n")
+```
+
+```{r}
+# Infra
+fig_q2_infra <- ggplot(q2_infra, aes(x = classe_distance_infra, y = ratio_diversite)) +
+  
+  geom_line(color = "#FF7043", linewidth = 1.2, alpha = 0.6) +
+  
+  geom_point(color = "#FF7043", size = 3) +
+  
+  geom_text_repel(aes(label = paste0(round(ratio_diversite * 100, 1), "%\n", 
+                                     format(nb_observations, big.mark = " "), " obs.")),
+                  size = 3.5, 
+                  lineheight = 0.8,
+                  color = "#1a3a4a", 
+                  fontface = "bold",
+                  nudge_y = 0.003,
+                  segment.color = NA) + 
+  
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(labels = label_percent(), 
+                     expand = expansion(mult = c(0.1, 0.2))) +
+  
+  labs(title    = "Q2-INFRA · Diversité et Proximité des Infrastructures",
+       subtitle  = "Analyse par rapport aux plateformes et parcs éoliens",
+       x = "Classe de distance à l'infrastructure (1 = plus proche)",
+       y = "Ratio de diversité (%)") +
+  
+  theme_minimal(base_size = 13) +
+  theme(panel.grid.minor = element_blank())
+
+ggsave("figures/Q2_infra.png", fig_q2_infra, 
+       width = 10, height = 6, dpi = 300, bg = "white")
+cat("  → figure generé\n")
+
+
+```
+```{r}
+fig_q2_port_final <- fig_q2_port_final + labs(title = "A · PROXIMITÉ DES PORTS")
+fig_q2_infra_final <- fig_q2_infra_final + labs(title = "B · PROXIMITÉ DES INFRASTRUCTURES OFFSHORE")
+
+fig_q2_comparaison <- fig_q2_port_final / fig_q2_infra_final
+
+fig_q2_comparaison <- fig_q2_comparaison + 
+  plot_annotation(
+    title = "Comparaison du Ratio de Diversité Spécifique",
+    subtitle = "Analyse des gradients de biodiversité selon l'anthropisation (1 = zone la plus proche)",
+    caption = "Source : Données EMODnet | Analyse bivariée Q2",
+    theme = theme(plot.title = element_text(size = 18, face = "bold", hjust = 0.5))
+  )
+
+ggsave("figures/Q2_ratio_diversite_FINAL.png", 
+       fig_q2_comparaison,
+       width = 12, 
+       height = 14, 
+       dpi = 300, 
+       bg = "white")
+
+cat("  → figure generé\n")
+```
+
+
+```{r}
+# --- Q5 : Profondeur par classe de distance ---------------------------------
+fig_q5_clean <- ggplot(q5_profond, aes(x = classe_distance_port)) +
+  geom_ribbon(aes(ymin = profondeur_moyenne - profondeur_ecart_type,
+                  ymax = profondeur_moyenne + profondeur_ecart_type),
+              fill = "#90CAF9", alpha = 0.3) +
+  
+  geom_line(aes(y = profondeur_moyenne), color = "#1565C0", 
+            linewidth = 1.2, alpha = 0.8) +
+  
+  geom_point(aes(y = profondeur_moyenne), color = "#1565C0", size = 3) +
+  
+  geom_text_repel(aes(y = profondeur_moyenne,
+                      label = paste0(round(profondeur_moyenne, 0), " m\n", 
+                                     format(nb_observations, big.mark = " "), " obs.")),
+                  size = 3.5, 
+                  lineheight = 0.8,
+                  color = "#1a3a4a", 
+                  fontface = "bold",
+                  nudge_y = -18,
+                  segment.color = NA) + 
+  
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_reverse(labels = label_number(suffix = " m")) + 
+  
+  labs(title    = "Q5 · Profil bathymétrique par classe de distance",
+       subtitle  = "Moyenne de profondeur (ligne) et variabilité (ruban bleu)",
+       x = "Classe de distance au port (1 = plus proche)",
+       y = "Profondeur (mètres)",
+       caption = "Le ruban représente l'écart-type. La classe 1 montre une très forte hétérogénéité.") +
+  
+  theme_minimal(base_size = 13) +
+  theme(panel.grid.minor = element_blank(),
+        plot.title      = element_text(face = "bold", color = "#1a3a4a"))
+
+ggsave("figures/Q5_profondeur_complet_clean.png", fig_q5_clean, 
+       width = 11, height = 7, dpi = 300, bg = "white")
+cat("  → figure generé\n")
+```
+
+```{r}
+# --- Top infrastructures ---------------------------------------------------
+top_infra <- top_infra %>%
+  mutate(type_fr = case_when(
+    type_infrastructure == "oil"           ~ "Pétrolier",
+    type_infrastructure == "wind"          ~ "Éolien",
+    type_infrastructure == "possible_oil"  ~ "Pétrolier (possible)",
+    type_infrastructure == "probable_oil"  ~ "Pétrolier (probable)",
+    type_infrastructure == "possible_wind" ~ "Éolien (possible)",
+    type_infrastructure == "probable_wind" ~ "Éolien (probable)",
+    TRUE ~ "Inconnu"
+  ),
+  type_fr = fct_reorder(type_fr, total_observations))
+
+fig_infra_type <- ggplot(top_infra, aes(x = type_fr, y = total_observations,
+                                        fill = type_infrastructure)) +
+  geom_col(width = 0.65, alpha = 0.9) +
+  geom_text(aes(label = paste0(label_number(big.mark = " ")(total_observations),
+                               "\n", distance_moyenne_km, " km")),
+            hjust = -0.05, size = 3.2) +
+  scale_fill_manual(values = palette_infra) +
+  scale_y_continuous(labels = label_number(big.mark = " "),
+                     expand = expansion(mult = c(0, 0.35))) +
+  coord_flip() +
+  labs(title    = "Type d'infrastructure offshore & observations associées",
+       subtitle  = "Les plateformes pétrolières et inconnues concentrent l'essentiel des observations",
+       x = NULL, y = "Nombre d'observations",
+       caption = "Note : 'inconnu' = infrastructure non classifiée dans la BDD") +
+  theme(legend.position = "none")
+ggsave("figures/infra_type_observations.png", fig_infra_type,
+       width = 11, height = 6, dpi = 300, bg = "white")
+
+cat("  → figure generé\n")
+```
+
+
+```{r}
+# --- B-07 : Scatter + Spearman (B7 dataset) --------------------------------
+b7_scatter <- b7_scatter %>%
+  mutate(phylum = factor(phylum, levels = c("Arthropoda", "Cnidaria", "Chordata")))
+
+b7_stats <- b7_scatter %>%
+  group_by(phylum) %>%
+  summarize(
+    rho = cor.test(distance_port_min, distance_infra_min, method = "spearman")$estimate,
+    p_val = cor.test(distance_port_min, distance_infra_min, method = "spearman")$p.value
+  ) %>%
+  mutate(label = sprintf("Spearman ρ = %.3f\np = %.2e", rho, p_val))
+
+# 3. GÉNÉRATION DU GRAPHIQUE
+fig_b07 <- ggplot(b7_scatter, aes(x = log1p(distance_port_min), 
+                                  y = log1p(distance_infra_min), 
+                                  color = phylum)) +
+  geom_point(alpha = 0.2, size = 0.8) +
+  geom_density_2d(linewidth = 0.5, alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, linewidth = 1.2, alpha = 0.15) +
+  
+  # Utilisation du tableau de stats pour les étiquettes par facette
+  geom_text(data = b7_stats, aes(label = label), 
+            x = Inf, y = Inf, hjust = 1.1, vjust = 1.5, 
+            size = 3.5, color = "grey30", inherit.aes = FALSE) +
+  
+  scale_color_manual(values = palette_phylum) +
+  facet_wrap(~phylum) +
+  
+  labs(title    = "B-07 · Relation log(dist. port) ~ log(dist. infra) par Phylum",
+       subtitle  = "Coefficients de Spearman calculés individuellement par groupe",
+       x = "log(1 + distance port) km",
+       y = "log(1 + distance infra) km",
+       caption = "Transformation log1p | Contours de densité par geom_density_2d") +
+  
+  theme_minimal() +
+  theme(legend.position = "none",
+        panel.grid.minor = element_blank(),
+        strip.text = element_text(face = "bold", size = 12))
+
+ggsave("figures/B07_scatter_log_FINAL.png", fig_b07, 
+       width = 12, height = 5, dpi = 300, bg = "white")
+cat("  → figure generé\n")
+```
+
+
+# ===============================================================
+# SECTION 4 : ANALYSE TEMPORELLE 
+# ===============================================================
+
+```{r}
+# Panneau A : Bleu + Vert
+data_A <- q4_complet %>% filter(phylum %in% c("Arthropoda", "Chordata"))
+# Panneau B : Bleu + Orange
+data_B <- q4_complet %>% filter(phylum %in% c("Arthropoda", "Cnidaria"))
+
+creer_plot <- function(data) {
+  ggplot(data, aes(x = year, y = distance_port_moyenne, color = phylum)) +
+    geom_line(linewidth = 1.1, alpha = 0.7) +
+    geom_point(size = 2) +
+    geom_smooth(method = "loess", se = TRUE, alpha = 0.1, linetype = "dashed", linewidth = 0.5) +
+    geom_text_repel(aes(label = paste0(format(nb_observations, big.mark = " "), " obs.")),
+                    size = 2.5, fontface = "bold", max.overlaps = Inf) +
+    scale_color_manual(values = palette_phylum) +
+    scale_x_continuous(breaks = 2010:2023) +
+    scale_y_continuous(labels = label_number(suffix = " km"), limits = c(0, 22)) +
+    theme_minimal() +
+    labs(x = "Année", y = "Distance (km)", color = "Phylum")
+}
+
+p1 <- creer_plot(data_A) + labs(title = "Comparaison : Arthropoda & Chordata")
+p2 <- creer_plot(data_B) + labs(title = "Comparaison : Arthropoda & Cnidaria")
+
+fig_finale <- p1 / p2 + 
+  plot_annotation(title = "Q4 · Analyse comparative de la distance au port",
+                  subtitle = "Séparation des phyla pour une meilleure lisibilité")
+
+ggsave("figures/Q4_distance_double_panneau.png", fig_finale, width = 12, height = 12, dpi = 300)
+cat("  → figure generé\n")
+```
+
+
+```{r}
+fig_q4_rich_v2 <- ggplot(q4_complet, aes(x = year, y = nb_especes_distinctes, color = phylum)) +
+
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  scale_y_log10(labels = label_number()) + 
+  
+  scale_color_manual(values = palette_phylum) +
+  scale_x_continuous(breaks = 2010:2023) +
+  
+  labs(title    = "Q4 · Évolution de la richesse spécifique (Échelle Log)",
+       subtitle = "Comparaison des tendances malgré les différences de volume",
+       x = "Année", y = "Nb espèces (Log10)",
+       color = "Phylum") +
+  theme_minimal()
+
+ggsave("figures/Q4_richesse_log.png", fig_q4_rich_v2, width = 12, height = 6)
+cat("  → figure generé\n")
+
+```
+
+# ===============================================================
+# SECTION 5 : ANIMATION GGANIMATE [REF-3]
+# ===============================================================
+
+ 
+```{r}
+# --- Animation : distance au port par phylum, année par année 
+# (Arthropoda uniquement pour la lisibilité)
+anim_q4 <- ggplot(q4_arthro, aes(x = year, y = distance_port_moyenne)) +
+  geom_area(fill = "#BBDEFB", alpha = 0.3, stat = "identity") + 
+  geom_line(color = "#2196F3", linewidth = 1.8, lineend = "round", stat = "identity") +
+  geom_point(aes(size = nb_especes_distinctes), color = "#2196F3", alpha = 0.9) +
+  
+  scale_x_continuous(breaks = 2010:2023) +
+  scale_y_continuous(labels = label_number(suffix = " km"),
+                     limits = c(9, 19)) +
+  scale_size_continuous(name = "Nb espèces", range = c(3, 12)) +
+  labs(title    = "Distance moyenne au port — Arthropoda",
+       subtitle = "Année : {frame_along}",
+       x = "Année", y = "Distance moyenne (km)",
+       caption = "[REF-3 gganimate] | Q4 : GROUP BY year, phylum") +
+  transition_reveal(year) + 
+  ease_aes("cubic-in-out")
+ 
+animate(anim_q4, nframes = 200, fps = 15,
+        width = 900, height = 500,
+        renderer = gifski_renderer("figures/animation_distance_temporelle.gif"))
+cat("  → Animation GIF sauvegardée\n")
+```
+ 
+# ===============================================================
+# SECTION 6 : ANALYSE SPATIALE — CARTE LEAFLET RÉELLE [REF-8]
+# ==============================================================
+ 
+ 
+```{r}
+cat("\n🗺️  ANALYSE SPATIALE — COORDONNÉES GPS RÉELLES\n")
+ 
+# --- Sous-échantillon pour la carte (performances) --------------------------
+set.seed(42)
+q1_sample <- q1_geo %>%
+  group_by(phylum) %>%
+  group_modify(~ slice_sample(.x, n = min(2000, nrow(.x)))) %>%
+  ungroup()
+ 
+# --- Palettes et popups -----------------------------------------------------
+pal_phylum <- colorFactor(
+  palette = c("#2196F3", "#FF7043", "#66BB6A"),
+  domain  = c("Arthropoda", "Cnidaria", "Chordata")
+)
+ 
+q1_sample <- q1_sample %>%
+  mutate(popup_html = paste0(
+    "<b>Phylum :</b> ", phylum, "<br>",
+    "<b>Espèce :</b> <i>", espece, "</i><br>",
+    "<b>Année :</b> ", year, "<br>",
+    "<b>Dist. port :</b> ", round(distance_port_min, 2), " km — ",
+    port_le_plus_proche, "<br>",
+    "<b>Infra. proche :</b> ", infra_la_plus_proche
+  ))
+ 
+# --- Top 20 ports avec icônes --------------------------------------------
+ports_sf <- top_ports %>%
+  rename(NomPort = NomPort)
+ 
+# --- Carte principale -------------------------------------------------------
+carte <- leaflet(options = leafletOptions(preferCanvas = TRUE)) %>%
+ 
+  # Fonds de carte
+  addProviderTiles(providers$CartoDB.Positron,    group = "CartoDB Positron") %>%
+  addProviderTiles(providers$Esri.OceanBasemap,   group = "ESRI Océan") %>%
+  addProviderTiles(providers$OpenStreetMap,        group = "OpenStreetMap") %>%
+ 
+  # ── Observations biologiques ──
+  addCircleMarkers(
+    data        = q1_sample,
+    lng         = ~longitude,
+    lat         = ~latitude,
+    color       = ~pal_phylum(phylum),
+    radius      = 5,
+    fillOpacity = 0.6,
+    opacity     = 0.9,
+    weight      = 0.5,
+    popup       = ~popup_html,
+    label       = ~paste(phylum, "–", espece),
+    group       = "Observations biologiques"
+  ) %>%
+ 
+  # ── Top 20 Ports ──
+  addCircleMarkers(
+    data        = ports_sf,
+    lng         = ~longitude,
+    lat         = ~latitude,
+    color       = "#FFD700",
+    fillColor   = "#FFA000",
+    radius      = ~rescale(nb_observations_associees, to = c(6, 18)),
+    fillOpacity = 0.85,
+    opacity     = 1,
+    weight      = 2,
+    popup       = ~paste0(
+      "<b>⚓ ", NomPort, "</b><br>",
+      "Observations associées : <b>", comma(nb_observations_associees), "</b><br>",
+      "Distance moyenne : <b>", distance_moyenne_km, " km</b>"
+    ),
+    label       = ~NomPort,
+    group       = "Ports (Top 20)"
+  ) %>%
+ 
+  # ── Légende phylums ──
+  addLegend(
+    position   = "bottomright",
+    pal        = pal_phylum,
+    values     = q1_sample$phylum,
+    title      = "Phylum",
+    opacity    = 0.9
+  ) %>%
+ 
+  # ── Contrôle des couches ──
+  addLayersControl(
+    baseGroups    = c("CartoDB Positron", "ESRI Océan", "OpenStreetMap"),
+    overlayGroups = c("Observations biologiques", "Ports (Top 20)"),
+    options       = layersControlOptions(collapsed = FALSE)
+  ) %>%
+ 
+  # ── Outils ──
+  addMiniMap(toggleDisplay = TRUE, minimized = FALSE) %>%
+  addScaleBar(position = "bottomleft") %>%
+  addMeasure(position = "topleft",
+             primaryLengthUnit = "kilometers") %>%
+ 
+  # Centrage sur la zone d'étude
+  setView(lng = 5, lat = 48, zoom = 4)
+ 
+saveWidget(carte, "figures/carte_biodiversite_marine.html", selfcontained = TRUE)
+cat("  → Carte interactive HTML sauvegardée\n")
+```
+
+```{r}
+# --- Carte statique tmap [REF-4] --------------------------------------------
+
+obs_sf   <- st_as_sf(q1_sample,  coords = c("longitude","latitude"), crs = 4326)
+ports_sf_geo <- st_as_sf(top_ports, coords = c("longitude","latitude"), crs = 4326)
+ 
+tmap_mode("plot")
+ 
+carte_statique <- tm_shape(obs_sf) +
+  tm_dots(
+    fill       = "phylum",
+    fill.scale = tm_scale_categorical(
+      values = c("Arthropoda" = "#2196F3",
+                 "Cnidaria"   = "#FF7043",
+                 "Chordata"   = "#66BB6A")
+    ),
+    fill.legend = tm_legend(title = "Phylum"),
+    size  = 0.08,
+    col   = NA
+  ) +
+  tm_shape(ports_sf_geo) +
+  tm_symbols(
+    fill  = "gold",
+    col   = "#FFA000",
+    size  = "nb_observations_associees",
+    shape = 23,
+    col.legend  = tm_legend_hide(),
+    size.legend = tm_legend(title = "Nb obs. (port)")
+  ) +
+  tm_title("Distribution spatiale de la biodiversité marine\nAtlantique NE / Méditerranée / Mer du Nord") +
+  tm_scalebar(position = c("left", "bottom"), breaks = c(0, 250, 500)) +
+  tm_compass(position = c("right", "top"), size = 2) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame          = FALSE,
+    bg.color       = "#F0F8FF"
+  )
+ 
+tmap_save(carte_statique, "figures/carte_statique_tmap.png",
+          width = 3000, height = 2000, dpi = 300)
+cat("  → figure generé\n")
+```
+
+
+Partie inference :
+
+```{r}
+stats_kw <- b7_scatter %>%
+  group_by(phylum) %>%
+  summarise(N          = n(),
+            Mediane    = round(median(distance_port_min), 2),
+            Moyenne    = round(mean(distance_port_min), 2),
+            Ecart_type = round(sd(distance_port_min), 2),
+            .groups    = "drop")
+print(kable(stats_kw, format = "simple"))
+```
+
+
+```{r}
+#============================================================================
+# TEST 1 — KRUSKAL-WALLIS : dist_port ~ phylum
+# ============================================================================
+# H₀ : distributions identiques entre les phylums
+# H₁ : au moins un phylum diffère
+# Justification : hétéroscédasticité sévère (ratio variances = 54.5,
+#                 Levene p < 0.001) → ANOVA non applicable
+# ============================================================================
+cat("══════════════════════════════════════\n")
+cat("TEST 1 · KRUSKAL-WALLIS\n")
+cat("══════════════════════════════════════\n\n")
+ 
+# --- Conditions d'application -----------------------------------------------
+var_arthro   <- var(b7_scatter$distance_port_min[b7_scatter$phylum == "Arthropoda"])
+var_cnidaria <- var(b7_scatter$distance_port_min[b7_scatter$phylum == "Cnidaria"])
+levene_res   <- leveneTest(distance_port_min ~ phylum, data = b7_scatter)
+ 
+cat(sprintf("Ratio des variances  : %.1f  (seuil : < 4)\n", var_arthro / var_cnidaria))
+cat(sprintf("Levene p-value       : %.2e  → hétéroscédasticité confirmée\n",
+            levene_res$`Pr(>F)`[1]))
+cat("→ ANOVA non applicable. Kruskal-Wallis retenu.\n\n")
+
+```
+```{r}
+# --- Test -------------------------------------------------------------------
+kw_res <- kruskal.test(distance_port_min ~ phylum, data = b7_scatter)
+cat(sprintf("\nKruskal-Wallis : chi²(%d) = %.2f, p = %.2e\n",
+            kw_res$parameter, kw_res$statistic, kw_res$p.value))
+cat("✔ H₀ rejetée : les phylums se distribuent différemment par rapport au port.\n\n")
+ 
+# --- Post-hoc Dunn ----------------------------------------------------------
+cat("Post-hoc Dunn (Bonferroni) :\n")
+dunn.test(b7_scatter$distance_port_min, b7_scatter$phylum,
+          method = "bonferroni", altp = TRUE)
+```
+```{r}
+# --- Figure -----------------------------------------------------------------
+fig_kw <- ggplot(b7_scatter, aes(x = phylum, y = distance_port_min, fill = phylum)) +
+  geom_violin(alpha = 0.3, color = NA, trim = TRUE) +
+  geom_boxplot(width = 0.25, outlier.shape = 21, outlier.size = 1,
+               outlier.alpha = 0.3, linewidth = 0.8) +
+  geom_text(data = stats_kw,
+            aes(y = Mediane, label = paste0("Mdn = ", Mediane, " km")),
+            vjust = -1.3, size = 3.5, fontface = "bold") +
+  annotate("segment", x = 1, xend = 2, y = 38, yend = 38,
+           color = "#B71C1C", linewidth = 0.8) +
+  annotate("text", x = 1.5, y = 39.5,
+           label = "***", size = 7, color = "#B71C1C") +
+  annotate("text", x = 1.5, y = 35,
+           label = sprintf("chi²(1) = %.1f\np < 2.2e-16", kw_res$statistic),
+           size = 3.3, color = "#B71C1C", fontface = "bold") +
+  scale_fill_manual(values = palette_phylum) +
+  scale_y_continuous(labels = label_number(suffix = " km")) +
+  labs(title   = "Test 1 - Kruskal-Wallis : distance au port par phylum",
+       subtitle = "*** Difference hautement significative (p < 0.001)",
+       x       = "Phylum",
+       y       = "Distance minimale au port (km)",
+       caption = sprintf("N = %d obs. | Kruskal-Wallis + post-hoc Dunn (Bonferroni)",
+                         nrow(b7_scatter))) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position  = "none",
+        plot.title       = element_text(face = "bold"),
+        panel.grid.minor = element_blank())
+ 
+ggsave("figures/T1_kruskal_wallis.png", fig_kw,
+       width = 8, height = 6, dpi = 300, bg = "white")
+cat("\n-> Figure T1 sauvegardee.\n")
+```
+```{r}
+# ============================================================================
+# TEST 2 — RÉGRESSION LINÉAIRE : ratio_diversite ~ classe_distance_port
+# ============================================================================
+# H₀ : β₁ = 0 (la distance n'explique pas la diversité spécifique)
+# H₁ : β₁ ≠ 0
+# Modèle : ratio_diversite = β₀ + β₁ × classe_distance_port + ε
+# ============================================================================
+cat("\n══════════════════════════════════════\n")
+cat("TEST 2 · RÉGRESSION LINÉAIRE\n")
+cat("══════════════════════════════════════\n\n")
+ 
+lm1     <- lm(ratio_diversite ~ classe_distance_port, data = q2_port)
+lm1_sum <- summary(lm1)
+p_val   <- pf(lm1_sum$fstatistic[1], lm1_sum$fstatistic[2],
+               lm1_sum$fstatistic[3], lower.tail = FALSE)
+ 
+cat(sprintf("Equation : ratio = %.4f + %.4f x classe_distance_port\n",
+            coef(lm1)[1], coef(lm1)[2]))
+cat(sprintf("R2        = %.4f  (%.1f%% de variance expliquee)\n",
+            lm1_sum$r.squared, lm1_sum$r.squared * 100))
+cat(sprintf("R2 ajuste = %.4f\n", lm1_sum$adj.r.squared))
+cat(sprintf("F(%d,%d)   = %.2f,  p = %.4f\n",
+            lm1_sum$fstatistic[2], lm1_sum$fstatistic[3],
+            lm1_sum$fstatistic[1], p_val))
+cat("\nCoefficients :\n")
+print(kable(round(coef(summary(lm1)), 5), format = "simple"))
+```
+
+
+```{r}
+# --- Figure : droite de régression + résidus --------------------------------
+q2_pred <- q2_port %>%
+  mutate(pred  = predict(lm1),
+         lower = predict(lm1, interval = "confidence")[, "lwr"],
+         upper = predict(lm1, interval = "confidence")[, "upr"])
+ 
+fig_reg <- ggplot(q2_pred, aes(x = classe_distance_port, y = ratio_diversite)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "#BBDEFB", alpha = 0.5) +
+  geom_line(aes(y = pred), color = "#1565C0",
+            linewidth = 1.4, linetype = "dashed") +
+  geom_point(aes(size = nb_observations), color = "#2196F3",
+             fill = "#2196F3", shape = 21, alpha = 0.9) +
+  geom_text(aes(label = paste0("Cl.", classe_distance_port)),
+            vjust = -1.1, size = 2.8, color = "#1a3a4a") +
+  annotate("text", x = 7.5, y = 0.008,
+           label = sprintf("R2 = %.3f\nb1 = +%.4f\np = %.3f",
+                           lm1_sum$r.squared, coef(lm1)[2], p_val),
+           size = 3.5, color = "#B71C1C", fontface = "bold") +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(labels = label_percent(accuracy = 0.1)) +
+  scale_size_continuous(labels = label_number(big.mark = " "),
+                        name = "Nb obs.", range = c(3, 10)) +
+  labs(title   = "Test 2 - Regression lineaire : ratio diversite ~ classe distance port",
+       subtitle = sprintf("ratio = %.4f + %.4f x classe | IC 95%% en bleu",
+                          coef(lm1)[1], coef(lm1)[2]),
+       x       = "Classe de distance au port (1 = plus proche)",
+       y       = "Ratio de diversite specifique",
+       caption = "N = 10 classes | ratio = nb_especes_distinctes / nb_observations") +
+  theme_minimal(base_size = 13) +
+  theme(plot.title       = element_text(face = "bold"),
+        panel.grid.minor = element_blank(),
+        legend.position  = "right")
+ 
+fig_residus <- ggplot(data.frame(fitted = fitted(lm1), res = residuals(lm1)),
+                      aes(x = fitted, y = res)) +
+  geom_point(color = "#2196F3", size = 3, alpha = 0.8) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "#B71C1C") +
+  geom_smooth(method = "loess", se = FALSE, color = "#FF7043",
+              linewidth = 1, span = 1) +
+  labs(title = "Analyse des residus",
+       x     = "Valeurs ajustees",
+       y     = "Residus") +
+  theme_minimal(base_size = 12) +
+  theme(plot.title       = element_text(face = "bold"),
+        panel.grid.minor = element_blank())
+ 
+fig_test2 <- fig_reg / fig_residus + plot_layout(heights = c(2, 1))
+ggsave("figures/T2_regression.png", fig_test2,
+       width = 10, height = 10, dpi = 300, bg = "white")
+cat("-> Figure T2 sauvegardee.\n")
+```
+
+```{r}
+u5 <- read.csv("SQL requettes/univarier/U5 Stats port.csv")
+u6 <- read.csv("SQL requettes/univarier/U6 Stat infra.csv")
+
+print(u5)
+print(u6)
+```
+
