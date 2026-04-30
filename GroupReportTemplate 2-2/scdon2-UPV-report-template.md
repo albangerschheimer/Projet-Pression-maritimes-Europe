@@ -1,15 +1,16 @@
 ---
-title: "Rapport de groupe des deep learners anonymes\\newline  Bases de données + Sciences des Données 2"
+title: "Rapport de groupe des\\newline deep learners anonymes\\newline  Bases de données + Sciences des Données 2"
 author:
 - 'Alban Gerschheimer, '
 - 'Omar Terras, '
 - 'Alfred Gyalay, '
 - Mia Portes.
-date: "26 April 2026"
+date: "30 April 2026"
 output:
   pdf_document:
     fig_caption: yes
     keep_md: yes
+    latex_engine: xelatex
     keep_tex: yes
     md_extensions: +raw_attribute
     number_sections: yes
@@ -38,7 +39,6 @@ csl: iso690-author-date-fr-no-abstract.csl
 Acknowledgements:
 - Nous tenons à remercier nos enseignantes, Mme Sandra Bringay et Mme Marine Demangeot, pour leur soutien et leurs conseils précieux tout au long de ce projet. 
 - Nous remercions également les membres de ce groupe pour leur sérieux et leur implication tout au long de sa réalisation.
-
 biblio-style: elsarticle-harv
 session: 2026
 team: 5
@@ -643,187 +643,335 @@ Vous pourrez consulter avec profit les Chapitre 11--13 du livre sur R :
 
 # Analyse Exploratoire des Données
 
-Toute étude impliquant des données doit **obligatoirement** inclure une analyse exploratoire préalable. Celle-ci permet de mieux comprendre l'information contenue dans les données.
+## Description générale du jeu de données
 
-Il faut produire de nombreux résumés graphiques (_e.g._, histogrammes, nuages de points, boxplots, etc.) et numériques (_e.g._, médiane, moyenne, variance, etc.). Ainsi, il faut faire une analyse descriptive uni- et bivariée systématique de toutes les variables du jeu de données. Puis, il faut uniquement conserver les plus pertinents (les autres pouvant être gardés en Annexe), c'est-à-dire ceux qui permettront de dégager des éléments de réponse pour la question de recherche envisagée.  Chaque figure et tableau doit être commenté. Mais il ne faut pas extrapoler et dire des choses qui ne sont pas visibles dans ces graphiques ou tableaux. Pour chaque analyse, vous pourrez préciser le nombre d'individus/ d'unités statistiques concernés au total.
+Le jeu de données final, issu du croisement des sources GBIF, EMODnet, comprend **459 773 observations** biologiques géoréférencées,
+couvrant la période 2010–2023 (les années 2024–2026 sont exclues en raison d'un volume insuffisant, respectivement 3 699, 416 et 16 observations). Ces observations
+sont mises en relation avec **400 ports maritimes** et **8 103 infrastructures offshore** répertoriés en Europe.
 
-Vous pourrez consulter avec profit le Chapitre 9 du livre sur R :
+Trois phylums sont représentés : Arthropoda, Cnidaria et Chordata. Chaque
+observation est associée à une distance euclidienne minimale vers le port le plus
+proche et vers l'infrastructure offshore la plus proche, regroupées en dix classes
+de proximité (1 = plus éloigné, 10 = plus proche).
 
-<http://biostatisticien.eu/springeR/livreR.pdf>
+## Analyse univariée
 
-## Utiliser R {.fragile}
-
-Il est facile d'inclure des codes R dans votre rapport, qui seront exécutés à la volée (_i.e._, lors de la traduction de votre fichier `Rmd` en fichier `PDF` ou `DOC`). Par exemple:
-
-
-``` r
-boxplot(cars, col = c("#5975a4", "#cc8963"))
-```
+### Distribution temporelle des observations
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-1-1} 
+{\centering \includegraphics[width=10cm]{figures/U01_distribution_temporelle} 
 
 }
 
-\caption{\label{fig:boxplots}Deux boxplots.}\label{fig:unnamed-chunk-1}
+\caption{\label{fig:u01}U-01 · Distribution annuelle des observations (2010–2023). Tendance décroissante nette à partir de 2016.}\label{fig:aed-u01}
 \end{figure}
 
-``` r
-colMeans(cars)
-```
+La Figure \ref{fig:u01} montre que le volume d'observations atteint son maximum en 2012 (52 694 obs.) avant d'amorcer une baisse progressive. Un rebond partiel est visible en 2021 (36 977 obs.), suivi d'une chute marquée en 2022–2023
+(respectivement 12 993 et 11 735 obs.). Cette tendance décroissante ne traduit pas nécessairement un appauvrissement réel de la biodiversité : elle reflète plutot une réduction de de collecte et/ou de soumission des données dans la base GBIF sur la période récente.
 
-```
-## speed  dist 
-## 15.40 42.98
-```
-
-
-Les lignes de code ne doivent pas dépasser dans la marge de droite. Ainsi on pourrait remplacer le chunk ci-dessous:
-
-
-``` r
-boxplot(cars, main = "Un titre qui est vraiment beaucoup trop long et qui dépasse dans la marge de droite")
-```
+### Répartition par phylum
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-2-1} 
+{\centering \includegraphics[width=8cm]{figures/U04_representation_phylum} 
 
 }
 
-\caption{Pas super.}\label{fig:unnamed-chunk-2}
+\caption{\label{fig:u04}U-04 · Représentation des trois phylums (N total = 459 773).}\label{fig:aed-u04}
 \end{figure}
 
-par celui-ci:
+La Figure \ref{fig:u04} révèle un déséquilibre taxonomique considérable :
+Arthropoda représente 455 372 observations (99,1 %), contre 3 901 pour Cnidaria (0,8 %) et 500 pour Chordata (0,1 %). Ce déséquilibre est un biais structurel majeur qui conditionnera l'interprétation de toutes les analyses agrégées : les
+statistiques « toutes espèces confondues » pourraient etre considerer comme des statistiques Arthropoda.
 
-\tiny
-
-
-``` r
-boxplot(cars, 
-        main = "Un titre qui est vraiment beaucoup trop long\n mais qui ne dépasse plus dans la marge de droite")
-```
+### Distribution des classes de distance aux ports
 
 \begin{figure}
 
-{\centering \includegraphics[width=7cm]{scdon2-UPV-report-template_files/figure-latex/unnamed-chunk-3-1} 
+{\centering \includegraphics[width=10cm]{figures/U02_distrib_classes_port} 
 
 }
 
-\caption{Déjà mieux.}\label{fig:unnamed-chunk-3}
+\caption{\label{fig:u02}U-02 · Répartition des observations par classe de proximité aux ports (1 = plus éloigné, 10 = plus proche).}\label{fig:aed-u02}
 \end{figure}
 
-\normalsize
+Comme le montre la Figure \ref{fig:u02}, la classe 1 (observations les plus éloignées des ports, distance > 0,30°) concentre à elle seule 443 637 observations, soit **96,5 % du total**. Les neuf classes restantes se partagent les 16 136 observations restantes (3,5 %). Cette distribution est extrêmement asymétrique et traduit le fait que la très grande majorité des relevés biologiques GBIF sont situés en pleine mer, loin des ports.
 
-où l'on a:
 
-- utilisé la commande \LaTeX\ `\tiny` pour changer la taille de la police (suivi de de `\normalsize` pour revenir à la taille normale), 
-- mis l'instruction `main = ...` sur la deuxième ligne,
-- utilisé `\n` pour afficher le titre sur deux lignes.
+Table: Statistiques descriptives des distances minimales (N = 459 773).
 
-\vspace{3em}
+|Variable                 | Minimum| Moyenne| Écart.type| Maximum|
+|:------------------------|-------:|-------:|----------:|-------:|
+|Distance au port (km)    |       0|   12.52|       9.76|   47.66|
+|Distance aux infras (km) |       0|    0.78|       1.39|   16.87|
 
-**Remarques** : Contrairement aux graphiques précédents, nous vous demandons, pour effectuer les graphiques, d'utiliser le package `ggplot2`. Voir [https://juba.github.io/tidyverse/08-ggplot2.html](https://juba.github.io/tidyverse/08-ggplot2.html) pour une courte introduction.
+La Table ci-dessus confirme la différence d'échelle entre les deux variables :
+la distance au port présente une moyenne de **12,52 km** (σ = 9,76 km), tandis que la distance aux infrastructures offshore est en moyenne de **0,78 km** (σ = 1,39 km) — les infrastructures offshore sont donc géographiquement bien
+plus proches des observations biologiques que les ports.
+
+## Analyse bivariée
+
+### Distance au port par phylum
+
+\begin{figure}
+
+{\centering \includegraphics[width=9cm]{figures/B01_distance_port_phylum} 
+
+}
+
+\caption{\label{fig:b01}B-01 · Distance moyenne au port par phylum (barres d'erreur = ± écart-type).}\label{fig:aed-b01}
+\end{figure}
+
+La Figure \ref{fig:b01} met en évidence une différence  entre les phylums. Arthropoda présente une distance moyenne au port de **12,60 km** (σ = 9,77 km), soit trois fois supérieure à celle de Cnidaria (**3,80 km**,σ = 1,17 km) et de Chordata (**4,88 km**, σ = 0,40 km). Cette séparation spatiale suggère que les arthropodes marins sont observés dans des zones plus éloignées des infrastructures portuaires, alors que les cnidaires et les chordés se concentrent dans des zones côtières.
+
+Pour les distances aux infrastructures offshore, la hiérarchie s'inverse partiellement : Cnidaria est le groupe le plus proche (moy. 0,25 km), suivi de Chordata (0,36 km) et d'Arthropoda (0,78 km). La variabilité reste faible pour Cnidaria (σ = 0,17 km) et Chordata (σ = 0,20 km), ce qui suggère une
+concentration géographique de ces groupes autour de certains types d'infrastructures (notamment pétrolières et éoliennes).
+
+### Ratio de diversité spécifique selon la proximité
+
+\begin{figure}
+
+{\centering \includegraphics[width=10cm]{figures/Q2_ratio_diversite_FINAL} 
+
+}
+
+\caption{\label{fig:q2}Comparaison du ratio de diversité spécifique (espèces distinctes / observations) selon la proximité aux ports (A) et aux infrastructures offshore (B).}\label{fig:aed-q2}
+\end{figure}
+
+La Figure \ref{fig:q2} présente le ratio de diversité spécifique (nombre d'espèces distinctes rapporté au nombre d'observations) pour chaque classe de distance.
+
+**Proximité aux ports (panneau A)** : le ratio est effondré en classe 1 (0,41 %, soit 1 857 espèces pour 448 375 observations) du au nombre d'observation bien plus important qui conduit a une diversité plus petite malgré le nombre d'espece differentes plus important que ailleurs, puis remonte fortement dès la classe 2 (9,2 %) et atteint un pic en classe 8 (21,9 %). La classe 9 présente une anomalie (1,0 % pour 5 405 obs.) qui correspond probablement à un biais d'échantillonnage localisé plutôt qu'à un signal biologique. En classe 10 (observations très proches des ports, < 0,01°), le ratio est de 18,3 % pour 421 observations.
+
+**Proximité aux infrastructures (panneau B)** : le gradient est plus régulier.
+Le ratio augmente progressivement de 0,73 % en classe 1 (234 356 obs.) jusqu'à 4,7 % en classe 8 (9 923 obs.), avant de redescendre légèrement en classe 9 (3,95 %) et 10 (1,52 %). Ce profil indique que les zones de forte densité d'infrastructures correspondent à des zones de faible diversité relative, ce
+qui est cohérent avec une pression anthropique localisée.
+
+### Profil bathymétrique par classe de distance aux ports
+
+\begin{figure}
+
+{\centering \includegraphics[width=10cm]{figures/Q5_profondeur_complet_clean} 
+
+}
+
+\caption{\label{fig:q5}Q-05 · Profil bathymétrique moyen par classe de distance au port (ruban = ± écart-type).}\label{fig:aed-q5}
+\end{figure}
+
+La Figure \ref{fig:q5} révèle un gradient bathymétrique structurant. La classe 1 (observations éloignées) présente une profondeur moyenne de **125 m** avec une variabilité extrêmement élevée (σ = 213 m, maximum 994 m), indiquant que ces
+observations couvrent une grande diversité de milieux, des zones côtières peu profondes jusqu'aux environnements bathypélagiques. À l'inverse, les classes proches des ports (8 à 10) affichent des profondeurs moyennes de 11 à 21 m, typiques des eaux portuaires et côtières. Ce gradient de profondeur constitue une variable de confusion potentielle dans l'interprétation du lien entre
+proximité aux ports et biodiversité.
+
+### Relation entre distance au port et distance aux infrastructures
+
+\begin{figure}
+
+{\centering \includegraphics[width=11cm]{figures/B07_scatter_log_FINAL} 
+
+}
+
+\caption{\label{fig:b07}B-07 · Relation entre log(distance port) et log(distance infra) par phylum, avec coefficients de Spearman.}\label{fig:aed-b07}
+\end{figure}
+
+La Figure \ref{fig:b07} examine la covariation spatiale entre les deux distances.
+Les coefficients de Spearman, calculés individuellement par phylum, indiquent une corrélation positive modérée à forte selon le groupe : les zones éloignées des ports tendent également à être plus éloignées des infrastructures offshore.
+Cette colinéarité partielle entre les deux variables de pression devra être prise en compte dans toute modélisation multivariée ultérieure.
+
+### Évolution temporelle de la distance au port
+
+\begin{figure}
+
+{\centering \includegraphics[width=11cm]{figures/Q4_distance_double_panneau} 
+
+}
+
+\caption{\label{fig:q4}Q-04 · Distance moyenne au port par phylum et par année (2010–2023), panneau A : Arthropoda vs Chordata, panneau B : Arthropoda vs Cnidaria.}\label{fig:aed-q4}
+\end{figure}
+
+La Figure \ref{fig:q4} montre l'évolution temporelle de la distance moyenne au port pour chaque phylum. Pour Arthropoda, on observe une hausse notable en 2016 (17,1 km) et 2017 (18,0 km), suivie d'un retour à la moyenne historique (~12 km) à partir de 2018. Cnidaria et Chordata maintiennent des distances stables et
+nettement inférieures sur toute la période. Cette instabilité temporelle chez Arthropoda est difficile à interpréter sans information sur les campagnes de collecte : elle peut refléter un déplacement réel de l'effort de pêche/observation ou un changement de protocole de soumission de données.
+
+### Type d'infrastructure offshore et observations associées
+
+\begin{figure}
+
+{\centering \includegraphics[width=10cm]{figures/infra_type_observations} 
+
+}
+
+\caption{\label{fig:infra}Nombre d'observations associées par type d'infrastructure offshore.}\label{fig:aed-infra}
+\end{figure}
+
+La Figure \ref{fig:infra} détaille la répartition des observations par type d'infrastructure. Les infrastructures de type « inconnu » et « pétrolières » concentrent l'essentiel des observations associées (respectivement ~180 873 et ~175 572), avec des distances moyennes de 0,83 km et 0,52 km. Les parcs
+éoliens génèrent un volume d'observations bien moindre. Ce résultat peut refléter la distribution géographique des infrastructures (les plateformes pétrolières de mer du Nord coïncident avec des zones à forte activité de relevé biologique) autant qu'un effet réel de ces structures sur la faune marine.
+
 
 # Inférence statistique et modélisation
 
-Dans cette partie, vous pourrez utiliser les outils et méthodes vus au semestre précédent pour analyser les liens entre les variables. 
+## Choix des méthodes
 
-Pour cela, vous pourrez utiliser les tests du $\chi^2$, test du coefficient de corrélation linéaire, test d'Anova, la droite de régression linéaire.
+Compte tenu de la distribution fortement asymétrique des variables de distance (dominance de la classe 1, non-normalité confirmée visuellement), les tests paramétriques classiques (ANOVA, test de Student) ne sont pas adaptés.
+Nous recourons à des méthodes non paramétriques et à des transformations logarithmiques.
 
-Vous pourrez également proposer des modèles pour faire du clustering (k-means, CAH), de la classification (K plus proches voisins par exemple) comme vu en Science des données 1.  
+Les deux axes d'analyse retenus sont :
 
-## La droite de régression linéaire : un premier exemple
+1. **Comparaison des distances entre groupes (phylums)** via le test de Kruskal-Wallis, suivi de comparaisons post-hoc par paires (test de Dunn).
+2. **Relation entre les deux distances** (port et infrastructure) via la corrélation de Spearman et une régression linéaire sur données transformées en log.
 
-Si on souhaite expliquer les variations d'une variables réponse $Y$ en fonction d'un certain nombre de prédicteurs $x_1,\ldots,x_p$, on peut utiliser un modèle de régression linéaire simple ($p=1$) ou multiple ($p>1$)
+## Test de Kruskal-Wallis : distance au port selon le phylum
+
+L'hypothèse nulle H₀ est que la distribution de la distance minimale au port est identique pour les trois phylums. L'hypothèse alternative H₁ stipule qu'au moins un phylum présente une distribution différente.
+
+\begin{figure}
+
+{\centering \includegraphics[width=10cm]{figures/T1_kruskal_wallis} 
+
+}
+
+\caption{\label{fig:kruskal}T-01 · Résultats du test de Kruskal-Wallis et comparaisons post-hoc (test de Dunn, correction de Bonferroni) pour la distance au port selon le phylum.}\label{fig:inf-kruskal}
+\end{figure}
+
+La Figure \ref{fig:kruskal} présente les résultats du test. La statistique de Kruskal-Wallis est très significative (p < 0,001), rejetant H₀ : les trois
+phylums ne partagent pas la même distribution de distances au port. Les comparaisons post-hoc (test de Dunn avec correction de Bonferroni) confirment que chaque paire de phylums est significativement différente. En particulier,
+Arthropoda se distingue fortement des deux autres groupes, ce qui est cohérent avec la différence de moyennes observée en section 4 (12,60 km vs 3,80–4,88 km).
+
+Ce résultat doit cependant être interprété avec prudence : la puissance du test est considérablement gonflée par la taille des effectifs (455 372 observations pour Arthropoda), ce qui rend quasiment certaine la détection de toute différence, même triviale sur le plan pratique.
+
+## Régression linéaire en espace log : distance port ~ distance infra
+
+Pour chaque phylum, nous ajustons un modèle de régression linéaire simple sur les données transformées :
 
 $$
-Y_i = \beta_0 + \beta_1 x_{1i} + \cdots +\beta_p x_{pi} + \epsilon_i, \qquad i=1,\ldots,n.
+\log(1 + d_{\text{port}}) = \beta_0 + \beta_1 \cdot \log(1 + d_{\text{infra}}) + \varepsilon
 $$
-où l'on présuppose que les $\epsilon_i$ sont i.i.d.\ $N(0,1)$ pour tout $i=1,\ldots,n$ ($n$ étant la taille de l'échantillon).
 
-Vous pourrez toujours consulter avec profit les Chapitre 11--13 du livre sur R :
+où $d_{\text{port}}$ et $d_{\text{infra}}$ désignent les distances minimales en kilomètres. La transformation $\log(1+x)$ (log1p) est utilisée pour gérer les valeurs nulles.
 
-<http://biostatisticien.eu/springeR/livreR.pdf>
+\begin{figure}
 
-Ces chapitres détaillent l'utilisation de certains tests et modèles sous `R`.
+{\centering \includegraphics[width=10cm]{figures/T2_regression} 
+
+}
+
+\caption{\label{fig:reg}T-02 · Droites de régression log-log par phylum (distance port ~ distance infra).}\label{fig:inf-regression}
+\end{figure}
+
+La Figure \ref{fig:reg} montre les droites ajustées par phylum. Les coefficients de Spearman calculés en section 4 (Figure \ref{fig:b07}) confirment la significativité statistique de la relation pour les trois groupes. La pente positive indique
+que, toutes choses égales par ailleurs, une observation éloignée d'un port tend également à être éloignée d'une infrastructure offshore — traduisant une
+structure spatiale commune : les zones hauturières sont simultanément loin des deux types d'infrastructures, tandis que les zones côtières concentrent ports et infrastructures offshore de manière co-localisée.
+
+Les résidus présentent une dispersion plus élevée pour Arthropoda, ce qui
+s'explique par la très grande étendue géographique des observations de ce
+phylum (de 0,0003 à 47,66 km du port).
+
+## Synthèse des résultats statistiques
+
+
+Table: Synthèse des principaux résultats statistiques.
+
+|Analyse                                   |Résultat                    |Interprétation                        |
+|:-----------------------------------------|:---------------------------|:-------------------------------------|
+|Kruskal-Wallis (dist. port ~ phylum)      |p < 0.001 (H₀ rejetée)      |Distances hétérogènes entre phylums   |
+|Spearman ρ — Arthropoda                   |ρ > 0 (p < 0.001)           |Colinéarité spatiale forte            |
+|Spearman ρ — Cnidaria                     |ρ > 0 (p < 0.001)           |Colinéarité spatiale modérée          |
+|Spearman ρ — Chordata                     |ρ > 0 (p < 0.001)           |Colinéarité spatiale modérée          |
+|Gradient ratio diversité (port, cl. 1→8)  |+0.41% → +21.9% (+21.5 pts) |Diversité plus élevée loin des ports  |
+|Gradient ratio diversité (infra, cl. 1→8) |+0.73% → +4.7% (+4.0 pts)   |Diversité plus élevée loin des infras |
+
 
 # Discussion
 
-Placer les résultats que vous avez obtenus dans le chapitre précédent en perspective par rapport au problème étudié.
+## Réponse à la problématique
 
-# Conclusion et perspectives {.label:ccl}
+Les analyses menées permettent d'apporter des éléments de réponse à la question
+initiale : **la proximité des ports et des infrastructures offshore est associée
+à une distribution spatiale non aléatoire des observations de biodiversité marine
+en Europe**, mais le sens et la magnitude de cette association varient fortement
+selon le groupe taxonomique et la variable de pression considérée.
 
-Quelles sont les conclusions principales? Quelles sont vos recommandations pour le commanditaire? Quelles analyses subséquentes pourraient être faites dans le futur?
+Le résultat le plus robuste est le gradient du ratio de diversité spécifique :
+les zones proches des ports (classes 8–10) présentent un ratio supérieur aux
+zones très éloignées (classe 1), malgré un volume d'observations bien plus faible.
+Ce paradoxe apparent s'explique : la classe 1 regroupe 96,5 % des observations,
+toutes dominées par Arthropoda, un phylum peu diversifié à l'échelle de nos
+données (observation répétée de quelques espèces très communes). À l'inverse,
+les zones portuaires, bien que moins échantillonnées, montrent une plus grande
+variété spécifique relative. Pour les infrastructures offshore, le gradient est
+plus direct et progressif, suggérant un effet dilutif de la pression anthropique
+sur la diversité locale.
+
+## Limites et biais
+
+**Déséquilibre taxonomique.** Arthropoda représente 99,1 % des observations.
+Toute statistique agrégée reflète en réalité la distribution de ce seul groupe.
+Les tendances observées pour Cnidaria et Chordata, bien que cohérentes, reposent
+sur des effectifs trop faibles (respectivement 3 901 et 500 observations) pour
+être généralisables.
+
+**Distance euclidienne vs distance géodésique.** La distance utilisée est une
+approximation euclidienne en degrés décimaux, non une distance orthodromique.
+Cette simplification introduit un biais croissant avec la latitude (surestimation
+des distances aux hautes latitudes, typiques de la mer du Nord et de la Baltique
+qui concentrent une part importante des observations).
+
+**Biais d'effort de collecte.** La baisse des observations à partir de 2016 et la
+chute des années 2022–2023 ne reflètent probablement pas une tendance écologique
+réelle, mais une réduction de la soumission de données dans GBIF. Ce biais rend
+toute analyse temporelle des tendances de biodiversité particulièrement fragile.
+
+**Classe 9 — anomalie.** La classe 9 de distance aux ports affiche un ratio de
+diversité anormalement bas (1,0 % pour 5 405 observations), en rupture avec le
+gradient des classes 2 à 8. Cela peut résulter d'une campagne de collecte
+spécifique à certains ports particuliers, concentrée sur peu d'espèces cibles.
+Ce point mériterait une investigation plus fine (analyse par pays ou par port).
+
+**Colinéarité port–infrastructure.** Les corrélations de Spearman positives entre
+les deux variables de distance (Figure \ref{fig:b07}) rendent difficile
+l'attribution de l'effet observé à l'une ou l'autre source de pression dans
+un modèle multivarié.
+
+
+# Conclusion et perspectives 
+
+Ce projet a permis de construire une base de données relationnelle croisant des
+occurrences d'espèces marines issues de GBIF avec des données géographiques sur
+les ports maritimes et les infrastructures offshore européennes, puis d'en
+extraire des analyses statistiques exploratoires et inférentielles. Le principal
+résultat est que **la proximité aux ports et aux infrastructures offshore est
+associée à une diversité spécifique relative plus élevée** par observation, ce qui
+s'interprète non pas comme un effet positif des pressions anthropiques sur la
+biodiversité, mais comme un artefact d'échantillonnage : les zones hauturières,
+qui concentrent 96,5 % des relevés, sont dominées par quelques espèces très
+communes d'Arthropoda, diluant mécaniquement le ratio de diversité. Ce résultat
+souligne l'importance de normaliser les analyses de biodiversité par l'effort
+d'échantillonnage avant toute conclusion.
+
+**Perspectives à court terme.** La priorité immédiate est de remplacer la distance
+euclidienne par la formule de Haversine, afin d'obtenir des distances en
+kilomètres réels corrigées de la courbure terrestre. Il serait également nécessaire
+de pondérer les analyses par l'effort de collecte (nombre de campagnes ou de
+jours d'observation par cellule spatiale) pour séparer le signal biologique du
+biais de détection. Enfin, l'anomalie de la classe 9 mérite une désagrégation
+par port et par pays.
+
+**Perspectives à long terme.** L'approche pourrait être enrichie par l'intégration
+de données de trafic maritime AIS (densité de passages par cellule), permettant
+une mesure directe de la pression plutôt qu'une proxy géographique. Sur le plan
+méthodologique, des modèles de distribution d'espèces (SDM, _species distribution
+models_) permettraient de contrôler les effets environnementaux confondants
+(température, salinité, bathymétrie) et d'isoler la part de variance expliquée
+par la seule proximité anthropique. Enfin, l'extension à d'autres groupes
+taxonomiques (poissons téléostéens, mammifères marins) apporterait une vision
+plus équilibrée de la biodiversité marine européenne.
 
 \bigskip
 
-On attend de vous deux types de perspectives : des perspectives à court terme pour améliorer rapidement votre approche et des perspectives à plus long terme qu'elles soient liées à la science des données ou au domaine métier pour lequel vous avez travaillé.
-
-\bigskip
-
-Lister également les difficultés rencontrées dans la partie BD (e.g., taille de la base, manque de données, ...) et dans la partie statistique.
-
-# Bibliographie {-}
-
-<div id="refs"></div>
-
-\bibliographystyle{elsarticle-harv}
-\bibliography{references}
-
-# Annexes {-}
-
-
-Il faut utiliser les annexes de façon judicieuse. C'est ici que l'on place des résultats trop volumineux pour apparaître dans le corps du rapport. Ou bien des résultats (e.g., graphiques) moins intéressants que les autres. Cela permet de limiter le nombre de pages du coeur du rapport, et d'ajouter des détails dans cette partie pour le lecteur désireux d'en savoir plus.
-
-## **Codes** {-}
-
-Ajouter vos codes informatique ici. Les codes doivent être correctement indentés et commentés.
-
-## **Tables** {-}
-
-Si vous avez des tableaux supplémentaires, vous pouvez les ajouter ici.
-
-Utiliser https://www.tablesgenerator.com/markdown_tables pour créer des tables Markdown simples, ou bien utiliser \LaTeX.
-
-1. Table Markdown
-
-| Les tables   |        sont       |  cool |
-|--------------|:-----------------:|------:|
-| col 1 est    |  alignée à gauche | $1600 |
-| col 2 est    |     centrée       |   $12 |
-| col 3 est    | alignée à droite  |    $1 |
-
-Table: une légende au-dessus du tableau. \label{tab7.1}
-
-Aligner les nombres de la troisième colonne sur la droite permet d'afficher les unités au-dessus des unités, les dizaines au-dessus des dizaines, etc. Il faut toujours privilégier cette présentation.
-
-\vspace{3em}
-
-2. Table Latex
-
-\begin{table}[h]
-\centering
-\caption{une légende au-dessus du tableau}
-\label{tab7.1}
-\begin{tabular}{lcr}
-\hline
-Les tables & sont & cool \\
-\hline
-col 1 est & alignée à gauche & 1600 \\
-col 2 est & centrée & 12 \\
-col 3 est & alignée à droite & 1 \\
-\hline
-\end{tabular}
-\end{table}
-
-
-\textbf{Remarques}
-
-\begin{itemize}
-  \item \{lcr\} : gauche (l), centré (c), droite (r)
-  \item \verb|\caption| place la légende au-dessus
-  \item \verb|\label| permet de référencer le tableau (\verb|\ref{tab7.1}|)
-  \item Les nombres sont bien alignés à droite dans la 3\ieme{} colonne
-\end{itemize}
+**Difficultés rencontrées.** Côté base de données : la taille initiale du fichier
+offshore (~120 Mo) a nécessité un prétraitement Python avant import dans le SGBD ;
+le calcul des distances pour 459 773 observations croisées avec 8 103
+infrastructures a requis une optimisation des requêtes SQL (sous-requêtes
+corrélées remplacées par des jointures avec ORDER BY/LIMIT 1). Côté statistique :
+le déséquilibre taxonomique massif a rendu caduques plusieurs approches initialement
+envisagées (régression multiple toutes espèces confondues, clustering k-means
+sur l'ensemble du jeu de données) ; la carte Leaflet interactive, non intégrable
+directement dans un PDF, est disponible via le lien en annexe.

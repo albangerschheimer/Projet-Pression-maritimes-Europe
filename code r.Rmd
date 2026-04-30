@@ -1,6 +1,19 @@
+---
+output:
+  html_document:
+    df_print: paged
+  pdf_document:
+    latex_engine: xelatex
+---
 # --- installation packages
-```{r}
-install.packages(c("tidyverse","ggplot2","scales","ggridges","patchwork","viridis","ggrepel","moments","sf","leaflet","tmap","gganimate","gifski","htmlwidgets","RColorBrewer","kableExtra","rnaturalearth", "rnaturalearthdata","dunn.test", "broom","car"))
+```{r setup, include=FALSE}
+options(repos = c(CRAN = "https://cran.rstudio.com"))
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
 ```
 
 
@@ -329,8 +342,9 @@ cat("  → figure generé\n")
 
 ```
 ```{r}
-fig_q2_port_final <- fig_q2_port_final + labs(title = "A · PROXIMITÉ DES PORTS")
-fig_q2_infra_final <- fig_q2_infra_final + labs(title = "B · PROXIMITÉ DES INFRASTRUCTURES OFFSHORE")
+fig_q2_port_final <- fig_q2_port + labs(title = "A · PROXIMITÉ DES PORTS")
+fig_q2_infra_final <- fig_q2_infra + labs(title = "B · PROXIMITÉ DES INFRASTRUCTURES OFFSHORE")
+
 
 fig_q2_comparaison <- fig_q2_port_final / fig_q2_infra_final
 
@@ -540,6 +554,9 @@ cat("  → figure generé\n")
 ```{r}
 # --- Animation : distance au port par phylum, année par année 
 # (Arthropoda uniquement pour la lisibilité)
+q4_arthro <- q4_complet %>%
+  filter(phylum == "Arthropoda")
+
 anim_q4 <- ggplot(q4_arthro, aes(x = year, y = distance_port_moyenne)) +
   geom_area(fill = "#BBDEFB", alpha = 0.3, stat = "identity") + 
   geom_line(color = "#2196F3", linewidth = 1.8, lineend = "round", stat = "identity") +
@@ -556,10 +573,13 @@ anim_q4 <- ggplot(q4_arthro, aes(x = year, y = distance_port_moyenne)) +
   transition_reveal(year) + 
   ease_aes("cubic-in-out")
  
-animate(anim_q4, nframes = 200, fps = 15,
-        width = 900, height = 500,
-        renderer = gifski_renderer("figures/animation_distance_temporelle.gif"))
-cat("  → Animation GIF sauvegardée\n")
+gif_anim <- "figures/animation_distance_temporelle.gif"
+if (!file.exists(gif_anim)) {
+  animate(anim_q4, nframes = 80, fps = 10,
+          width = 900, height = 500,
+          renderer = gifski_renderer(gif_anim))
+}
+cat("  → Animation GIF disponible\n")
 ```
  
 # ===============================================================
@@ -886,4 +906,3 @@ u6 <- read.csv("SQL requettes/univarier/U6 Stat infra.csv")
 print(u5)
 print(u6)
 ```
-
