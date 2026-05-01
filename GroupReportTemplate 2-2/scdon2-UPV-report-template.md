@@ -655,6 +655,16 @@ directement dans un PDF, est disponible via le lien en annexe.
 
 # Annexes
 
+## Outils et fichiers sources {#annexe-outils-sources}
+
+Le projet s’appuie sur plusieurs outils complémentaires :
+
+* **DBpro** : création et manipulation de la base de données relationnelle, importation des tables et exécution des requêtes SQL.
+* **Python avec la bibliothèque pandas** : prétraitement du fichier offshore volumineux et préparation de certaines données avant importation.
+* **R et R Markdown** : production des visualisations, analyses exploratoires, tests statistiques et génération du rapport.
+
+Le fichier `code r.Rmd` contient le code source de plusieurs éléments utilisés dans le rapport, notamment la carte interactive, l’animation temporelle et certains schémas ou graphiques.
+
 ## Descriptif des tables {#annexe-descriptif-tables}
 \textbf{REMPLIR LE NOMBRE DE COLONNES ET DE LIGNES}
 

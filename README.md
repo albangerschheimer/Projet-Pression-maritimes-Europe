@@ -12,6 +12,10 @@ This project studies the relationship between the spatial distribution of marine
 
 The final dataset combines biological occurrences from GBIF with geographic data on ports and offshore infrastructures. Each observation is associated with a minimum distance to the nearest port and the nearest offshore infrastructure, then grouped into proximity classes for SQL queries, visualizations and statistical analyses.
 
+### Author Portfolio
+
+This project is part of the work of **Alban Gerschheimer**. More projects are available on the portfolio: [albangerschheimer.vercel.app](https://albangerschheimer.vercel.app).
+
 ### Research Question
 
 To what extent does proximity to maritime ports and offshore infrastructures influence the spatial distribution of marine biodiversity observations in Europe?
@@ -38,9 +42,11 @@ To what extent does proximity to maritime ports and offshore infrastructures inf
 
 #### Interactive Map
 
+[![Preview of the interactive biodiversity map](GroupReportTemplate%202-2/figures/carte_statique_tmap.png)](GroupReportTemplate%202-2/figures/carte_biodiversite_marine.html)
+
 [Open the interactive HTML map](GroupReportTemplate%202-2/figures/carte_biodiversite_marine.html)
 
-The map also depends on the `GroupReportTemplate 2-2/figures/carte_biodiversite_marine_files/` folder, which must remain next to the HTML file.
+README files cannot embed an interactive HTML map directly, so the image above is a clickable preview. The map also depends on the `GroupReportTemplate 2-2/figures/carte_biodiversite_marine_files/` folder, which must remain next to the HTML file.
 
 ### Report
 
@@ -86,6 +92,10 @@ Ce projet étudie la relation entre la distribution spatiale d'observations de b
 
 Le jeu de données final croise des occurrences biologiques issues de GBIF avec des données géographiques sur les ports et les infrastructures offshore. Les observations sont associées à une distance minimale au port le plus proche et à l'infrastructure offshore la plus proche, puis regroupées en classes de proximité pour produire des requêtes SQL, des visualisations et des analyses statistiques.
 
+### Portfolio
+
+Ce projet fait partie des travaux de **Alban Gerschheimer**. D'autres projets sont disponibles sur le portfolio : [albangerschheimer.vercel.app](https://albangerschheimer.vercel.app).
+
 ### Problématique
 
 Dans quelle mesure la proximité des ports maritimes et des infrastructures offshore influence-t-elle la distribution spatiale des observations de biodiversité marine en Europe ?
@@ -112,9 +122,11 @@ Dans quelle mesure la proximité des ports maritimes et des infrastructures offs
 
 #### Carte interactive
 
+[![Aperçu de la carte interactive de biodiversité](GroupReportTemplate%202-2/figures/carte_statique_tmap.png)](GroupReportTemplate%202-2/figures/carte_biodiversite_marine.html)
+
 [Ouvrir la carte interactive HTML](GroupReportTemplate%202-2/figures/carte_biodiversite_marine.html)
 
-La carte dépend aussi du dossier `GroupReportTemplate 2-2/figures/carte_biodiversite_marine_files/`, qui doit rester à côté du fichier HTML.
+Les README ne peuvent pas intégrer directement une carte HTML interactive, donc l’image ci-dessus sert d’aperçu cliquable. La carte dépend aussi du dossier `GroupReportTemplate 2-2/figures/carte_biodiversite_marine_files/`, qui doit rester à côté du fichier HTML.
 
 ### Rapport
 
