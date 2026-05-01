@@ -42,11 +42,9 @@ To what extent does proximity to maritime ports and offshore infrastructures inf
 
 #### Interactive Map
 
-[![Preview of the interactive biodiversity map](GroupReportTemplate%202-2/figures/carte_statique_tmap.png)](GroupReportTemplate%202-2/figures/carte_biodiversite_marine.html)
-
 [Open the interactive HTML map](GroupReportTemplate%202-2/figures/carte_biodiversite_marine.html)
 
-README files cannot embed an interactive HTML map directly, so the image above is a clickable preview. The map also depends on the `GroupReportTemplate 2-2/figures/carte_biodiversite_marine_files/` folder, which must remain next to the HTML file.
+The map also depends on the `GroupReportTemplate 2-2/figures/carte_biodiversite_marine_files/` folder, which must remain next to the HTML file.
 
 ### Report
 
@@ -122,11 +120,9 @@ Dans quelle mesure la proximité des ports maritimes et des infrastructures offs
 
 #### Carte interactive
 
-[![Aperçu de la carte interactive de biodiversité](GroupReportTemplate%202-2/figures/carte_statique_tmap.png)](GroupReportTemplate%202-2/figures/carte_biodiversite_marine.html)
-
 [Ouvrir la carte interactive HTML](GroupReportTemplate%202-2/figures/carte_biodiversite_marine.html)
 
-Les README ne peuvent pas intégrer directement une carte HTML interactive, donc l’image ci-dessus sert d’aperçu cliquable. La carte dépend aussi du dossier `GroupReportTemplate 2-2/figures/carte_biodiversite_marine_files/`, qui doit rester à côté du fichier HTML.
+La carte dépend aussi du dossier `GroupReportTemplate 2-2/figures/carte_biodiversite_marine_files/`, qui doit rester à côté du fichier HTML.
 
 ### Rapport
 
