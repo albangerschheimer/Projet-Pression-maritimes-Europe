@@ -97,9 +97,9 @@ Dans notre équipe, les tâches ont été réparties de la manière suivante:
 
 \begin{center}
 \begin{tabular}{p{0.28\textwidth}p{0.58\textwidth}}
-\textbf{Alban Gerschheimer} & Étudiant numéro XXXX, Resp. de l'import de données et des requêtes SQL.\\
-\textbf{Omar Terras} & Étudiant numéro XXXX, Resp.\\
-\textbf{Alfred Gyalay} & Étudiant numéro XXXX, Resp. du code R.\\
+\textbf{Alban Gerschheimer} & Étudiant numéro 22413913, Resp. de la recherche, importation, SQL et du rapport.\\
+\textbf{Omar Terras} & Étudiant numéro 22309268, Resp.\\
+\textbf{Alfred Gyalay} & Étudiant numéro 22413922, Resp. du code R et du rapport.\\
 \textbf{Mia Portes} & Étudiant numéro 22406297, Resp. du rapport.
 \end{tabular}
 \end{center}
@@ -206,62 +206,7 @@ Le détail du nettoyage des données a été placé en fin de rapport : [Nettoya
 
 ### Création de la table `observation_europe`
 
-Nous avons ensuite créé la table `observation_europe`, qui contient les informations directement liées à chaque observation : coordonnées, date, profondeur, origine du jeu de données et lien vers l’espèce.
-
-```sql
-CREATE TABLE observation_europe AS
-SELECT
-    occurrenceid,
-    taxonkey,
-    `year`,
-    decimalLatitude,
-    decimalLongitude,
-    depth,
-    datasetkey,
-    phylum,
-    `class`,
-    `order`,
-    family,
-    genus,
-    species
-FROM cnidaria_europe
-
-UNION ALL
-
-SELECT
-    occurrenceid,
-    taxonkey,
-    `year`,
-    decimalLatitude,
-    decimalLongitude,
-    depth,
-    datasetkey,
-    phylum,
-    `class`,
-    `order`,
-    family,
-    genus,
-    species
-FROM elasmobranchii_europe
-
-UNION ALL
-
-SELECT
-    occurrenceid,
-    taxonkey,
-    `year`,
-    decimalLatitude,
-    decimalLongitude,
-    depth,
-    datasetkey,
-    phylum,
-    `class`,
-    `order`,
-    family,
-    genus,
-    species
-FROM malacostraca_europe;
-```
+La table `observation_europe` regroupe les observations issues des trois jeux de données biologiques afin de disposer d’une base unique pour les analyses spatiales. La requête SQL complète de création est disponible en annexe : [Nettoyage en ANNEXE](#annexe-nettoyage-donnees).
 
 
 ## Préparation des données géographiques
@@ -319,49 +264,12 @@ SET distance_infra_min = (
 
 ### Construction des classes de distance
 
-Les distances ont été regroupées en classes :
-
-```sql
-UPDATE observation_europe
-SET classe_distance_port =
-    CASE
-        WHEN distance_port_min < 0.01 THEN 10
-        WHEN distance_port_min < 0.02 THEN 9
-        WHEN distance_port_min < 0.03 THEN 8
-        WHEN distance_port_min < 0.05 THEN 7
-        WHEN distance_port_min < 0.07 THEN 6
-        WHEN distance_port_min < 0.10 THEN 5
-        WHEN distance_port_min < 0.15 THEN 4
-        WHEN distance_port_min < 0.20 THEN 3
-        WHEN distance_port_min < 0.30 THEN 2
-        ELSE 1
-    END;
-```
+Les distances ont été regroupées en classes de proximité allant de 1 à 10 afin de faciliter les comparaisons entre observations éloignées et observations proches. La requête SQL complète est disponible en annexe : [Nettoyage en ANNEXE](#annexe-nettoyage-donnees).
 
 
 ### Liaison avec les infrastructures offshore
 
-On crée alors une liaison entre les 2 en ajoutant le port le plus proche et en liant les colonnes en FK.
-
-```sql
-UPDATE observation_europe o
-SET id_offshore_proche = (
-    SELECT i.id_offshore
-    FROM offshore_europe i
-    ORDER BY 
-        ((o.decimalLatitude - i.latitude) * (o.decimalLatitude - i.latitude)) +
-        ((o.decimalLongitude - i.longitude) * (o.decimalLongitude - i.longitude))
-    LIMIT 1
-);
-```
-
-Ajout de la clé étrangère :
-
-```sql
-ALTER TABLE observation_europe
-ADD CONSTRAINT fk_obs_offshore
-FOREIGN KEY (id_offshore_proche) REFERENCES offshore_europe(id_offshore);
-```
+Chaque observation est reliée à l’infrastructure offshore la plus proche, puis cette relation est sécurisée par une clé étrangère. La requête SQL complète est disponible en annexe : [Nettoyage en ANNEXE](#annexe-nettoyage-donnees).
 ---
 
 ## Analyse des données
@@ -407,23 +315,6 @@ ORDER BY classe_distance_port;
 ![Code.](impact.png){#fig-sql-diversite-distance width="6cm" }
 
 
-### Distance moyenne au port par classe taxonomique
-
-Analyse de la distance moyenne aux ports selon les classes taxonomiques.
-
-```sql
-SELECT `class`, AVG(distance_port_min) AS distance_port_moyenne
-FROM observation_europe
-WHERE `class` IS NOT NULL
-GROUP BY `class`
-ORDER BY distance_port_moyenne;
-```
-
-![Code.](taxo.png){#fig-sql-distance-classe width="6cm" }
-
-Les requêtes complémentaires sur les espèces les plus observées et l’évolution annuelle ont été placées en fin de rapport : [Requêtes complémentaires en ANNEXE](#annexe-requetes-complementaires).
-
-
 ### Phylums proches des ports avec un nombre significatif d’observations
 
 On sélectionne les phylums ayant au moins 20 observations afin d’assurer une certaine robustesse statistique.
@@ -456,7 +347,7 @@ INNER JOIN port_maritime_eur p
     ON o.gid_port_proche = p.gid;
 ```
 
-Les requêtes sur les observations situées sous la distance moyenne et les phylums abondants proches des ports sont aussi disponibles en annexe : [Requêtes complémentaires en ANNEXE](#annexe-requetes-complementaires).
+Les requêtes complémentaires sur la distance moyenne au port par classe taxonomique, les observations situées sous la distance moyenne et les phylums abondants proches des ports sont regroupées en annexe : [Requêtes complémentaires en ANNEXE](#annexe-requetes-complementaires).
 
 # Analyse Exploratoire des Données
 
@@ -672,52 +563,21 @@ knitr::kable(synthese,
 
 ## Réponse à la problématique
 
-Les analyses menées permettent d'apporter des éléments de réponse à la question
-initiale : **la proximité des ports et des infrastructures offshore est associée
-à une distribution spatiale non aléatoire des observations de biodiversité marine
-en Europe**, mais le sens et la magnitude de cette association varient fortement
-selon le groupe taxonomique et la variable de pression considérée.
+Les analyses apportent des éléments de réponse à la question initiale : **la proximité des ports et des infrastructures offshore est associée à une distribution spatiale non aléatoire des observations de biodiversité marine en Europe**. Cependant, cette association varie fortement selon le groupe taxonomique et la variable de pression considérée.
 
-Le résultat le plus robuste est le gradient du ratio de diversité spécifique :
-les zones proches des ports (classes 8-10) présentent un ratio supérieur aux
-zones très éloignées (classe 1), malgré un volume d'observations bien plus faible.
-Ce paradoxe apparent s'explique : la classe 1 regroupe 96,5 % des observations,
-toutes dominées par Arthropoda, un phylum peu diversifié à l'échelle de nos
-données (observation répétée de quelques espèces très communes). À l'inverse,
-les zones portuaires, bien que moins échantillonnées, montrent une plus grande
-variété spécifique relative. Pour les infrastructures offshore, le gradient est
-plus direct et progressif, suggérant un effet dilutif de la pression anthropique
-sur la diversité locale.
+Le résultat le plus robuste concerne le ratio de diversité spécifique. Les zones proches des ports, notamment les classes 8 à 10, présentent un ratio supérieur aux zones très éloignées, malgré un volume d’observations plus faible. Ce paradoxe s’explique par la classe 1, qui regroupe 96,5 % des observations et reste dominée par Arthropoda, un phylum très majoritaire dans notre base. À l’inverse, les zones portuaires, moins échantillonnées, présentent une plus grande variété spécifique relative. Pour les infrastructures offshore, le gradient est plus régulier, ce qui suggère une association spatiale entre proximité des infrastructures et variation de la diversité observée.
 
 ## Limites et biais
 
-**Déséquilibre taxonomique.** Arthropoda représente 99,1 % des observations.
-Toute statistique agrégée reflète en réalité la distribution de ce seul groupe.
-Les tendances observées pour Cnidaria et Chordata, bien que cohérentes, reposent
-sur des effectifs trop faibles (respectivement 3 901 et 500 observations) pour
-être généralisables.
+**Déséquilibre taxonomique.** Arthropoda représente 99,1 % des observations. Les résultats globaux reflètent donc surtout ce groupe, tandis que Cnidaria et Chordata reposent sur des effectifs plus faibles, respectivement 3 901 et 500 observations.
 
-**Distance euclidienne vs distance géodésique.** La distance utilisée est une
-approximation euclidienne en degrés décimaux, non une distance orthodromique.
-Cette simplification introduit un biais croissant avec la latitude (surestimation
-des distances aux hautes latitudes, typiques de la mer du Nord et de la Baltique
-qui concentrent une part importante des observations).
+**Distance utilisée.** La distance calculée est une approximation euclidienne en degrés décimaux, et non une distance géodésique. Cette simplification peut introduire un biais, notamment aux hautes latitudes comme en mer du Nord ou en Baltique.
 
-**Biais d'effort de collecte.** La baisse des observations à partir de 2016 et la
-chute des années 2022-2023 ne reflètent probablement pas une tendance écologique
-réelle, mais une réduction de la soumission de données dans GBIF. Ce biais rend
-toute analyse temporelle des tendances de biodiversité particulièrement fragile.
+**Biais d’effort de collecte.** La baisse des observations après 2016 et la chute en 2022-2023 reflètent probablement davantage une baisse de soumission dans GBIF qu’une tendance écologique réelle.
 
-**Classe 9 - anomalie.** La classe 9 de distance aux ports affiche un ratio de
-diversité anormalement bas (1,0 % pour 5 405 observations), en rupture avec le
-gradient des classes 2 à 8. Cela peut résulter d'une campagne de collecte
-spécifique à certains ports particuliers, concentrée sur peu d'espèces cibles.
-Ce point mériterait une investigation plus fine (analyse par pays ou par port).
+**Classe 9.** La classe 9 présente un ratio de diversité anormalement bas, probablement lié à une campagne de collecte localisée autour de certains ports ou de quelques espèces ciblées.
 
-**Colinéarité port-infrastructure.** Les corrélations de Spearman positives entre
-les deux variables de distance (Figure \ref{fig:b07}) rendent difficile
-l'attribution de l'effet observé à l'une ou l'autre source de pression dans
-un modèle multivarié.
+**Colinéarité port-infrastructure.** Les corrélations positives de Spearman entre les deux distances rendent difficile l’attribution précise de l’effet observé aux ports ou aux infrastructures offshore.
 
 
 # Conclusion et perspectives 
@@ -945,7 +805,66 @@ DELETE FROM port_maritime_eur
 WHERE latitude IS NULL OR longitude IS NULL;
 ```
 
+### Requête de construction des classes de distance
+
+Les distances au port ont été transformées en classes de proximité de 1 à 10.
+
+```sql
+UPDATE observation_europe
+SET classe_distance_port =
+    CASE
+        WHEN distance_port_min < 0.01 THEN 10
+        WHEN distance_port_min < 0.02 THEN 9
+        WHEN distance_port_min < 0.03 THEN 8
+        WHEN distance_port_min < 0.05 THEN 7
+        WHEN distance_port_min < 0.07 THEN 6
+        WHEN distance_port_min < 0.10 THEN 5
+        WHEN distance_port_min < 0.15 THEN 4
+        WHEN distance_port_min < 0.20 THEN 3
+        WHEN distance_port_min < 0.30 THEN 2
+        ELSE 1
+    END;
+```
+
+### Requête de liaison avec les infrastructures offshore
+
+Chaque observation a été associée à l’infrastructure offshore la plus proche, puis la relation a été déclarée comme clé étrangère.
+
+```sql
+UPDATE observation_europe o
+SET id_offshore_proche = (
+    SELECT i.id_offshore
+    FROM offshore_europe i
+    ORDER BY
+        ((o.decimalLatitude - i.latitude) * (o.decimalLatitude - i.latitude)) +
+        ((o.decimalLongitude - i.longitude) * (o.decimalLongitude - i.longitude))
+    LIMIT 1
+);
+```
+
+Ajout de la clé étrangère :
+
+```sql
+ALTER TABLE observation_europe
+ADD CONSTRAINT fk_obs_offshore
+FOREIGN KEY (id_offshore_proche) REFERENCES offshore_europe(id_offshore);
+```
+
 ## Requêtes SQL complémentaires {#annexe-requetes-complementaires}
+
+### Distance moyenne au port par classe taxonomique
+
+Analyse de la distance moyenne aux ports selon les classes taxonomiques.
+
+```sql
+SELECT `class`, AVG(distance_port_min) AS distance_port_moyenne
+FROM observation_europe
+WHERE `class` IS NOT NULL
+GROUP BY `class`
+ORDER BY distance_port_moyenne;
+```
+
+![Code.](taxo.png){#fig-sql-distance-classe width="6cm" }
 
 ### Espèces les plus observées à proximité immédiate des ports
 
