@@ -141,13 +141,7 @@ Cette formule donne une distance euclidienne simplifiée entre une observation o
 \bigskip
 
 Ensuite, pour chaque observation, on garde seulement la distance au port \textbf{le plus proche}.
-On applique la même logique aux infrastructures offshore.
-Pour une observation o et une infrastructure i, la distance peut être notée :
-
-$$
-d_{infra}(o,i)=\sqrt{(lat_o - lat_i)^2 + (lon_o - lon_i)^2}
-$$
-Puis on retient la \textbf{distance minimale}.
+On applique la même formule aux infrastructures offshore, puis on retient la \textbf{distance minimale}.
 
 ## Construction de classes de distance
 
@@ -463,11 +457,6 @@ INNER JOIN port_maritime_eur p
 ```
 
 Les requêtes sur les observations situées sous la distance moyenne et les phylums abondants proches des ports sont aussi disponibles en annexe : [Requêtes complémentaires en ANNEXE](#annexe-requetes-complementaires).
-
-## Quelques détails techniques
-
-
-On peut interagir avec une base de données directement depuis RMarkdown : i.e. requêter puis récupérer et afficher le résultat directement depuis le Rmd. Un fichier connexionBDD.Rmd est fourni pour donner des exemples.
 
 # Analyse Exploratoire des Données
 
