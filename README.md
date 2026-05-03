@@ -160,4 +160,4 @@ Les résultats doivent être interprétés avec prudence : la distance utilisée
 
 ## Video / Vidéo
 
-[![Video presentation of the project](https://img.youtube.com/vi/8GbSYteuBdM/hqdefault.jpg)](https://youtu.be/8GbSYteuBdM)
+[![Video presentation of the project](https://img.youtube.com/vi/8GbSYteuBdM/hqdefault.jpg)](https://youtu.be/bsVa2WncufQ)
