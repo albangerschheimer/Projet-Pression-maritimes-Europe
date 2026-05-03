@@ -157,3 +157,7 @@ Le projet combine :
 ### Limites
 
 Les résultats doivent être interprétés avec prudence : la distance utilisée est une approximation spatiale, les données GBIF reflètent l'effort de collecte autant que la biodiversité réelle, et le déséquilibre massif en faveur d'Arthropoda influence fortement les statistiques globales.
+
+## Video / Vidéo
+
+[![Video presentation of the project](https://img.youtube.com/vi/8GbSYteuBdM/hqdefault.jpg)](https://youtu.be/8GbSYteuBdM)

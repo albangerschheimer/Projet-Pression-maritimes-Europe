@@ -98,7 +98,7 @@ Dans notre équipe, les tâches ont été réparties de la manière suivante:
 \begin{center}
 \begin{tabular}{p{0.28\textwidth}p{0.58\textwidth}}
 \textbf{Alban Gerschheimer} & Étudiant numéro 22413913, Resp. de la recherche, importation, SQL et du rapport.\\
-\textbf{Omar Terras} & Étudiant numéro 22309268, Resp.\\
+\textbf{Omar Terras} & Étudiant numéro 22309268\\
 \textbf{Alfred Gyalay} & Étudiant numéro 22413922, Resp. du code R et du rapport.\\
 \textbf{Mia Portes} & Étudiant numéro 22406297, Resp. du rapport.
 \end{tabular}
