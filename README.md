@@ -1,6 +1,19 @@
+<div align="center">
+
 # Maritime Pressures and Marine Biodiversity in Europe
 
-**Language / Langue:** [English](#english) | [Français](#francais)
+**Do ports and offshore infrastructures shape where marine biodiversity is observed?**
+
+[![R](https://img.shields.io/badge/R-R%20Markdown-276DC3.svg)](https://rmarkdown.rstudio.com/)
+[![SQL](https://img.shields.io/badge/analysis-SQL%20%2B%20R-336791.svg)](#methods)
+[![Data](https://img.shields.io/badge/data-459%2C773%20observations-lightgrey.svg)](#data-used)
+[![Period](https://img.shields.io/badge/period-2010--2023-lightgrey.svg)](#data-used)
+
+**Language / Langue — [English](#english) · [Français](#francais)**
+
+</div>
+
+---
 
 <a id="english"></a>
 
@@ -60,8 +73,9 @@ The map also depends on the `GroupReportTemplate 2-2/figures/carte_biodiversite_
 ├── GroupReportTemplate 2-2/         # Final report, figures and rendered outputs
 │   ├── figures/                     # Charts, GIF and HTML map
 │   └── scdon2-UPV-report-template.Rmd
-├── Query SQL/                       # SQL queries and Markdown outputs
-├── SQL requettes/                   # CSV outputs from queries
+├── Query SQL/                       # Query results, exported as .sql INSERTs and Markdown tables
+├── SQL requettes/                   # Query results, exported as CSV
+├── nouvelle requettes.docx          # The SQL statements themselves
 ├── code r.Rmd                       # R code used to prepare visualizations
 └── README.md
 ```
@@ -138,8 +152,9 @@ La carte dépend aussi du dossier `GroupReportTemplate 2-2/figures/carte_biodive
 ├── GroupReportTemplate 2-2/         # Rapport final, figures et rendus
 │   ├── figures/                     # Graphiques, GIF et carte HTML
 │   └── scdon2-UPV-report-template.Rmd
-├── Query SQL/                       # Requêtes SQL et versions Markdown
-├── SQL requettes/                   # Sorties CSV des requêtes
+├── Query SQL/                       # Résultats des requêtes, exportés en INSERT .sql et en tableaux Markdown
+├── SQL requettes/                   # Résultats des requêtes, exportés en CSV
+├── nouvelle requettes.docx          # Les requêtes SQL elles-mêmes
 ├── code r.Rmd                       # Code R de préparation des visualisations
 └── README.md
 ```
@@ -161,3 +176,24 @@ Les résultats doivent être interprétés avec prudence : la distance utilisée
 ## Video / Vidéo
 
 [![Video presentation of the project](https://img.youtube.com/vi/8GbSYteuBdM/hqdefault.jpg)](https://youtu.be/bsVa2WncufQ)
+
+---
+
+## License / Licence
+
+**English.** This is a group student project. A license file has not been added
+yet because that decision belongs to every contributor, not just one of them.
+Until then, default copyright applies: the work is not licensed for reuse.
+
+The data has its own terms in any case — the biological occurrences come from
+[GBIF](https://www.gbif.org/), and the port and offshore layers from their
+respective European providers.
+
+**Français.** Ceci est un projet étudiant de groupe. Aucun fichier de licence n'a
+encore été ajouté, car cette décision appartient à l'ensemble des contributeurs
+et pas à un seul d'entre eux. D'ici là, le droit d'auteur par défaut s'applique :
+l'œuvre n'est pas sous licence de réutilisation.
+
+Les données ont de toute façon leurs propres conditions : les occurrences
+biologiques proviennent de [GBIF](https://www.gbif.org/), et les couches ports et
+offshore de leurs fournisseurs européens respectifs.
