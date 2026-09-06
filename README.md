@@ -63,8 +63,9 @@ Modélisation relationnelle (MCD/MOD), puis import, nettoyage et enrichissement 
 ├── GroupReportTemplate 2-2/         # Rapport final, figures et rendus
 │   ├── figures/                     # Graphiques, GIF et carte HTML
 │   └── scdon2-UPV-report-template.Rmd
-├── Query SQL/                       # Requêtes SQL et versions Markdown
-├── SQL requettes/                   # Sorties CSV des requêtes
+├── Query SQL/                       # Résultats des requêtes, en INSERT .sql et tableaux Markdown
+├── SQL requettes/                   # Résultats des requêtes, en CSV
+├── nouvelle requettes.docx          # Les requêtes SQL elles-mêmes
 ├── code r.Rmd                       # Code R de préparation des visualisations
 └── README.md
 ```
@@ -134,8 +135,9 @@ Relational modeling (conceptual and logical schema), then import, cleaning and e
 ├── GroupReportTemplate 2-2/         # Final report, figures and rendered outputs
 │   ├── figures/                     # Charts, GIF and HTML map
 │   └── scdon2-UPV-report-template.Rmd
-├── Query SQL/                       # SQL queries and Markdown outputs
-├── SQL requettes/                   # CSV outputs from queries
+├── Query SQL/                       # Query results, as .sql INSERTs and Markdown tables
+├── SQL requettes/                   # Query results, as CSV
+├── nouvelle requettes.docx          # The SQL statements themselves
 ├── code r.Rmd                       # R code used to prepare visualizations
 └── README.md
 ```
@@ -143,3 +145,24 @@ Relational modeling (conceptual and logical schema), then import, cleaning and e
 ---
 
 Project by **Alban Gerschheimer**. More of my work: [albangerschheimer.vercel.app](https://albangerschheimer.vercel.app)
+
+---
+
+## Licence / License
+
+**Français.** C'est un projet étudiant de groupe, et aucune licence n'a été
+ajoutée pour l'instant : ce choix appartient à tous les contributeurs, pas à un
+seul. En attendant, le droit d'auteur par défaut s'applique — le travail n'est
+pas réutilisable librement.
+
+De toute façon les données ont leurs propres conditions : les occurrences
+biologiques viennent de [GBIF](https://www.gbif.org/), les couches ports et
+offshore de leurs fournisseurs européens respectifs.
+
+**English.** This is a group student project, and no license has been added yet:
+that call belongs to every contributor, not just one of them. Until then default
+copyright applies — the work isn't free to reuse.
+
+The data comes with its own terms anyway: biological occurrences from
+[GBIF](https://www.gbif.org/), port and offshore layers from their respective
+European providers.
